@@ -12,3 +12,7 @@ def test_basic_sentence():
 
 def test_single_word():
     assert count_words("hello") == 1
+
+
+def test_empty_string():
+    assert count_words("") == 0
