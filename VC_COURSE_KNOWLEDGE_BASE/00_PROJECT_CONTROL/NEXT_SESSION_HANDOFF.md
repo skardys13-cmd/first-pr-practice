@@ -48,17 +48,34 @@ an oversight. See `EXTRACTION_STATUS.md` → "DELIBERATELY NOT DONE".
 
 All four CSVs contain headers only, zero rows.
 
+## DELIVERY METHOD — SETTLED
+
+**Seth pastes lectures into the conversation, one at a time, as needed.** There
+is no bulk upload and no underlying deck files. Each paste is saved verbatim
+into `03_SOURCE_DOCUMENTS/` and becomes the immutable original for that lecture.
+
+Full handling procedure: `03_SOURCE_DOCUMENTS/README_HOW_TO_ADD_SOURCES.md`.
+
+Implications to keep in mind:
+
+- **The saved paste is the only copy.** There is no source deck to re-check a
+  detail against, so capture generously on the first pass.
+- Visuals do not survive a paste. Mark `[VISUAL NOT CAPTURED]` where a lecture
+  clearly referenced a chart/table/diagram that is not in the text. Never invent
+  what it showed.
+- Course order arrives incrementally and possibly out of sequence. Keep the
+  manifest's `Order` column provisional and re-sort as the picture fills in.
+
 ## OPEN QUESTIONS FOR SETH
 
-1. **How will the ~30+ files be delivered?** Recommended: a single Google Drive
-   folder (the Drive connector is live and working in this session). Also fine:
-   committing them into `03_SOURCE_DOCUMENTS/`, or attaching them to a session.
-2. Are both courses' materials mixed together, or already separated by course?
-3. Is there a syllabus or schedule? That would settle deck ordering immediately
-   and is worth processing **first** — it is the map for everything else.
-4. Any graded assignments/exams with his own work on them? Those are the
-   strongest career-translation evidence (they show what he actually produced,
-   not just what he was shown).
+1. Ask **with each paste**: which course, lecture title/number or rough position
+   in the semester, and whether it is the complete lecture. Mark `[NOT PROVIDED]`
+   rather than guessing; do not stall extraction waiting on an answer.
+2. Is there a syllabus or schedule he could paste **first**? It would settle
+   ordering for both courses in one shot and is the map for everything else.
+3. Any graded assignments or exams with his own work? Those are the strongest
+   career-translation evidence — they show what he actually produced, not just
+   what he was shown.
 
 ## KNOWN EXTRACTION ISSUES
 
@@ -74,27 +91,29 @@ All four CSVs contain headers only, zero rows.
 
 ## NEXT ACTION (exact)
 
-```bash
-# 1. Confirm sources have landed
-ls -la VC_COURSE_KNOWLEDGE_BASE/03_SOURCE_DOCUMENTS/
+**Wait for Seth to paste a lecture.** Then, per paste:
 
-# 2. Mechanically extract everything (originals are never modified)
+```bash
+# 1. Save the paste VERBATIM as the immutable original
+#    03_SOURCE_DOCUMENTS/SRC-P-###_<short-name>.md
+
+# 2. Extract it
 python3 VC_COURSE_KNOWLEDGE_BASE/00_PROJECT_CONTROL/tools/extract_source.py \
-        --all --export-images
+        --file "03_SOURCE_DOCUMENTS/SRC-P-###_<short-name>.md" --id SRC-P-###
 ```
 
 Then:
 
-3. Register every file in `FILE_MANIFEST.md` with a **final** source ID.
-   Presentation numbering follows reconstructed **course order**, not filename
-   order. Process any syllabus first to establish that order.
-4. Read the raw extractions and write structured notes into
+3. Register it in `FILE_MANIFEST.md` with its final source ID.
+4. Read the raw extraction and write structured notes into
    `02_PRESENTATION_NOTES/` using the §9 template.
 5. Roll entities, numbers, formulas, concepts, and heuristics up into
-   `05_MASTER_KNOWLEDGE/` and `06_DATABASES/` as you go — not in a batch at the end.
-6. Cross-reference each new source against what is already processed.
-7. Update `PROCESS_LOG.md` and `EXTRACTION_STATUS.md` after each source.
-8. Continue autonomously through all sources. Do not ask permission between files.
+   `05_MASTER_KNOWLEDGE/` and `06_DATABASES/` as you go — not batched at the end.
+6. Cross-reference the new lecture against everything already processed.
+7. Update `PROCESS_LOG.md` and `EXTRACTION_STATUS.md`.
+8. Commit and push. Then wait for the next paste — do not ask whether to continue.
+
+If several lectures arrive at once, process them all in sequence autonomously.
 
 ---
 

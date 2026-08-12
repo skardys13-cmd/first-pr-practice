@@ -63,7 +63,8 @@ PDF_EXT = {".pdf"}
 WORD_EXT = {".docx", ".doc"}
 SHEET_EXT = {".xlsx", ".xlsm", ".xls"}
 CSV_EXT = {".csv", ".tsv"}
-SUPPORTED = DECK_EXT | PDF_EXT | WORD_EXT | SHEET_EXT | CSV_EXT
+TEXT_EXT = {".txt", ".md"}
+SUPPORTED = DECK_EXT | PDF_EXT | WORD_EXT | SHEET_EXT | CSV_EXT | TEXT_EXT
 
 LEGACY_CONVERT = {".ppt": "pptx", ".doc": "docx", ".xls": "xlsx"}
 
@@ -381,6 +382,57 @@ def _extract_xlsx(path: Path, src_id: str) -> str:
     return "\n".join(out)
 
 
+def _extract_text(path: Path, src_id: str) -> str:
+    """
+    Pasted lecture text. Preserved VERBATIM -- never reflowed, trimmed, or
+    reworded. Slide/section boundaries are detected and indexed where the paste
+    contains them, so downstream notes can still cite a slide number.
+    """
+    raw = path.read_text(encoding="utf-8", errors="replace")
+    lines = raw.splitlines()
+
+    # Detect slide-ish delimiters so citations stay addressable.
+    marker = re.compile(
+        r"^\s*(?:#+\s*)?(?:slide|lecture|section|part|chapter|module)\s*[#:\-]?\s*(\d+)\b",
+        re.IGNORECASE,
+    )
+    hits = [(i + 1, m.group(0).strip()) for i, ln in enumerate(lines)
+            if (m := marker.match(ln))]
+
+    out = [f"# RAW EXTRACTION — {src_id}", "",
+           f"**Original file:** `{path.name}`  ",
+           "**Type:** Pasted lecture text  ",
+           f"**Lines:** {len(lines)}  ",
+           f"**Detected slide/section markers:** {len(hits)}  ", ""]
+    out.append("> Verbatim capture of pasted course content. Nothing below is "
+               "summarized, reworded, or reordered. If the paste came from a deck, "
+               "formatting that carried meaning in the original (chart data, table "
+               "layout, images) may be absent — check `MARKERS` below for how "
+               "granular the citations can be.")
+    out.append("")
+
+    if hits:
+        out.append("## Detected markers")
+        out.append("")
+        for ln_no, label in hits:
+            out.append(f"- line {ln_no}: `{label}`")
+        out.append("")
+    else:
+        out.append("> **[NO SLIDE MARKERS DETECTED]** — citations for this source "
+                   "must reference line numbers rather than slide numbers, unless "
+                   "slide structure can be inferred from the content itself.")
+        out.append("")
+
+    out.append("---")
+    out.append("")
+    out.append("## Verbatim content")
+    out.append("")
+    out.append("```text")
+    out.extend(lines)
+    out.append("```")
+    return "\n".join(out)
+
+
 def _extract_csv(path: Path, src_id: str) -> str:
     out = [f"# RAW EXTRACTION — {src_id}", "",
            f"**Original file:** `{path.name}`  ", "**Type:** Delimited data  ", "",
@@ -421,6 +473,10 @@ def process(path: Path, src_id: str, export_images: bool, scratch: Path) -> Path
         body, dest_dir = _extract_xlsx(work, src_id), DOC_OUT
     elif ext in CSV_EXT:
         body, dest_dir = _extract_csv(work, src_id), DOC_OUT
+    elif ext in TEXT_EXT:
+        # Pasted lectures are presentation sources; other pasted docs are not.
+        body = _extract_text(work, src_id)
+        dest_dir = DECK_OUT if src_id.startswith("SRC-P") else DOC_OUT
     else:
         raise ValueError(f"unsupported extension: {ext}")
 
@@ -450,8 +506,12 @@ def main():
         if not SOURCE_DIR.exists():
             print(f"ERROR: {SOURCE_DIR} does not exist.", file=sys.stderr)
             return 1
+        # Skip this folder's own control/readme files -- they are not course sources.
         files = sorted(f for f in SOURCE_DIR.rglob("*")
-                       if f.is_file() and f.suffix.lower() in SUPPORTED)
+                       if f.is_file()
+                       and f.suffix.lower() in SUPPORTED
+                       and not f.name.startswith((".", "_"))
+                       and not f.stem.upper().startswith("README"))
         if not files:
             print(f"No supported source files found in {SOURCE_DIR}.")
             print("Drop the course decks/PDFs/docs there, then re-run.")
@@ -459,7 +519,7 @@ def main():
         targets = []
         deck_n = doc_n = 0
         for f in files:
-            if f.suffix.lower() in DECK_EXT:
+            if f.suffix.lower() in DECK_EXT | TEXT_EXT:
                 deck_n += 1
                 targets.append((f, f"SRC-P-{deck_n:03d}"))
             else:

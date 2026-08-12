@@ -17,15 +17,29 @@ Other documents processed:     0
 Other documents remaining:     0   (none delivered yet)
 ```
 
+## DELIVERY METHOD
+
+**Pasted text.** Seth pastes lectures into the conversation one at a time, as
+needed — there is no bulk file upload and no underlying deck files. Each paste
+is saved verbatim into `03_SOURCE_DOCUMENTS/` and becomes the immutable original
+for that lecture. The extractor accepts `.md`/`.txt` and auto-indexes any
+slide/section markers so citations stay addressable.
+
+Consequence: the saved paste is the **only** copy of that lecture — there is no
+source deck to re-check against — and visuals (charts, tables, diagrams, speaker
+notes) do not survive a copy-paste. Capture generously on the first pass and
+mark `[VISUAL NOT CAPTURED]` rather than inferring what a missing exhibit showed.
+
 ## CURRENT STATE
 
-**BLOCKED — awaiting source material.**
+**Ready and waiting for the first lecture paste.**
 
 The project scaffold, methodology, tracking system, database schemas, and a
-tested extraction pipeline are all in place. **Zero course files have been
-delivered**, so no course knowledge exists in this repository yet.
+tested extraction pipeline are all in place. **No lecture content has been
+pasted yet**, so no course knowledge exists in this repository.
 
-Locations checked on 2026-08-12, all empty of course material:
+Locations checked on 2026-08-12 before the paste workflow was settled, all empty
+of course material:
 
 | Location | Result |
 |---|---|
@@ -50,9 +64,11 @@ Ingest course files once delivered. See `NEXT_SESSION_HANDOFF.md`.
 
 ## OPEN ISSUES
 
-1. **No source material delivered.** Everything downstream is blocked on this.
-2. Course order for the decks is unknown until filenames/content are seen; the
-   manifest's `Order` column stays empty until then.
+1. **No lecture content pasted yet.** Everything downstream waits on this.
+2. Course order arrives incrementally and possibly out of sequence, since
+   lectures are pasted as needed rather than in bulk. Keep the manifest's
+   `Order` column provisional and re-sort as the picture fills in. A pasted
+   syllabus would resolve it in one step.
 3. Scanned-image PDFs would need OCR — `tesseract` is **not** installed in this
    environment. Flag any such file as unresolved and note it here.
 4. `.ppt`/`.doc`/`.xls` legacy files convert via LibreOffice (installed) — path

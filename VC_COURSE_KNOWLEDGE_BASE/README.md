@@ -14,11 +14,16 @@ portfolio work, and career material.
 
 ---
 
-## ⚠ CURRENT STATE: awaiting source material
+## ⚠ CURRENT STATE: ready, awaiting the first lecture
 
 The scaffold, methodology, tracking system, database schemas, and a **tested**
-extraction pipeline are in place. **No course files have been delivered**, so
+extraction pipeline are in place. **No lecture content has been pasted yet**, so
 every knowledge file is deliberately empty.
+
+**Delivery method:** lectures are pasted into the conversation one at a time, as
+needed. Each paste is saved verbatim into `03_SOURCE_DOCUMENTS/` and becomes the
+immutable original for that lecture — there is no underlying deck to fall back
+on, so first-pass capture has to be thorough.
 
 That emptiness is the honest state, not an oversight. Filling the Concept
 Library, Formula Library, or "Ortberg Rules" from general VC knowledge would
@@ -26,7 +31,7 @@ produce something that looks like progress while quietly replacing what the
 professor actually taught — and would poison the well for interview prep later,
 where an untraceable claim is a liability.
 
-**To unblock:** see
+**Per-paste handling procedure:**
 [`03_SOURCE_DOCUMENTS/README_HOW_TO_ADD_SOURCES.md`](03_SOURCE_DOCUMENTS/README_HOW_TO_ADD_SOURCES.md).
 
 ---
@@ -35,7 +40,7 @@ where an untraceable claim is a liability.
 
 | If you are… | Read |
 |---|---|
-| Adding course files | [`03_SOURCE_DOCUMENTS/README_HOW_TO_ADD_SOURCES.md`](03_SOURCE_DOCUMENTS/README_HOW_TO_ADD_SOURCES.md) |
+| Pasting a lecture | [`03_SOURCE_DOCUMENTS/README_HOW_TO_ADD_SOURCES.md`](03_SOURCE_DOCUMENTS/README_HOW_TO_ADD_SOURCES.md) |
 | A new session picking this up | [`00_PROJECT_CONTROL/MASTER_INSTRUCTIONS.md`](00_PROJECT_CONTROL/MASTER_INSTRUCTIONS.md), then `EXTRACTION_STATUS.md`, then `NEXT_SESSION_HANDOFF.md` |
 | Checking progress | [`00_PROJECT_CONTROL/EXTRACTION_STATUS.md`](00_PROJECT_CONTROL/EXTRACTION_STATUS.md) |
 
@@ -84,7 +89,9 @@ python3 00_PROJECT_CONTROL/tools/extract_source.py --file "03_SOURCE_DOCUMENTS/X
 
 Verified to recover slide text with bullet nesting, speaker notes, tables, chart
 series values, Word headings and tables, and spreadsheet **formulas** as well as
-values. Handles legacy `.ppt`/`.doc`/`.xls` via LibreOffice. Reads originals in
-binary read-only mode and writes only to derived directories.
+values. Pasted lecture text (`.md`/`.txt`) is preserved verbatim with
+slide/section markers auto-indexed so citations stay addressable. Handles legacy
+`.ppt`/`.doc`/`.xls` via LibreOffice. Reads originals read-only and writes only
+to derived directories.
 
 **Requires:** `pip install python-pptx pdfplumber openpyxl python-docx`
