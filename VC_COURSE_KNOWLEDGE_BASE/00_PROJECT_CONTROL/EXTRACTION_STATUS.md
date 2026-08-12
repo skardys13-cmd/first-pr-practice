@@ -32,10 +32,15 @@ Built from the 13 full deck notes: Formula Library, Heuristics, all six
 Frameworks, the career layer (translation, gap analysis, resume, interview prep,
 portfolio plan), the cheat sheet, and the capstone playbook.
 
-**Still thin and worth a future pass:** Concept_Library and Case_Library (still
-fragment-era), the glossary, flashcards, calculation practice, practice cases,
-LinkedIn material, the databases (many entities from the full extractions are not
-yet in the CSVs), and the consolidated final knowledge base.
+**All layers now built at v1.0.** Concept and Case libraries rebuilt from the
+full notes; glossary, flashcards, 57 technical questions, 16 worked calculations,
+10 practice cases, LinkedIn material, expanded databases (45 company/deal rows,
+23 investors, 13 people, full source index), and the consolidated master index.
+
+**Remaining known gaps** are content gaps, not project gaps: SRC-P-004 was never
+retrieved; visual-only slides are marked throughout; and the 4310 New Venture
+Finance course is one deck deep, leaving burn/runway and unit economics uncovered.
+See `EXTERNAL_CONTEXT_Research_Canon.md`.
 
 **Prior state below is historical.**
 
