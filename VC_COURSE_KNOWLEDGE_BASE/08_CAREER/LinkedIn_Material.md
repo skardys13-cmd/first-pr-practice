@@ -1,5 +1,16 @@
 # LinkedIn Material
 
+> # ⚠ DRAFT TEXT ONLY — NOTHING IS PUBLISHED
+>
+> **This file is a private draft. Nothing in it has been posted anywhere, and
+> nothing ever will be without Seth explicitly saying so, per instance.**
+> Claude has no access to Seth's LinkedIn and will not request it. If any of this
+> text is ever used, **Seth copies it and posts it himself.**
+>
+> **Professor's name is NOT in any draft below.** He is referenced only by
+> description. His name appears once, under "people to connect with" — that is a
+> networking suggestion, not profile copy.
+
 **Rule:** position as **legitimate academic preparation plus self-directed work**.
 Never imply professional investing experience.
 
