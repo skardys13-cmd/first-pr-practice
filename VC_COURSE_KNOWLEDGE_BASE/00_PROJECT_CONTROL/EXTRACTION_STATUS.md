@@ -8,31 +8,42 @@
 ## PROJECT STATUS
 
 ```
-Presentations discovered:      0
+Presentations discovered:     14   (Google Drive, located 2026-08-12)
+Presentations retrieved:       0   (blocked — see below)
 Presentations processed:       0
-Presentations remaining:       0   (none delivered yet)
+Presentations remaining:      14
 
 Other documents discovered:    0
 Other documents processed:     0
-Other documents remaining:     0   (none delivered yet)
+Other documents remaining:     0
 ```
 
-## DELIVERY METHOD
+## DELIVERY METHOD — SUPERSEDED, NOW GOOGLE DRIVE
 
-**Pasted text.** Seth pastes lectures into the conversation one at a time, as
-needed — there is no bulk file upload and no underlying deck files. Each paste
-is saved verbatim into `03_SOURCE_DOCUMENTS/` and becomes the immutable original
-for that lecture. The extractor accepts `.md`/`.txt` and auto-indexes any
-slide/section markers so citations stay addressable.
-
-Consequence: the saved paste is the **only** copy of that lecture — there is no
-source deck to re-check against — and visuals (charts, tables, diagrams, speaker
-notes) do not survive a copy-paste. Capture generously on the first pass and
-mark `[VISUAL NOT CAPTURED]` rather than inferring what a missing exhibit showed.
+Original plan was pasted text. **Superseded 2026-08-12:** Seth put 14 decks in a
+Drive folder, "Lecture notes venture capital". The paste path still works and
+remains supported for anything not in Drive.
 
 ## CURRENT STATE
 
-**Ready and waiting for the first lecture paste.**
+**BLOCKED — decks located, content not retrievable yet.**
+
+All 14 decks are identified with their Drive file IDs (see `FILE_MANIFEST.md`).
+Neither retrieval route is currently open:
+
+| Route | Status |
+|---|---|
+| Connector text extraction (`read_file_content`) | **Permission not granted.** Two attempts returned "MCP tool call requires approval". This is the intended route. |
+| Connector binary download (`download_file_content`) | **Not viable regardless of permission.** Returns base64 into the model's context; a 92 MB deck is millions of tokens. Never use this for these files. |
+| Direct HTTPS download in the shell | No Drive credentials in the environment. Would work only if the folder were link-shared. |
+
+Disk is not a constraint — 30 GB free against ~340 MB of decks.
+
+### Unblocking
+
+Approve the Drive connector's file-read permission (choose the always-allow
+option so all 14 decks process without re-prompting per file). Then proceed to
+the NEXT ACTION in `NEXT_SESSION_HANDOFF.md`.
 
 The project scaffold, methodology, tracking system, database schemas, and a
 tested extraction pipeline are all in place. **No lecture content has been
@@ -64,11 +75,19 @@ Ingest course files once delivered. See `NEXT_SESSION_HANDOFF.md`.
 
 ## OPEN ISSUES
 
-1. **No lecture content pasted yet.** Everything downstream waits on this.
-2. Course order arrives incrementally and possibly out of sequence, since
-   lectures are pasted as needed rather than in bulk. Keep the manifest's
-   `Order` column provisional and re-sort as the picture fills in. A pasted
-   syllabus would resolve it in one step.
+1. **Drive read permission not granted.** Everything downstream waits on this.
+2. **Course attribution unknown.** The folder is named for venture capital, but
+   Seth took two courses. Some of these 14 decks may belong to New Venture
+   Financing. Determine per deck from content — do not assume the folder name
+   settles it, and do not assume all 14 are one course.
+3. **Deck order unverified.** Filenames are bare numbers `1.pptx`–`14.pptx`.
+   That probably reflects lecture order, but it is an assumption; confirm from
+   content and re-sort the manifest if wrong.
+4. **Decks 2, 3, 4 are 65–92 MB** — heavy embedded media. Their text extraction
+   will likely understate what the lecture actually covered. Flag visuals as
+   `[VISUAL NOT CAPTURED]` rather than guessing.
+5. No syllabus in the folder. One would settle ordering and course attribution
+   in a single step — worth asking for.
 3. Scanned-image PDFs would need OCR — `tesseract` is **not** installed in this
    environment. Flag any such file as unresolved and note it here.
 4. `.ppt`/`.doc`/`.xls` legacy files convert via LibreOffice (installed) — path

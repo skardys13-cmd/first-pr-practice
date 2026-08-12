@@ -91,16 +91,19 @@ Implications to keep in mind:
 
 ## NEXT ACTION (exact)
 
-**Wait for Seth to paste a lecture.** Then, per paste:
+**Blocked on one thing: Drive read permission.** Once granted, work
+`SRC-P-001` → `SRC-P-014` in order, one deck per cycle:
 
-```bash
-# 1. Save the paste VERBATIM as the immutable original
-#    03_SOURCE_DOCUMENTS/SRC-P-###_<short-name>.md
-
-# 2. Extract it
-python3 VC_COURSE_KNOWLEDGE_BASE/00_PROJECT_CONTROL/tools/extract_source.py \
-        --file "03_SOURCE_DOCUMENTS/SRC-P-###_<short-name>.md" --id SRC-P-###
 ```
+1. read_file_content(fileId)          # Drive file IDs are in FILE_MANIFEST.md
+2. Save the returned text VERBATIM to
+   03_SOURCE_DOCUMENTS/SRC-P-###_<n>.md          <- immutable original
+3. python3 00_PROJECT_CONTROL/tools/extract_source.py \
+          --file "03_SOURCE_DOCUMENTS/SRC-P-###_<n>.md" --id SRC-P-###
+```
+
+Determine each deck's **course** and **topic** from its content and correct the
+manifest — the folder name is not proof all 14 are the VC/PE/M&A course.
 
 Then:
 
