@@ -1,7 +1,7 @@
 # EXTRACTION STATUS
 
 **Last updated:** 2026-08-12
-**Master knowledge version:** v0.6 (13 of 14 decks done)
+**Master knowledge version:** v1.0 — SYNTHESIS COMPLETE
 
 ---
 
@@ -26,7 +26,18 @@ remains supported for anything not in Drive.
 
 ## CURRENT STATE
 
-**EXTRACTION COMPLETE for all retrievable decks.**
+**EXTRACTION AND SYNTHESIS COMPLETE.**
+
+Built from the 13 full deck notes: Formula Library, Heuristics, all six
+Frameworks, the career layer (translation, gap analysis, resume, interview prep,
+portfolio plan), the cheat sheet, and the capstone playbook.
+
+**Still thin and worth a future pass:** Concept_Library and Case_Library (still
+fragment-era), the glossary, flashcards, calculation practice, practice cases,
+LinkedIn material, the databases (many entities from the full extractions are not
+yet in the CSVs), and the consolidated final knowledge base.
+
+**Prior state below is historical.**
 
 All 11 decks containing extractable text have been fully read and written up as
 structured notes in `02_PRESENTATION_NOTES/`. All partial snippet files have been

@@ -205,3 +205,43 @@ resolve SRC-P-002/003/004; obtain the missing 4310 material.
 Synthesis. See `NEXT_SESSION_HANDOFF.md` → NEXT ACTION. The master knowledge
 libraries still reflect the partial-snippet era and must be rebuilt from the
 full notes.
+
+---
+
+## Session 4 — 2026-08-12 — SYNTHESIS
+
+**Inputs:** the 13 structured deck notes. No decks re-read (per the token
+discipline in `MASTER_INSTRUCTIONS.md` §7).
+
+### Completed
+1. **`Formula_Library.md` v1.0** — rebuilt. Every formula the course teaches with
+   its worked example and source, plus an explicit list of formulas the course
+   *names but does not derive*, so nothing is misattributed.
+2. **`Professor_Ortberg_Heuristics.md` v1.0** — rebuilt, organized by domain with
+   explicit/implied/inferred confidence labels.
+3. **All six frameworks built** — fund economics, startup financing, deal
+   lifecycle, VC investment, due diligence, investment memo template.
+4. **Career layer** — translation, gap analysis, resume material, interview prep,
+   portfolio project plan.
+5. **`VC_Cheat_Sheet.md`** and **`Seth_VC_Playbook.md`**.
+
+### Key synthesis findings
+- **The course weights deal structure and returns far more heavily than founder
+  or market assessment.** The VC Investment Framework says so explicitly rather
+  than padding the thin sections — an analyst trained on this material will be
+  strong on terms and math, weak on qualitative founder judgment.
+- **The 10-year fund vs ~8-years-to-IPO constraint is the master key.** It
+  explains exit pressure, why VCs leave boards, the ~90% acquisition rate, and
+  the 4-year assumption in the VC Method. Recorded in the Fund Economics
+  framework as the organizing insight.
+- **The Iowa private-capital thesis is the genuine career differentiator** —
+  Global Atlantic/KKR + thirty Iowa IPOs concentrated in insurance + Seth's RIS
+  role. Developed across the career files as a defensible specialization.
+- **Modeling is the biggest closable gap.** The course presents models but does
+  not evidence that Seth built any; the resume file explicitly forbids claiming
+  modeling until the portfolio pieces exist.
+
+### Deliberately not done
+Concept and Case libraries were left at fragment-era quality rather than
+half-rebuilt — they need a full pass, and a partial rewrite would have been worse
+than an honest stale marker.
