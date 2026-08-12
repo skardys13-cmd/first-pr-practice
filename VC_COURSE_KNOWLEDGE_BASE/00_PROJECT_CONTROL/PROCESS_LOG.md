@@ -144,3 +144,64 @@ Everything downstream of ingestion. See `NEXT_SESSION_HANDOFF.md` → NEXT ACTIO
 
 Retrieve full decks once permission is granted; re-verify every partial entry;
 resolve SRC-P-002/003/004; obtain the missing 4310 material.
+
+---
+
+## Session 3 — 2026-08-12
+
+**Source IDs processed:** SRC-P-001, 005, 006, 007, 008, 009, 010, 011, 012, 013,
+014 — all FULL extractions with structured notes.
+
+### Actions completed
+
+1. Drive read permission granted mid-session; full `read_file_content` access
+   confirmed working.
+2. Re-tested SRC-P-002/003/004 **with access**: all three still return empty
+   `fileContent`. Confirmed as image-based slideshows with no text layer.
+3. Read all 11 remaining decks in full and wrote structured notes to
+   `02_PRESENTATION_NOTES/`, one file per deck.
+4. Deleted all `_PARTIAL.md` snippet files — superseded.
+5. Committed and pushed after each deck.
+
+### Major content recovered beyond the partial extractions
+
+- **SRC-P-001**: private vs public market sizing, accredited investor rationale,
+  exit taxonomy, deal sizes by stage, the four metrics, the 20% fund IRR
+  survival threshold, and the banker/VC/PE metaphors.
+- **SRC-P-005**: the complete two-rounds-vs-one-round dilution exercise with
+  outcomes ($16.9M vs $12.4M per founder), full liquidation preference and
+  anti-dilution mechanics, and all term sheet rights.
+- **SRC-P-007**: venture pricing by comparables not DCF, PRE+MONEY=POST, the
+  entire IPO process, Rule of 40, and the engineered first-day pop.
+- **SRC-P-008**: EV, six valuation multiples, full LBO leverage/coverage metrics,
+  the Ziply deal, and the zero-growth LBO returning 3.75x.
+- **SRC-P-009**: LBO capital stack, WACC/CAPM worked both ways, the 2x4/4x4
+  hurdles, RJR's complete entry-to-exit math, and Guitar Center.
+- **SRC-P-010**: KKR's fee double-dip, the systemic leverage incentives, the
+  Vista/Marketo model deal, the private credit module, and the Global Atlantic
+  Iowa insurance conflict.
+- **SRC-P-011**: platform/add-on strategy, the deal selection screen, proprietary
+  sourcing, and the first-hand Calix/Clearfield divestiture.
+- **SRC-P-012**: the full due diligence checklist, synergy taxonomy, five
+  first-hand diligence failures, the 2026 Bain landscape, "12 is the New 5", the
+  M&A term sheet, and antitrust.
+- **SRC-P-013**: the Venture Capital Method of valuation, the complete
+  accretion/dilution model, comps vs precedents, goodwill, and M&A base rates.
+- **SRC-P-014**: hedge fund economics and decline, REITs, and the closing
+  "WHO ARE YOU?" career self-selection framework.
+
+### Issues encountered
+
+- SRC-P-002/003/004 remain unresolved — image-only slideshows.
+- Many slides across all decks are graphics-only; each is marked
+  `[VISUAL NOT CAPTURED]` in the notes. The largest losses are the cap tables in
+  SRC-P-005, the carry waterfall in SRC-P-007, and the public-company cost
+  slides in SRC-P-007.
+- Internal inconsistencies in the Ziply figures (SRC-P-008) and the two EV
+  formula variants (SRC-P-008 vs 009) were preserved and flagged, not reconciled.
+
+### Remaining tasks
+
+Synthesis. See `NEXT_SESSION_HANDOFF.md` → NEXT ACTION. The master knowledge
+libraries still reflect the partial-snippet era and must be rebuilt from the
+full notes.

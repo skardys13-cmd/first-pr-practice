@@ -1,7 +1,7 @@
 # EXTRACTION STATUS
 
 **Last updated:** 2026-08-12
-**Master knowledge version:** v0.3 (7 decks fully extracted)
+**Master knowledge version:** v0.5 (all 11 extractable decks done)
 
 ---
 
@@ -9,9 +9,9 @@
 
 ```
 Presentations discovered:     14   (Google Drive)
-Presentations FULLY done:      7   (SRC-P-001, 005, 006, 007, 008, 009, 010)
-Partial only (snippets):       4   (SRC-P-011, 012, 013, 014)
+Presentations FULLY done:     11   (every deck with extractable text)
 Unresolved (zero content):     3   (SRC-P-002, 003, 004)
+Structured notes written:     11
 
 Other documents discovered:    0
 Other documents processed:     0
@@ -26,10 +26,13 @@ remains supported for anything not in Drive.
 
 ## CURRENT STATE
 
-**UNBLOCKED — Drive read access granted 2026-08-12. Extraction in progress.**
+**EXTRACTION COMPLETE for all retrievable decks.**
 
-Six decks fully extracted with structured notes. Five remain (partial snippets
-only). Three return zero content and are permanently unresolvable by this route.
+All 11 decks containing extractable text have been fully read and written up as
+structured notes in `02_PRESENTATION_NOTES/`. All partial snippet files have been
+deleted, superseded by the full notes.
+
+Three decks return zero content and are unresolvable by this route.
 
 ### SRC-P-002 / 003 / 004 — CONFIRMED UNRESOLVABLE
 

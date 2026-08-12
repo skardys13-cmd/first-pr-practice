@@ -7,22 +7,30 @@
 
 ## LAST COMPLETED SOURCE
 
-`SRC-P-009` — full notes written.
+`SRC-P-014`. **Deck extraction is COMPLETE** for all 11 decks with extractable
+text: SRC-P-001, 005, 006, 007, 008, 009, 010, 011, 012, 013, 014.
 
-**Fully done:** SRC-P-001, 005, 006, 007, 008, 009, 010 (structured notes in
-`02_PRESENTATION_NOTES/`).
+`SRC-P-002/003/004` return empty content with full access granted — their slides
+carry no text layer. Seth confirms all three are slideshows, so they are
+image-based decks. Only screenshots or the original files could recover them.
 
-## NEXT SOURCE
+## NEXT ACTION — SYNTHESIS PHASE
 
-`SRC-P-011`, then `012`, `013`, `014`. Drive file IDs in
-`FILE_MANIFEST.md`. Read with `mcp__Google_Drive__read_file_content`, write
-notes to `02_PRESENTATION_NOTES/SRC-P-###_Notes.md`, delete the corresponding
-`_PARTIAL.md`, commit, push.
+Raw extraction is done; the project now moves from EXTRACT to ORGANIZE/SYNTHESIZE.
+Working from `02_PRESENTATION_NOTES/` (do NOT re-read decks):
 
-**SRC-P-002/003/004 are confirmed unresolvable** — they return empty content
-even with full access. Do not retry; ask Seth what they are.
-
----
+1. **Rebuild `05_MASTER_KNOWLEDGE/`** from the 11 full notes — the current
+   Concept/Formula/Case/Heuristics libraries were written from ~5,000-character
+   partial snippets and are now substantially incomplete. Rewrite, don't append.
+   Priority additions: the VC Method of valuation (SRC-P-013), the
+   two-rounds-vs-one-round dilution exercise (SRC-P-005), the accretion/dilution
+   model (SRC-P-013), the LBO capital stack and WACC math (SRC-P-009), the
+   diligence checklist (SRC-P-012).
+2. **Expand `06_DATABASES/`** — many companies, investors and people from the
+   full extractions are not yet in the CSVs.
+3. **Build `07_FRAMEWORKS/`** — all six framework files are still empty stubs.
+   The material now exists to write every one of them from source.
+4. **Then `08_CAREER/`, `09_STUDY/`, `10_FINAL/`.**
 
 ## COMPLETED SO FAR
 
