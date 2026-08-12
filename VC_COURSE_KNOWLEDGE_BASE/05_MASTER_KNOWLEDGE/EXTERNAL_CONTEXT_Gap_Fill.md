@@ -201,22 +201,63 @@ what that implies for building a portfolio.
 
 ---
 
-## GAP 6 — HOW VCs ACTUALLY DECIDE
-`EXTERNAL CONTEXT` — the qualitative side the course is thinnest on.
+## ⭐ GAP 6 — HOW VCs ACTUALLY DECIDE
+### The single best evidence on the dimension the course underweights.
 
-The definitive source is **Gompers, Gornall, Kaplan & Strebulaev, "How Do Venture
-Capitalists Make Decisions?"** — a large-scale survey of practicing VCs covering
-sourcing, selection, valuation methods and post-investment involvement.
-**Flagged in `EXTERNAL_CONTEXT_Research_Canon.md` as the highest-value paper still
-to read in full.** Its headline finding — consistently reported — is that VCs rank
-**the team above the market or the product** in selection, which is precisely the
-dimension the course underweights.
+**Gompers, Gornall, Kaplan & Strebulaev, "How Do Venture Capitalists Make
+Decisions?"** — *Journal of Financial Economics*, January 2020 (NBER WP 22587).
+**A survey of 885 institutional venture capitalists at 681 firms.** It is the
+largest systematic account of what VCs actually do, covering pre-investment
+screening, deal structuring, and post-investment monitoring, using the framework
+from Kaplan & Strömberg (2001).
 
-**The practical gap to close:** the course gives you the tools to price and
-structure a deal but almost nothing on judging the people. If an interviewer asks
-*"what makes a good founder?"*, you currently have `SRC-P-012`'s diligence items
-(track record, industry expertise, cultural fit) and the Coral Ventures
-credential-verification failure — and little else. **Read the paper.**
+### The three findings that matter for you
+
+**1. Team beats business — in selection *and* in attribution.**
+> In selecting investments, VCs see **the management team as somewhat more
+> important than business-related characteristics** such as product or
+> technology — though with meaningful variation across stage and industry.
+> And VCs **attribute ultimate success or failure more to the team than to the
+> business.**
+
+**This is precisely the axis the course underweights.** `SRC-P-006`'s pitch
+template makes Leadership Team required, and `SRC-P-012` lists management
+evaluation in diligence — but the course spends its depth on structure, terms and
+returns. **The evidence says practitioners weight the opposite way.**
+
+**2. Deal *selection* is rated the most important source of value.**
+> Of deal sourcing, deal selection, and post-investment value-add, **VCs rate
+> selection as the most important of the three.**
+
+This sits interestingly against two course claims. `SRC-P-011` argues
+**sourcing** channel drives returns (proprietary beats auctions) — that is a PE
+claim, and both can hold. And `SRC-P-007`'s *"do VCs add value beyond money? ~it's
+about 50/50"* aligns well: practitioners themselves rank post-investment
+value-add **below** selection.
+
+**3. It quantifies the qualitative.** The paper is the credible source to cite
+when asked how VCs evaluate founders — rather than repeating platitudes.
+
+### How to use this in an interview
+Asked *"what makes a good founder?"* or *"how would you evaluate a team?"*, the
+strongest available answer combines both layers:
+
+> "The course gave me the diligence frame — track record, industry expertise,
+> cultural fit, and verifying credentials, which was a real failure case we
+> studied. But the broader evidence goes further: the Gompers, Gornall, Kaplan
+> and Strebulaev survey of 885 VCs found they rate the management team as **more
+> important than product or technology in selection**, and they attribute
+> outcomes more to the team than the business. They also rate **selection** as
+> the biggest driver of value — above sourcing and above their own
+> post-investment help."
+
+That answer is honest about which part is coursework and which is reading, cites
+a real study, and demonstrates you know where your training was thin.
+
+**Sources:** [NBER WP 22587 (full PDF)](https://www.nber.org/system/files/working_papers/w22587/w22587.pdf) ·
+[Journal of Financial Economics](https://www.sciencedirect.com/science/article/abs/pii/S0304405X19301680) ·
+[Stanford GSB](https://www.gsb.stanford.edu/faculty-research/publications/how-do-venture-capitalists-make-decisions) ·
+[Harvard Law corpgov summary](https://corpgov.law.harvard.edu/2019/08/20/how-do-venture-capitalists-make-decisions)
 
 ---
 

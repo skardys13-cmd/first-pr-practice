@@ -84,12 +84,12 @@ Lotus, returning ~$191M gross). **The course gives the anecdote; this literature
 gives the structure.**
 
 ### Still to read — flagged, not yet done
-- **Gompers, Gornall, Kaplan & Strebulaev, "How Do Venture Capitalists Make
-  Decisions?"** — the large-scale survey of actual VC practice (deal sourcing,
-  selection criteria, valuation methods, post-investment involvement). **This is
-  the single highest-value paper for gap #5 and should be the next thing read
-  in full.** The searches above surfaced returns literature rather than this
-  paper; it needs a direct retrieval.
+- ~~Gompers, Gornall, Kaplan & Strebulaev, "How Do Venture Capitalists Make
+  Decisions?"~~ — **RETRIEVED AND WRITTEN UP.** See
+  `EXTERNAL_CONTEXT_Gap_Fill.md` GAP 6. Survey of 885 VCs at 681 firms, *JFE*
+  2020. Headline findings: team outranks product/technology in selection and in
+  attribution of outcomes; **deal selection** is rated the most important of
+  sourcing/selection/value-add.
 - Gornall & Strebulaev on **unicorn valuation** — demonstrates that headline
   post-money valuations systematically overstate true company value because they
   ignore preference stacks. **Directly extends `SRC-P-005`'s liquidation
