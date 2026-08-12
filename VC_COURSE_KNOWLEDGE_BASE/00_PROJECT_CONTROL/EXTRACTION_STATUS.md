@@ -1,17 +1,17 @@
 # EXTRACTION STATUS
 
 **Last updated:** 2026-08-12
-**Master knowledge version:** v0.1 (real content, partial evidence)
+**Master knowledge version:** v0.2 (6 decks fully extracted)
 
 ---
 
 ## PROJECT STATUS
 
 ```
-Presentations discovered:     14   (Google Drive, located 2026-08-12)
-Presentations partially done: 11   (first ~5,000 chars only)
-Presentations fully done:      0
-Unresolved (no content):       3   (SRC-P-002/003/004)
+Presentations discovered:     14   (Google Drive)
+Presentations FULLY done:      6   (SRC-P-001, 005, 006, 007, 008, 010)
+Partial only (snippets):       5   (SRC-P-009, 011, 012, 013, 014)
+Unresolved (zero content):     3   (SRC-P-002, 003, 004)
 
 Other documents discovered:    0
 Other documents processed:     0
@@ -26,7 +26,28 @@ remains supported for anything not in Drive.
 
 ## CURRENT STATE
 
-**BLOCKED — decks located, content not retrievable yet.**
+**UNBLOCKED — Drive read access granted 2026-08-12. Extraction in progress.**
+
+Six decks fully extracted with structured notes. Five remain (partial snippets
+only). Three return zero content and are permanently unresolvable by this route.
+
+### SRC-P-002 / 003 / 004 — CONFIRMED UNRESOLVABLE
+
+Re-tested **with full access granted**: all three return an empty
+`fileContent`. This is **not** a permissions problem — those decks contain no
+extractable text at all. At 65-92 MB each they are almost certainly slides built
+as images, or embedded video/recorded lectures.
+
+They cannot be recovered through the connector. Options, in order of practicality:
+1. Ask Seth what those three decks are (they may be recorded lectures rather
+   than slide content).
+2. Export them to PDF and re-upload — only helps if the text is real text.
+3. Screenshot key slides for visual reading.
+
+Binary download remains off the table: base64 of a 92 MB file is millions of
+tokens.
+
+## PRIOR BLOCK (resolved)
 
 All 14 decks are identified with their Drive file IDs (see `FILE_MANIFEST.md`).
 Neither retrieval route is currently open:

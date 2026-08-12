@@ -7,15 +7,20 @@
 
 ## LAST COMPLETED SOURCE
 
-None. No source material has been delivered.
+`SRC-P-010` — full notes written.
 
-## CURRENT SOURCE
-
-None.
+**Fully done:** SRC-P-001, 005, 006, 007, 008, 010 (structured notes in
+`02_PRESENTATION_NOTES/`).
 
 ## NEXT SOURCE
 
-The first deck delivered into `03_SOURCE_DOCUMENTS/`.
+`SRC-P-009`, then `011`, `012`, `013`, `014`. Drive file IDs in
+`FILE_MANIFEST.md`. Read with `mcp__Google_Drive__read_file_content`, write
+notes to `02_PRESENTATION_NOTES/SRC-P-###_Notes.md`, delete the corresponding
+`_PARTIAL.md`, commit, push.
+
+**SRC-P-002/003/004 are confirmed unresolvable** — they return empty content
+even with full access. Do not retry; ask Seth what they are.
 
 ---
 
