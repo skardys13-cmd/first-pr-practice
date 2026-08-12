@@ -1,7 +1,7 @@
 # EXTRACTION STATUS
 
 **Last updated:** 2026-08-12
-**Master knowledge version:** v0.2 (6 decks fully extracted)
+**Master knowledge version:** v0.3 (7 decks fully extracted)
 
 ---
 
@@ -9,8 +9,8 @@
 
 ```
 Presentations discovered:     14   (Google Drive)
-Presentations FULLY done:      6   (SRC-P-001, 005, 006, 007, 008, 010)
-Partial only (snippets):       5   (SRC-P-009, 011, 012, 013, 014)
+Presentations FULLY done:      7   (SRC-P-001, 005, 006, 007, 008, 009, 010)
+Partial only (snippets):       4   (SRC-P-011, 012, 013, 014)
 Unresolved (zero content):     3   (SRC-P-002, 003, 004)
 
 Other documents discovered:    0

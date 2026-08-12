@@ -7,14 +7,14 @@
 
 ## LAST COMPLETED SOURCE
 
-`SRC-P-010` — full notes written.
+`SRC-P-009` — full notes written.
 
-**Fully done:** SRC-P-001, 005, 006, 007, 008, 010 (structured notes in
+**Fully done:** SRC-P-001, 005, 006, 007, 008, 009, 010 (structured notes in
 `02_PRESENTATION_NOTES/`).
 
 ## NEXT SOURCE
 
-`SRC-P-009`, then `011`, `012`, `013`, `014`. Drive file IDs in
+`SRC-P-011`, then `012`, `013`, `014`. Drive file IDs in
 `FILE_MANIFEST.md`. Read with `mcp__Google_Drive__read_file_content`, write
 notes to `02_PRESENTATION_NOTES/SRC-P-###_Notes.md`, delete the corresponding
 `_PARTIAL.md`, commit, push.
