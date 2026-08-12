@@ -1,97 +1,102 @@
 # VC / PE / M&A / New Venture Financing — Course Knowledge Base
 
 A permanent, source-traceable knowledge system built from two Iowa State
-University courses taught by **Gudmundur "Good" Ortberg**:
+University courses taught by **Todd Ortberg**, Professor of Practice, Ivy College
+of Business:
 
-1. **Venture Capital, Private Equity, and Mergers & Acquisitions**
-2. **New Venture Financing**
+1. **FIN/ENTRP 4350** — Private Markets: Venture Capital, Private Equity and
+   Mergers & Acquisitions
+2. **FIN/ENTRP 4310** — New Venture Finance
 
-The goal is not to summarize old slide decks. It is to recover everything useful
-from both courses and turn it into a professional knowledge system that supports
-a move toward venture capital — preserving what was taught, organizing it,
-connecting it across sources, and only then translating it into study material,
-portfolio work, and career material.
+> **Note:** the project brief originally named the instructor "Gudmundur 'Good'
+> Ortberg." Every deck that carries a name says **Todd Ortberg**
+> (`ortberg@iastate.edu`). Corrected throughout. See
+> `05_MASTER_KNOWLEDGE/Master_Course_Notes.md` §1.
+
+The goal was never to summarize old slide decks. It was to recover everything
+useful from both courses and turn it into a professional knowledge system that
+supports a move toward venture capital.
 
 ---
 
-## ⚠ CURRENT STATE: ready, awaiting the first lecture
+## STATUS: complete and usable
 
-The scaffold, methodology, tracking system, database schemas, and a **tested**
-extraction pipeline are in place. **No lecture content has been pasted yet**, so
-every knowledge file is deliberately empty.
+**13 of 14 decks fully extracted**, with structured notes, master knowledge
+libraries, six frameworks, career material, and a study system. **52 files.**
 
-**Delivery method:** lectures are pasted into the conversation one at a time, as
-needed. Each paste is saved verbatim into `03_SOURCE_DOCUMENTS/` and becomes the
-immutable original for that lecture — there is no underlying deck to fall back
-on, so first-pass capture has to be thorough.
-
-That emptiness is the honest state, not an oversight. Filling the Concept
-Library, Formula Library, or "Ortberg Rules" from general VC knowledge would
-produce something that looks like progress while quietly replacing what the
-professor actually taught — and would poison the well for interview prep later,
-where an untraceable claim is a liability.
-
-**Per-paste handling procedure:**
-[`03_SOURCE_DOCUMENTS/README_HOW_TO_ADD_SOURCES.md`](03_SOURCE_DOCUMENTS/README_HOW_TO_ADD_SOURCES.md).
+| | |
+|---|---|
+| Decks extracted | **13 of 14** (`SRC-P-004` never retrieved) |
+| Structured deck notes | 13 |
+| Databases | 44 companies/deals · 22 investors · 12 people |
+| Frameworks | 6 |
+| Study material | Cheat sheet · flashcards · 57 questions · 16 worked calcs · 10 cases |
 
 ---
 
 ## Start here
 
-| If you are… | Read |
+| If you want to… | Read |
 |---|---|
-| Pasting a lecture | [`03_SOURCE_DOCUMENTS/README_HOW_TO_ADD_SOURCES.md`](03_SOURCE_DOCUMENTS/README_HOW_TO_ADD_SOURCES.md) |
-| A new session picking this up | [`00_PROJECT_CONTROL/MASTER_INSTRUCTIONS.md`](00_PROJECT_CONTROL/MASTER_INSTRUCTIONS.md), then `EXTRACTION_STATUS.md`, then `NEXT_SESSION_HANDOFF.md` |
-| Checking progress | [`00_PROJECT_CONTROL/EXTRACTION_STATUS.md`](00_PROJECT_CONTROL/EXTRACTION_STATUS.md) |
+| **Prepare for an interview tomorrow** | [`09_STUDY/VC_Cheat_Sheet.md`](09_STUDY/VC_Cheat_Sheet.md) then [`08_CAREER/Interview_Prep.md`](08_CAREER/Interview_Prep.md) |
+| **Learn the material** | [`10_FINAL/Complete_Course_Knowledge_Base.md`](10_FINAL/Complete_Course_Knowledge_Base.md) — the master index with a reading order |
+| **Evaluate a company** | [`10_FINAL/Seth_VC_Playbook.md`](10_FINAL/Seth_VC_Playbook.md) |
+| **Know what to build next** | [`08_CAREER/Portfolio_Project_Plan.md`](08_CAREER/Portfolio_Project_Plan.md) |
+| **Pick up the project cold** | [`00_PROJECT_CONTROL/MASTER_INSTRUCTIONS.md`](00_PROJECT_CONTROL/MASTER_INSTRUCTIONS.md), then `EXTRACTION_STATUS.md`, then `NEXT_SESSION_HANDOFF.md` |
 
 ## Layout
 
 ```
 00_PROJECT_CONTROL/   methodology, manifest, log, status, handoff, tools/
 01_PRESENTATION_EXTRACTIONS/   raw verbatim deck extractions
-02_PRESENTATION_NOTES/         interpreted structured notes
+02_PRESENTATION_NOTES/         13 interpreted structured notes  ← the detail
 03_SOURCE_DOCUMENTS/           ORIGINALS — read only
-04_DOCUMENT_NOTES/             non-deck sources
-05_MASTER_KNOWLEDGE/           course notes, concepts, formulas, heuristics, cases, glossary
-06_DATABASES/                  companies/deals, investors/firms, people, source index
-07_FRAMEWORKS/                 investment, financing, deal lifecycle, fund economics, DD, memo
-08_CAREER/                     translation, gap analysis, resume, LinkedIn, interview, projects
-09_STUDY/                      cheat sheet, flashcards, questions, calc practice, cases
-10_FINAL/                      consolidated knowledge base, personal VC playbook
+05_MASTER_KNOWLEDGE/           course notes, concepts, formulas, heuristics,
+                               cases, glossary + the EXTERNAL CONTEXT files
+06_DATABASES/                  companies/deals, investors, people, source index
+07_FRAMEWORKS/                 investment, financing, deal lifecycle, fund
+                               economics, due diligence, investment memo
+08_CAREER/                     translation, gap analysis, resume, LinkedIn,
+                               interview prep, portfolio projects
+09_STUDY/                      cheat sheet, flashcards, questions, calcs, cases
+10_FINAL/                      master index + Seth's VC Playbook
 ```
-
-## Pipeline
-
-```
-source file → raw extraction → structured notes → master files + databases
-            → frameworks → study material → career material
-```
-
-Master files serve as working memory. Later sessions read those rather than
-re-reading raw extractions — that is what keeps a 30+ file project affordable
-across many sessions.
 
 ## The rule that governs everything
 
 **Source-First.** Course material is the primary source. Course terminology,
-framing, examples, and even oddities are preserved rather than "corrected."
-Anything not from the course is labeled `EXTERNAL CONTEXT` or `CLAUDE INFERENCE`
-and kept visibly separate. Every major claim carries its source ID and slide or
-page number. Nothing is invented — missing information is marked
-`[NOT PROVIDED]` or `[UNCLEAR]`.
+framing, examples — and even its internal inconsistencies — are preserved rather
+than "corrected." Anything from outside is confined to files named
+`EXTERNAL_CONTEXT_*` and labelled `EXTERNAL CONTEXT` or `CLAUDE INFERENCE`.
+Every major claim carries a source ID. Nothing is invented — missing information
+is marked `[NOT PROVIDED]`, `[UNCLEAR]`, or `[VISUAL NOT CAPTURED]`.
+
+**Why this matters practically:** the value of this knowledge base in an
+interview is that *"in my venture capital coursework we analyzed X"* is
+verifiably true. Blending outside reading into the course layer would leave a
+claim that collapses under one follow-up question.
+
+## Known limits
+
+- **`SRC-P-004`** was never retrieved
+- Many slides are graphics-only and marked `[VISUAL NOT CAPTURED]`. Largest
+  losses: the cap tables in `SRC-P-005`, the carry waterfall in `SRC-P-007`,
+  current round benchmarks in `SRC-P-003`
+- **4310 New Venture Finance is one deck deep.** Burn rate, runway and unit
+  economics are not in the course — filled in
+  `05_MASTER_KNOWLEDGE/EXTERNAL_CONTEXT_Gap_Fill.md`
+- The course is strong on deal structure and returns, **thin on qualitative
+  founder evaluation**
 
 ## Extraction tool
 
 ```bash
 python3 00_PROJECT_CONTROL/tools/extract_source.py --all --export-images
-python3 00_PROJECT_CONTROL/tools/extract_source.py --file "03_SOURCE_DOCUMENTS/X.pptx" --id SRC-P-004
 ```
+Handles `.pptx/.pdf/.docx/.xlsx/.csv/.md/.txt`, converts legacy Office via
+LibreOffice, reads originals read-only. **Requires:**
+`pip install python-pptx pdfplumber openpyxl python-docx`
 
-Verified to recover slide text with bullet nesting, speaker notes, tables, chart
-series values, Word headings and tables, and spreadsheet **formulas** as well as
-values. Pasted lecture text (`.md`/`.txt`) is preserved verbatim with
-slide/section markers auto-indexed so citations stay addressable. Handles legacy
-`.ppt`/`.doc`/`.xls` via LibreOffice. Reads originals read-only and writes only
-to derived directories.
-
-**Requires:** `pip install python-pptx pdfplumber openpyxl python-docx`
+> **Retrieval note:** Google Drive's text indexer silently skips files above
+> ~17 MB — it returns empty content rather than an error. Three decks failed that
+> way. **Exporting to PDF bypasses it entirely.**
