@@ -245,3 +245,52 @@ discipline in `MASTER_INSTRUCTIONS.md` §7).
 Concept and Case libraries were left at fragment-era quality rather than
 half-rebuilt — they need a full pass, and a partial rewrite would have been worse
 than an honest stale marker.
+
+---
+
+## Session 5 — 2026-08-12 — GAP RESEARCH & CLEANUP
+
+### Completed
+1. **Rebuilt `Concept_Library.md` and `Case_Library.md`** to v1.0 — both were
+   still fragment-era. Case Library now ranks 12 cases by interview value.
+2. **Expanded databases** — 17 companies, 12 investors, 8 people added; full
+   source index built.
+3. **Study system** — glossary (45 terms), flashcards, 57 technical questions,
+   16 worked calculations, 10 practice cases, LinkedIn material, master index.
+4. **Rebuilt `README.md`** — it was the entry point and still said "awaiting the
+   first lecture" with the incorrect instructor name.
+5. **Rebuilt `Master_Course_Notes.md`** to v1.0 — the designated working-memory
+   document was still v0.1.
+6. **Researched and filled 8 gaps** (`EXTERNAL_CONTEXT_Gap_Fill.md`), including
+   two papers retrieved in full.
+7. **Cleaned stale tracking** — handoff rewritten, manifest corrected (Partial →
+   Complete for all fully-extracted decks, decks 2/3 marked recovered via PDF).
+
+### The three findings that changed the knowledge base
+
+- **Pre-money vs post-money SAFEs.** The course teaches SAFEs but not this
+  distinction. YC replaced the pre-money SAFE in 2018; post-money is now standard,
+  and it determines **who absorbs dilution when SAFEs stack** — under post-money,
+  additional SAFEs dilute the founder, not earlier SAFE holders. **This is a live
+  correction to course material, not just an addition.**
+- **Gornall & Strebulaev** — reported unicorn post-money valuations average **48%
+  above fair value**; common shares **56% overvalued**; **65 of 135 lose unicorn
+  status** once adjusted. This is `SRC-P-003`'s post-money formula and
+  `SRC-P-005`'s preference stack combined and measured at scale. The course
+  reaches the edge of this insight without generalizing it.
+- **Gompers, Gornall, Kaplan & Strebulaev** (885 VCs) — VCs rate **team above
+  product/technology** in selection and attribute outcomes more to team than
+  business. **Exactly the axis the course underweights**, now evidenced.
+
+### Root cause correction
+Decks 2/3/4 were **never image-only decks** — an earlier session's conclusion that
+was wrong. Google Drive's text indexer silently skips files above ~17 MB and
+returns empty content rather than an error. Every deck ≤16.9 MB extracted; all
+three above 65 MB failed. **PDF export bypasses it**, which is how 2 and 3 were
+recovered.
+
+### State at end of session
+**Complete and usable.** 52 files, 13 of 14 decks, all layers at v1.0. Remaining
+items are content gaps (SRC-P-004, visual-only slides, 4310 depth) and research
+(Metrick & Yasuda, Ewens & Farre-Mensa, non-SaaS sector metrics) — not project
+gaps. The highest-value next actions are Seth's to do, not a session's.

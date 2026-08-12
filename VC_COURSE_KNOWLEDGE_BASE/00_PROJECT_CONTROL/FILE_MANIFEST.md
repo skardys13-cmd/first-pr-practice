@@ -42,20 +42,20 @@ term, and topic below are taken from each deck's own title slide.
 
 | ID | Filename | Type | Course | Term | Topic | Extracted? | Notes? | X-Ref? | Status |
 |---|---|---|---|---|---|---|---|---|---|
-| SRC-P-001 | 1.pptx | Deck | C1 (4350) | Spring 2025 | Course intro, syllabus, objectives; instructor background and full investment/board record | Partial | Yes | Yes | Partial — full deck not retrieved |
+| SRC-P-001 | 1.pptx | Deck | C1 (4350) | Spring 2025 | Course intro; private vs public markets; VC/PE definitions; exits; deal sizes; the four metrics; the banker/VC/PE metaphors | Yes | Yes | Yes | Complete  — full deck not retrieved |
 | SRC-P-002 | 2.pptx (via PDF) | Deck | C1 (4350) | Spring 2026 | Financing the early side of private markets: the 8-method ladder, VC fund structure, cost to reach an IPO | Yes | Yes | Yes | Complete |
 | SRC-P-003 | 3.pptx (via PDF) | Deck | C1 (4350) | Spring 2026 | VC vs PE; priced vs unpriced rounds; worked valuation examples; 30 Iowa IPOs | Yes | Yes | Yes | Complete |
 | SRC-P-004 | 4.pptx | Deck | [UNCLEAR] | [UNCLEAR] | [NOT PROVIDED] | No | No | No | **Unresolved — deprioritized. Retrieve by exporting to PDF (Drive indexer skips files >~17MB)** |
-| SRC-P-005 | 5.pptx | Deck | C1 (4350) | Fall 2025 | VC: term sheets, liquidation preferences, preferred vs common, convertible notes, SAFEs, protective provisions, anti-dilution, vesting | Partial | Yes | Yes | Partial |
-| SRC-P-006 | 6.pptx | Deck | **C2 (4310)** | Fall 2024 | Corporate VC vs Fund VC; CVC landscape (50+ named corporate arms); investor pitch deck template | Partial | Yes | Yes | Partial |
-| SRC-P-007 | 7.pptx | Deck | C1 (4350) | Spring 2026 | *Silicon Cowboys* / Compaq case wrap-up; founder ownership at IPO; fund economics and carry distribution (Sevin Rosen Fund I) | Partial | Yes | Yes | Partial |
-| SRC-P-008 | 8.pptx | Deck | C1 (4350) | [UNCLEAR] | AI, reviewing public financials, Private Equity I; remaining-term class plan | Partial | Yes | Yes | Partial |
-| SRC-P-009 | 9.pptx | Deck | C1 (4350) | [UNCLEAR] | Private Equity II, leveraged buyouts, *Barbarians at the Gate* | Partial | Yes | Yes | Partial |
-| SRC-P-010 | 10.pptx | Deck | C1 (4350) | [UNCLEAR] | Course recap of private funds; PE case study; leverage/debt "stack"; private capital vs bank debt post-2008 | Partial | Yes | Yes | Partial |
-| SRC-P-011 | 11.pptx | Deck | C1 (4350) | Spring 2026 | PE criticism: post-buyout bankruptcies, overleverage; *Bad Company* (2025) | Partial | Yes | Yes | Partial |
-| SRC-P-012 | 12.pptx | Deck | C1 (4350) | Spring 2026 | PE deal selection / "bottom feeding"; Allbirds revenue-multiple example | Partial | Yes | Yes | Partial |
-| SRC-P-013 | 13.pptx | Deck | C1 (4350) | Spring 2026 | Deal transaction tools: IRR, MOIC, rule-of-thumb return heuristics | Partial | Yes | Yes | Partial |
-| SRC-P-014 | 14.pptx | Deck | C1 (4350) | Spring 2026 | Hedge funds, real estate funds, crypto, commodities, REITs; alternatives as an asset class | Partial | Yes | Yes | Partial |
+| SRC-P-005 | 5.pptx | Deck | C1 (4350) | Fall 2025 | Term sheets, liquidation preferences, anti-dilution, all preferred rights, vesting, and the two-rounds-vs-one-round dilution exercise | Yes | Yes | Yes | Complete  |
+| SRC-P-006 | 6.pptx | Deck | **C2 (4310)** | Fall 2024 | Corporate VC vs fund VC; the CVC landscape; the full investor pitch deck template | Yes | Yes | Yes | Complete  |
+| SRC-P-007 | 7.pptx | Deck | C1 (4350) | Spring 2026 | Compaq scorecard; VC valuation by comparables not DCF; the complete IPO process; Rule of 40 | Yes | Yes | Yes | Complete  |
+| SRC-P-008 | 8.pptx | Deck | C1 (4350) | [UNCLEAR] | Public financials, gross margin, EBITDA, enterprise value, LBO metrics, Ziply, the zero-growth LBO | Yes | Yes | Yes | Complete  |
+| SRC-P-009 | 9.pptx | Deck | C1 (4350) | [UNCLEAR] | LBO capital stack, junk bonds, WACC/CAPM, RJR entry-to-exit math, 2x4/4x4 hurdles, Guitar Center | Yes | Yes | Yes | Complete  |
+| SRC-P-010 | 10.pptx | Deck | C1 (4350) | [UNCLEAR] | Barbarians debrief and KKR fees; Vista/Marketo; the private credit module; Global Atlantic / Iowa insurance | Yes | Yes | Yes | Complete  |
+| SRC-P-011 | 11.pptx | Deck | C1 (4350) | Spring 2026 | PE deal selection and screening; platform/add-on rollups; sourcing; divestitures; the Calix/Clearfield case | Yes | Yes | Yes | Complete  |
+| SRC-P-012 | 12.pptx | Deck | C1 (4350) | Spring 2026 | Due diligence and the data room; synergy taxonomy; five first-hand diligence failures; 2026 PE landscape; M&A term sheet; antitrust | Yes | Yes | Yes | Complete  |
+| SRC-P-013 | 13.pptx | Deck | C1 (4350) | Spring 2026 | Deal transaction tools; the Venture Capital Method; the full accretion/dilution model; comps vs precedents; goodwill; M&A base rates | Yes | Yes | Yes | Complete  |
+| SRC-P-014 | 14.pptx | Deck | C1 (4350) | Spring 2026 | Hedge funds and their decline; REITs; alternatives; the closing WHO ARE YOU career framework | Yes | Yes | Yes | Complete  |
 
 ### Course codes — CORRECTED from source material
 
