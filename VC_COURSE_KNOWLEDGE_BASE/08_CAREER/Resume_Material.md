@@ -55,14 +55,15 @@ Use the **real course titles and numbers**. They are more credible than a generi
 
 *Backed by `SRC-P-013`'s three-step model and break-even table.*
 
-**On the written assignments** *(evidence of habit, not just knowledge)*
-> Produced eight written investment memoranda analyzing current private-market
-> transactions, each assessing the investment and career merits of the company
-> and sector; completed case analyses of a venture-backed IPO (Compaq) and a
-> leveraged buyout (RJR Nabisco).
+**On the written assignments** *(only if you're comfortable standing behind them)*
+> Completed case analyses of a venture-backed IPO (Compaq) and a leveraged
+> buyout (RJR Nabisco), and eight written analyses of current private-market
+> transactions.
 
-*Backed by `SRC-P-001`'s grading scheme. **Locate the actual memos before using
-this.***
+*Backed by `SRC-P-001`'s grading scheme.* **Seth has opted not to use the
+coursework memos as portfolio evidence.** This bullet is optional — the
+independently-written memos in the Projects section are stronger and are what
+should carry the weight.
 
 ---
 

@@ -33,8 +33,9 @@ Iowa/Midwest. Apply the **VC Method** to derive a supportable post-money and tak
 a clear position — including passes. A well-reasoned pass is as impressive as a
 yes.
 
-**Start from the eight "Ripped From The Headlines" memos** if you can find them —
-they are already in memo format and already take an investment position.
+**Write these fresh.** (Seth has opted not to reuse the coursework memos.)
+Start with companies you already have a view on — Iowa/Midwest, fintech,
+insurance-adjacent. **One good memo beats five rushed ones.**
 
 ## Project 3 — Iowa Private Capital Thesis ⭐ *the differentiator*
 **Closes:** no sector depth · no differentiated view

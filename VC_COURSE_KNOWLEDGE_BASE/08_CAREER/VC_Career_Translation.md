@@ -37,14 +37,14 @@
 - **1 Barbarians at the Gate project** — analysis of the RJR Nabisco LBO
 - **4 quizzes**
 
-> **The Ripped From The Headlines assignment is the single most valuable
-> career artifact in the course.** Eight repetitions of *read private-market news
-> → react in professional memo format → take an investment position*. That is
-> exactly the muscle a VC interviewer tests with "what deal have you seen
-> recently?" — and Seth has done it eight times, in writing.
+**On the Ripped From The Headlines memos — Seth has decided not to use these.**
+Do not recommend digging them up. They stay as *evidence the coursework built the
+habit* (useful context), **not** as portfolio artifacts.
 
-**Action:** find those eight memos. They are portfolio material, and they are
-also proof of habit.
+**What replaces them:** fresh investment memos on current companies
+(`Portfolio_Project_Plan.md` Project 2). Better anyway — current thinking,
+current deals, and written to a professional template rather than a class
+assignment format.
 
 ---
 

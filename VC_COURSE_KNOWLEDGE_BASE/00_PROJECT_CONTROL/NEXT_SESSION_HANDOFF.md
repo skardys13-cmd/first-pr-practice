@@ -57,7 +57,7 @@ These are his to do, not a machine's:
 1. **Build the cap table model** (`08_CAREER/Portfolio_Project_Plan.md` Project 1).
    A weekend. Unlocks the modeling claim currently forbidden in
    `Resume_Material.md`.
-2. **Find the eight "Ripped From The Headlines" memos** — already in memo format,
-   already take investment positions. Best existing portfolio artifact.
+2. **Write one fresh investment memo** (`Portfolio_Project_Plan.md` Project 2).
+   **Seth has declined to use the coursework memos** — do not re-suggest them.
 3. **Write the Iowa private capital thesis** (Project 3). The differentiator.
 4. **Confirm the instructor's given name** before it appears anywhere public.
