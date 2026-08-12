@@ -36,28 +36,51 @@ The extraction tool assigns provisional IDs; this table holds the final ones.
 (`1QCGZPUtT9kyNmPMSDj8noUqY8FsZHz8p`, owner skardys13@gmail.com, created
 2026-08-12). 14 PowerPoint decks, ~340 MB total.
 
-Filenames are bare numbers `1.pptx`–`14.pptx`. Provisional IDs below follow that
-numbering on the assumption it reflects lecture order — **unverified**, since no
-deck content has been read yet. Topic, course attribution, and final ordering
-stay `[NOT PROVIDED]` until the content is inspected; do not fill them from the
-filename alone.
+Filenames are bare numbers `1.pptx`–`14.pptx`. IDs follow that numbering as a
+stable label only — **it does not encode lecture order** (see below). Course,
+term, and topic below are taken from each deck's own title slide.
 
-| ID | Filename | Type | Course | Order | Topic | Extracted? | Notes Created? | Cross-Referenced? | Status |
+| ID | Filename | Type | Course | Term | Topic | Extracted? | Notes? | X-Ref? | Status |
 |---|---|---|---|---|---|---|---|---|---|
-| SRC-P-001 | 1.pptx | Deck | C? | 1? | [NOT PROVIDED] | No | No | No | Located, not retrieved |
-| SRC-P-002 | 2.pptx | Deck | C? | 2? | [NOT PROVIDED] | No | No | No | Located, not retrieved |
-| SRC-P-003 | 3.pptx | Deck | C? | 3? | [NOT PROVIDED] | No | No | No | Located, not retrieved |
-| SRC-P-004 | 4.pptx | Deck | C? | 4? | [NOT PROVIDED] | No | No | No | Located, not retrieved |
-| SRC-P-005 | 5.pptx | Deck | C? | 5? | [NOT PROVIDED] | No | No | No | Located, not retrieved |
-| SRC-P-006 | 6.pptx | Deck | C? | 6? | [NOT PROVIDED] | No | No | No | Located, not retrieved |
-| SRC-P-007 | 7.pptx | Deck | C? | 7? | [NOT PROVIDED] | No | No | No | Located, not retrieved |
-| SRC-P-008 | 8.pptx | Deck | C? | 8? | [NOT PROVIDED] | No | No | No | Located, not retrieved |
-| SRC-P-009 | 9.pptx | Deck | C? | 9? | [NOT PROVIDED] | No | No | No | Located, not retrieved |
-| SRC-P-010 | 10.pptx | Deck | C? | 10? | [NOT PROVIDED] | No | No | No | Located, not retrieved |
-| SRC-P-011 | 11.pptx | Deck | C? | 11? | [NOT PROVIDED] | No | No | No | Located, not retrieved |
-| SRC-P-012 | 12.pptx | Deck | C? | 12? | [NOT PROVIDED] | No | No | No | Located, not retrieved |
-| SRC-P-013 | 13.pptx | Deck | C? | 13? | [NOT PROVIDED] | No | No | No | Located, not retrieved |
-| SRC-P-014 | 14.pptx | Deck | C? | 14? | [NOT PROVIDED] | No | No | No | Located, not retrieved |
+| SRC-P-001 | 1.pptx | Deck | C1 (4350) | Spring 2025 | Course intro, syllabus, objectives; instructor background and full investment/board record | Partial | Yes | Yes | Partial — full deck not retrieved |
+| SRC-P-002 | 2.pptx | Deck | [UNCLEAR] | [UNCLEAR] | [NOT PROVIDED] | No | No | No | **Unresolved — no content returned** |
+| SRC-P-003 | 3.pptx | Deck | [UNCLEAR] | [UNCLEAR] | [NOT PROVIDED] | No | No | No | **Unresolved — no content returned** |
+| SRC-P-004 | 4.pptx | Deck | [UNCLEAR] | [UNCLEAR] | [NOT PROVIDED] | No | No | No | **Unresolved — no content returned** |
+| SRC-P-005 | 5.pptx | Deck | C1 (4350) | Fall 2025 | VC: term sheets, liquidation preferences, preferred vs common, convertible notes, SAFEs, protective provisions, anti-dilution, vesting | Partial | Yes | Yes | Partial |
+| SRC-P-006 | 6.pptx | Deck | **C2 (4310)** | Fall 2024 | Corporate VC vs Fund VC; CVC landscape (50+ named corporate arms); investor pitch deck template | Partial | Yes | Yes | Partial |
+| SRC-P-007 | 7.pptx | Deck | C1 (4350) | Spring 2026 | *Silicon Cowboys* / Compaq case wrap-up; founder ownership at IPO; fund economics and carry distribution (Sevin Rosen Fund I) | Partial | Yes | Yes | Partial |
+| SRC-P-008 | 8.pptx | Deck | C1 (4350) | [UNCLEAR] | AI, reviewing public financials, Private Equity I; remaining-term class plan | Partial | Yes | Yes | Partial |
+| SRC-P-009 | 9.pptx | Deck | C1 (4350) | [UNCLEAR] | Private Equity II, leveraged buyouts, *Barbarians at the Gate* | Partial | Yes | Yes | Partial |
+| SRC-P-010 | 10.pptx | Deck | C1 (4350) | [UNCLEAR] | Course recap of private funds; PE case study; leverage/debt "stack"; private capital vs bank debt post-2008 | Partial | Yes | Yes | Partial |
+| SRC-P-011 | 11.pptx | Deck | C1 (4350) | Spring 2026 | PE criticism: post-buyout bankruptcies, overleverage; *Bad Company* (2025) | Partial | Yes | Yes | Partial |
+| SRC-P-012 | 12.pptx | Deck | C1 (4350) | Spring 2026 | PE deal selection / "bottom feeding"; Allbirds revenue-multiple example | Partial | Yes | Yes | Partial |
+| SRC-P-013 | 13.pptx | Deck | C1 (4350) | Spring 2026 | Deal transaction tools: IRR, MOIC, rule-of-thumb return heuristics | Partial | Yes | Yes | Partial |
+| SRC-P-014 | 14.pptx | Deck | C1 (4350) | Spring 2026 | Hedge funds, real estate funds, crypto, commodities, REITs; alternatives as an asset class | Partial | Yes | Yes | Partial |
+
+### Course codes — CORRECTED from source material
+
+| Code | Course | Evidence |
+|---|---|---|
+| `C1` | **FIN/ENTRP 4350** — Private Markets: Venture Capital, Private Equity and Mergers & Acquisitions | Title slides, SRC-P-001 / 013 |
+| `C2` | **FIN/ENTRP 4310** — New Venture Finance | Title slide, SRC-P-006 |
+
+**13 of the 14 decks are 4350.** Only `SRC-P-006` is 4310. The folder name
+("Lecture notes venture capital") is therefore not a reliable course label, and
+the New Venture Finance course is represented by a single deck here — the rest
+of that course's material is **missing from this folder**.
+
+### Ordering — filename numbering does NOT equal lecture order
+
+The decks span **at least four different offerings**: Fall 2024, Spring 2025,
+Fall 2025, Spring 2026. They are not one sequence. Within Spring 2026 the class
+plans allow partial ordering (SRC-P-013 IRR/MOIC → SRC-P-011/012 PE →
+SRC-P-014 hedge/RE/crypto, which the plan lists last at 5/6). Treat the `Order`
+concept as *per-offering*, not across the folder.
+
+Office number is a weak term fingerprint: 3123 Gerdin (SRC-P-001, 014),
+3132 Gerdin (SRC-P-008/009/010), 3233 Gerdin (SRC-P-005/006/007/011/012/013).
+Recorded as observation, not conclusion.
+
 
 ### Drive file IDs (for retrieval)
 

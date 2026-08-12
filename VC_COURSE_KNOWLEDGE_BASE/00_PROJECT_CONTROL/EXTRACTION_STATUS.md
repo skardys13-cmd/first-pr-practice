@@ -1,7 +1,7 @@
 # EXTRACTION STATUS
 
 **Last updated:** 2026-08-12
-**Master knowledge version:** v0.0 (no course knowledge yet — scaffold only)
+**Master knowledge version:** v0.1 (real content, partial evidence)
 
 ---
 
@@ -9,9 +9,9 @@
 
 ```
 Presentations discovered:     14   (Google Drive, located 2026-08-12)
-Presentations retrieved:       0   (blocked — see below)
-Presentations processed:       0
-Presentations remaining:      14
+Presentations partially done: 11   (first ~5,000 chars only)
+Presentations fully done:      0
+Unresolved (no content):       3   (SRC-P-002/003/004)
 
 Other documents discovered:    0
 Other documents processed:     0
@@ -33,7 +33,8 @@ Neither retrieval route is currently open:
 
 | Route | Status |
 |---|---|
-| Connector text extraction (`read_file_content`) | **Permission not granted.** Two attempts returned "MCP tool call requires approval". This is the intended route. |
+| Connector text extraction (`read_file_content`) | **Permission not granted.** Three attempts, all "MCP tool call requires approval". This is the intended route and remains the blocker. |
+| Connector search snippets (`search_files`) | **WORKS — currently the only content channel.** Returns ~5,000 chars per file. Delivered 11 of 14 decks. Set `excludeContentSnippets: false`; the response overflows the tool limit and lands on disk, so parse it there. |
 | Connector binary download (`download_file_content`) | **Not viable regardless of permission.** Returns base64 into the model's context; a 92 MB deck is millions of tokens. Never use this for these files. |
 | Direct HTTPS download in the shell | No Drive credentials in the environment. Would work only if the folder were link-shared. |
 
