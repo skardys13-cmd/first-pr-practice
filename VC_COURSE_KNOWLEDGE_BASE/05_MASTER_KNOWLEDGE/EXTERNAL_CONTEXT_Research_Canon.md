@@ -90,11 +90,10 @@ gives the structure.**
   2020. Headline findings: team outranks product/technology in selection and in
   attribution of outcomes; **deal selection** is rated the most important of
   sourcing/selection/value-add.
-- Gornall & Strebulaev on **unicorn valuation** — demonstrates that headline
-  post-money valuations systematically overstate true company value because they
-  ignore preference stacks. **Directly extends `SRC-P-005`'s liquidation
-  preference material and is a genuinely impressive thing to raise in an
-  interview.**
+- ~~Gornall & Strebulaev on **unicorn valuation**~~ — **RETRIEVED AND WRITTEN
+  UP.** See `EXTERNAL_CONTEXT_Gap_Fill.md` GAP 8. 135 unicorns valued off legal
+  terms: reported post-money averages **48% above fair value**, common shares
+  **56% overvalued**, and **65 of 135 lose unicorn status** once adjusted.
 - Ewens & Farre-Mensa on the changing supply of late-stage private capital.
 - Metrick & Yasuda, *Venture Capital and the Finance of Innovation* — the
   standard graduate textbook; the rigorous treatment of fund economics that

@@ -274,6 +274,73 @@ task.
 
 ---
 
+## ⭐ GAP 8 — WHY HEADLINE VALUATIONS ARE WRONG
+### The best single thing you can raise unprompted in a VC interview.
+
+**Gornall & Strebulaev, "Squaring Venture Capital Valuations with Reality"** —
+*Journal of Financial Economics*, January 2020 (NBER WP 23895). They valued
+**135 U.S. unicorns** using the actual financial terms in legal filings.
+
+### The findings
+| Finding | Value |
+|---|---|
+| Reported post-money valuations vs fair value | **48% too high on average** |
+| Companies more than 100% overvalued | **14 of 135** |
+| **Common shares overvalued by** | **56%** |
+| **Unicorns that lose unicorn status once adjusted** | **65 of 135 — nearly half** |
+| VCs who themselves think unicorns are overvalued | **91%** |
+
+### Why — and this is the part that connects to the course
+> **Reported valuations assume every share is as valuable as the most recently
+> issued preferred share.** They are not.
+
+Recent investors routinely hold protections that earlier shareholders and common
+holders do not:
+- **IPO return guarantees** — 15% of the sample
+- **Vetoes over down-IPOs** — 24%
+- **Seniority over all other investors** — 30%
+
+**Common shares have none of these — hence 56% overvalued.**
+
+### ⭐ Why this is the strongest thing you own
+`SRC-P-003` teaches **`POST = INVESTMENT ÷ OWNERSHIP%`** — a $500k SAFE at a
+$10M cap "means" a $10M company. `SRC-P-005` teaches that **preferences cumulate
+by round** and that a $38M offer against $40M raised leaves common with roughly
+nothing.
+
+**This paper is those two lessons combined and measured at scale.** The headline
+valuation the course teaches you to compute is *mechanically correct and
+economically misleading*, because it prices the whole company off the most
+protected share class in the stack.
+
+The course gets you to the edge of this insight — the $38M trap is the same idea —
+but never generalizes it. This does, with numbers.
+
+### How to say it
+> "One thing my coursework set up that I followed further: we learned that
+> post-money is just investment divided by ownership, and separately that
+> liquidation preferences cumulate by round — we worked a case where a company
+> raised $40M, got a $38M offer, and the common was worth almost nothing.
+>
+> Gornall and Strebulaev did that at scale. They valued 135 unicorns off their
+> actual legal terms and found **reported post-money valuations average 48% above
+> fair value**, because the headline price assumes every share is worth as much as
+> the newest, most-protected preferred. **Common is 56% overvalued, and about half
+> the unicorns stop being unicorns once you adjust.**
+>
+> So when I see a headline valuation, my first question is what's in the
+> preference stack."
+
+**That answer demonstrates you can distinguish a reported number from an economic
+one — which is most of the job.**
+
+**Sources:** [NBER WP 23895 (full PDF)](https://www.nber.org/system/files/working_papers/w23895/w23895.pdf) ·
+[Journal of Financial Economics](https://www.sciencedirect.com/science/article/abs/pii/S0304405X19301692) ·
+[Stanford GSB](https://www.gsb.stanford.edu/faculty-research/publications/squaring-venture-capital-valuations-reality) ·
+[Poets&Quants summary](https://poetsandquants.com/2020/02/24/stanfords-strebulaev-tech-unicorns-valuations-are-fairy-tales/)
+
+---
+
 ## PRIORITY ORDER FOR SETH
 
 1. **Post-money vs pre-money SAFEs** — the only item here that is a live
@@ -282,5 +349,7 @@ task.
    real conversations
 3. **Burn and runway** — basic literacy, and it completes the staging argument
 4. **Option pool shuffle** — a sharp, specific thing to know
-5. **Gompers et al on VC decision-making** — closes the founder-evaluation gap
-6. **Portfolio construction** — matters once talking to funds, not before
+5. **Gompers et al on VC decision-making** — closes the founder-evaluation gap ✅ *done*
+6. **Gornall & Strebulaev on unicorn valuations** — the best unprompted point you
+   have ✅ *done*
+7. **Portfolio construction** — matters once talking to funds, not before
