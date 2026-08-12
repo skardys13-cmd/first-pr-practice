@@ -1,1 +1,15 @@
-Source_ID,Filename,Type,Course,Order,Topic,Extracted,Notes_Created,Cross_Referenced,Status
+Source_ID,Filename,Type,Course,Term,Topic,Extracted,Notes_Created,Cross_Referenced,Status
+SRC-P-001,1.pptx,Deck,C1 4350,Spring 2025,Course intro; private markets overview,Yes,Yes,Yes,Complete
+SRC-P-002,2.pptx (PDF),Deck,C1 4350,Spring 2026,Financing the early side of private markets,Yes,Yes,Yes,Complete
+SRC-P-003,3.pptx (PDF),Deck,C1 4350,Spring 2026,VC vs PE; priced vs unpriced; Iowa IPOs,Yes,Yes,Yes,Complete
+SRC-P-004,4.pptx,Deck,[UNCLEAR],[UNCLEAR],[NOT PROVIDED],No,No,No,Unresolved - deprioritized
+SRC-P-005,5.pptx,Deck,C1 4350,Fall 2025,"Term sheets, liquidation preferences, cap tables, dilution",Yes,Yes,Yes,Complete
+SRC-P-006,6.pptx,Deck,C2 4310,Fall 2024,Corporate VC; investor pitch deck template,Yes,Yes,Yes,Complete
+SRC-P-007,7.pptx,Deck,C1 4350,Spring 2026,Compaq scorecard; VC valuation; IPO process,Yes,Yes,Yes,Complete
+SRC-P-008,8.pptx,Deck,C1 4350,[UNCLEAR],"Financials, EBITDA, enterprise value, private equity I",Yes,Yes,Yes,Complete
+SRC-P-009,9.pptx,Deck,C1 4350,[UNCLEAR],"LBO capital stack, WACC/CAPM, RJR math, Guitar Center",Yes,Yes,Yes,Complete
+SRC-P-010,10.pptx,Deck,C1 4350,[UNCLEAR],Barbarians debrief; Vista/Marketo; private credit,Yes,Yes,Yes,Complete
+SRC-P-011,11.pptx,Deck,C1 4350,Spring 2026,"PE deal selection, rollups, sourcing, divestitures",Yes,Yes,Yes,Complete
+SRC-P-012,12.pptx,Deck,C1 4350,Spring 2026,"Due diligence, M&A strategy, process, antitrust",Yes,Yes,Yes,Complete
+SRC-P-013,13.pptx,Deck,C1 4350,Spring 2026,"Deal tools, the VC Method, M&A analysis",Yes,Yes,Yes,Complete
+SRC-P-014,14.pptx,Deck,C1 4350,Spring 2026,"Hedge funds, REITs, parting thoughts",Yes,Yes,Yes,Complete

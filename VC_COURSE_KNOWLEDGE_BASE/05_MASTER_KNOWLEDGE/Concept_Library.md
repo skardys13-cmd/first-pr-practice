@@ -1,184 +1,299 @@
 # Concept Library
 
-> **Evidence base: PARTIAL.** Built from the first ~5,000 characters of 11 of 14
-> decks (see `Master_Course_Notes.md`). Entries are real and sourced, but the
-> set is incomplete. Citations are `SRC-P-###, partial extract` — slide numbers
-> are not recoverable from snippet-form text.
+**Version:** v1.0 — rebuilt 2026-08-12 from all 13 fully-extracted decks.
+Levels: **L1** know instantly · **L2** important · **L3** advanced · **L4** reference
 
 ---
 
-## Preferred Shares (priced equity round)
+## PRIVATE MARKETS — STRUCTURE
 
-**Level:** L1 MUST KNOW
+### Private vs Public Markets — **L1**
+`SRC-P-001` — Private **~$11T**, ILLIQUID, *"many different, largely uncontrolled
+investment methods."* Public **~$54T**, LIQUID, *"SEC controlled… methods and
+protections."*
+**But:** **77% of the $54T public market cap comes from VC-backed companies that
+went public** — ~$41T of value. Ten years earlier: 43% of public companies were
+VC-originated, at 57% of market cap.
+**Practical:** private markets are small but produce the public market's value.
 
-**How the course explains it** — `SOURCE FACT` (`SRC-P-005`):
-- Preferred shares are sold at a **price per share established by the pre/post
-  money valuation in the term sheet**
-- **This is PRICED**, via a term sheet
-- Preferred carry rights — **"Protective Provisions"** — above the **COMMON**
-  shares that founders and employees own
-- **It requires a COMPANY VALUATION to set the PRICE**
-- Preferred shares carry a **liquidation preference**
-- Preferred shares carry **director approval requirements**
+### Accredited Investor — **L2**
+`SRC-P-001` — the course gives the *reason*, not just the rule: *"SEC cannot
+control so many different private entities and products — so it requires
+ACCREDITED INVESTORS to invest, because they should know better than to get
+taken."* Threshold given in `SRC-P-014`: **$250K+ salary, $1M+ net worth.**
 
-**Related** — Common stock, term sheet, liquidation preference, protective
-provisions, anti-dilution.
-
-**Source** — `SRC-P-005`, partial extract.
-
----
-
-## Convertible Note (and venture debt)
-
-**Level:** L1 MUST KNOW
-
-**How the course explains it** — `SOURCE FACT` (`SRC-P-005`):
-- The company signs an agreement to **"borrow" money temporarily**
-- It buys an **OPTION to CONVERT to PREFERRED SHARES at the FUTURE ROUND price**
-- Often "converts" at the next round of financing at a price
-- **This is UNPRICED**
-- **Until paid or converted it is debt, and it is senior to Preferred Shares, so
-  it is paid back first**
-- **It DOES NOT require a company valuation to set price** — there is no price
-  yet, until the next round
-
-**The point the course is making** — the choice between a priced round and a
-convertible instrument is fundamentally about *whether you have to agree on a
-valuation today*. Seniority is the trade-off: notes sit ahead of preferred.
-
-**Source** — `SRC-P-005`, partial extract.
+### The Private Capital Map — **L2**
+`SRC-P-001`, `SRC-P-002` — PE · VC · private credit · M&A/IPOs · hedge funds ·
+REITs · currency · commodities · crypto · infrastructure. Split
+**UNPROFITABLE (VC) / PROFITABLE (PE)**, with **M&A and divestitures required to
+get money back.**
 
 ---
 
-## SAFE Note (Simple Agreement For Equity)
+## VENTURE CAPITAL
 
-**Level:** L1 MUST KNOW
+### Venture Capital — **L1**
+`SRC-P-001` — *"financing startups and small business with exceptional growth
+potential… in exchange for an equity stake."*
+> **"THE DOMAIN OF UNPROFITABLE, EARLY STAGE COMPANIES THAT NEED TO BE FINANCED
+> THROUGH THE 'VALLEY OF DEATH'"**
+**Related:** valley of death, PE, power law.
 
-**How the course explains it** — `SOURCE FACT` (`SRC-P-005`):
-- **"A SAFE is a 'warrant'"** — an agreed future right to purchase equity at a
-  later date
-- **It is NOT debt** (explicitly contrasted with the convertible note)
-- The warrant is to buy **preferred shares at some future round price, at a
-  discount (~15%)**
-- **Its term can be indefinite**
-- **It does not require a company valuation**
-- **"Very Simple, Very Fast (why it is attractive)"**
-- The acronym is spelled out on the slide: **S**imple **A**greement **F**or
-  **E**quity
+### Valley of Death — **L1**
+The unprofitable period a startup must be financed through. **PE does not do
+this.** `SRC-P-006` requires a pitch chart showing it: *"Financials 2 — graph of
+Revenue versus Net Income (shows your Valley of Death)."*
 
-**The three-way distinction the course sets up** — `CLAUDE INFERENCE` from the
-sequence of slides in `SRC-P-005`: priced preferred (valuation required, no
-seniority over other preferred) → convertible note (no valuation, *is* debt,
-senior) → SAFE (no valuation, *not* debt, discount, indefinite). Instrument
-choice is a trade between speed, seniority, and when you must price the company.
+### The 8 financing methods — **L1**
+See `07_FRAMEWORKS/Startup_Financing_Framework.md`. Bootstrapping · friends &
+family · crowdfunding (**up to $5M before SEC regulated**) · incubators &
+accelerators · **SBIR/STTR grants (non-dilutive)** · **bank loans — "*NOT*"** ·
+angels · VC.
+**Angels are the hinge:** *"THIS MAY BE THE FIRST STEP WITH PREFERRED STOCK."*
 
-**Source** — `SRC-P-005`, partial extract.
-
----
-
-## Liquidation Preference
-
-**Level:** L1 MUST KNOW
-
-**How the course explains it** — `SOURCE FACT` (`SRC-P-005`): liquidation
-preferences **"Stack Up….ahead of Common."** Taught with "Real Examples" and a
-"Two Rounds versus One Round" game, and paired with **participation options**.
-
-The mechanics past the headline fall beyond the truncation point.
-`[TEXT NOT RETRIEVED]` — this is a **priority gap**: liquidation preference is
-among the most-asked VC interview topics and the course clearly worked examples
-of it.
-
-**Source** — `SRC-P-005`, partial extract.
+### Corporate Venture Capital — **L2** *(directly relevant to Seth)*
+`SRC-P-006` — **3,000+ companies do CVC; over half of all VC is CVC.**
+- **"Strategic Value Over Immediate Gains"** · **"Corporate VCs are less
+  valuation sensitive"**
+- *"If you can get a CVC arm to lead your round……you will likely get a higher
+  valuation"*
+- **The pathway:** GTM partner → investor → acquirer (**Cisco → Cerent**)
+- **As a job:** no fundraising burden, predictable bonuses, job security, **less
+  carry upside**
+- **What CVCs want:** information rights, not board seats (`SRC-P-005`)
 
 ---
 
-## Protective Provisions / Preferred rights
+## INSTRUMENTS
 
-**Level:** L2 SHOULD KNOW
+### Preferred Stock — **L1**
+`SRC-P-005` — sold at a price per share set by pre/post money in the term sheet.
+**PRICED.** Carries protective provisions above common. **Requires a valuation.**
+Carries liquidation preference and director approval rights.
 
-`SOURCE FACT` (`SRC-P-005`) — the deck covers "The Rights (Protective
-Provisions) of Preferred and the Common," plus preferred **share director
-approval requirements** and **anti-dilution**. Named and framed; detail is
-past the truncation point. `[TEXT NOT RETRIEVED]`
+### Convertible Note — **L1**
+`SRC-P-005`, `SRC-P-003` — company "borrows" temporarily; buys an **option to
+convert to preferred at the next round's price. UNPRICED. It is debt and is
+senior to preferred — paid back first.** No valuation needed. **Dividends accrue
+but are typically unpaid.**
 
----
+### SAFE — **L1**
+`SRC-P-005` — **Simple Agreement For Equity.** *"A SAFE is a 'warrant'"* — a
+future right to buy preferred at the next round's price, **at a ~15% discount.
+NOT debt. Term indefinite.** No valuation. **"Very Simple, Very Fast (why it is
+attractive)."**
 
-## Vesting
+> **The organizing trade:** must you price today, and where do you sit in the stack?
 
-**Level:** L2 SHOULD KNOW
-
-`SOURCE FACT` (`SRC-P-005`) — "UNDERSTANDING VESTING: KEY POINTS — Employee
-retention: Vesting periods serve as a powerful tool for companies to retain
-valuable employees by tying a portion of their comp…" *(truncated)*
-
-The framing is notable: vesting is introduced as a **retention mechanism**
-first, rather than as a founder-protection or investor-protection device.
-
----
-
-## Share classes in a company
-
-`SOURCE FACT` (`SRC-P-005`) — the deck asks "What Type of Shares are there for a
-Company?" and identifies **COMMON** held by founders and employees (including
-new-hire stock awards), against **preferred** held by VCs, angels, and corporate
-VC — both new and existing.
+### Common Stock — **L2**
+Founders, employees, new-hire awards. Sits **below** all preferred in the
+waterfall.
 
 ---
 
-## Corporate Venture Capital (CVC)
+## DEAL TERMS
 
-**Level:** L2 SHOULD KNOW — and directly relevant to Seth's stated CVC interest
+### Liquidation Preference — **L1** *(most-asked VC interview topic)*
+`SRC-P-005` — *"Preferred Right to be paid back first."* **"THESE PREFERENCES
+CUMULATE WITH ROUNDS IN ORDER."**
+- **Non-participating 1x** — *"this is most common."* Takes the preference, then
+  waits until converting to common is better
+- **Participating** — takes the preference *and* shares the remainder
+- Variants named: **1x participating with a 2x cap**, **3x non-participating**
+- **Convert Point** — where preferred is better off as common; the right is in
+  the term sheet
+- **At IPO, preferred converts automatically and the preference is forfeited**
 
-**How the course explains it** — `SOURCE FACT` (`SRC-P-006`, the one
-New Venture Finance deck):
-- **Over 3,000 companies are doing corporate venture capital investing**
-- **"And over half of VC….is CVC"**
-- The deck lists **50+ named corporate VC arms**, ranked — Alphabet (GV &
-  CapitalG), Microsoft M12, Intel Capital, Salesforce Ventures, Samsung NEXT,
-  Qualcomm Ventures, Cisco Investments, Comcast Ventures, Amazon Alexa Fund, BP
-  Ventures, Shell Ventures, Eli Lilly, Novartis, JJDC, Toyota AI Ventures, BMW i
-  Ventures, LG Technology Ventures, SAP.iO, Verizon Ventures, 3M New Ventures,
-  301 INC (General Mills), Chevron Technology Ventures, Citi Ventures, Dell
-  Technologies Capital, Ford, GE Ventures, GM Ventures, Hitachi Ventures, Home
-  Depot Ventures (launched 2022), Lockheed Martin Ventures, National Grid
-  Partners, Pfizer Ventures, Roche Venture Fund, Swisscom Ventures, American
-  Express Ventures, In-Q-Tel, and others
-- **"Strategic Investment is the Focus"** — strategic value over immediate gains
-- **"Resilience Amid Market Fluctuations"**
-- **"Corporate VCs are less valuation sensitive…."**
+**The trap:** raise $40M, receive a $38M offer → the stack consumes everything and
+common is worth ~nothing (`SRC-P-005`).
 
-**The implication the course draws** — `SOURCE FACT`, mid-sentence at the
-truncation point: *"If you can get a Corporate Venture Cap…"* — the argument is
-about what CVC participation does to a round's valuation.
-`[TEXT NOT RETRIEVED]`
+### Anti-Dilution — **L1**
+`SRC-P-005` — protects investors in a **down round** (post-money falls).
+- **Full ratchet** — *"price down 20%? get 20% more shares."* **Most stringent**
+- **Weighted average** — *"times the ratio of new money to old."* **Most common**
 
-**Why this matters for a founder** — `CLAUDE INFERENCE`: if corporate VCs are
-less valuation-sensitive because they are buying strategic optionality rather
-than pure financial return, a CVC in the round can support a higher price than
-financial investors alone would.
+### Protective Provisions — **L2**
+Rights of preferred above common; director approval requirements.
 
-**Source** — `SRC-P-006`, partial extract.
+### Pro Rata Rights — **L2**
+Right to maintain ownership in future rounds. *"You can't kick them out of the
+syndicate."*
+
+### Information Rights — **L2**
+Financials, business plans, annual reports. *"Important if you do not have a large
+enough investment to warrant a board seat — you still get the board package.
+**This is what many corporate venture arms want.**"*
+
+### Registration Rights — **L3**
+Power to require SEC registration. **"Means they can vote to make the company
+register for an IPO."**
+
+### ROFR & Co-Sale (Tag-Along) — **L3**
+First dibs on any share sale; minority right to sell alongside a majority holder.
+
+### Vesting & Acceleration — **L2**
+`SRC-P-005` — framed **retention-first**. Acceleration (full or partial) triggers
+on a **liquidity event**: IPO, acquisition, or merger.
 
 ---
 
-## Alternatives / Private capital as an asset class
+## VALUATION
 
-`SOURCE FACT` (`SRC-P-014`) — "Private capital is also part of 'ALTERNATIVES'":
-financial assets that **fall outside traditional categories like stocks, bonds,
-and cash**, offering **diversification and potential access to higher returns**.
-Private equity is characterized as **"High Returns with Risk."** The deck covers
-hedge funds (concept, asset class, returns, controversy, crypto) and real estate
-funds.
+### Pre / Post Money — **L1**
+`PRE + MONEY = POST` · `MONEY ÷ POST = ownership = dilution` ·
+`POST = INVESTMENT ÷ OWNERSHIP%`
+Worked: $200,000 for 5% → $4M post, founders keep 95%.
+
+### The Venture Capital Method — **L1** ⭐
+`SRC-P-013` — `required post = (exit revenue × exit multiple) ÷ required MOIC`.
+Valuation derived **backwards from the return needed**. See `Formula_Library.md`.
+
+### Why DCF is not used in venture — **L1**
+`SRC-P-007` — *"Valuation Metrics like Discounted Cash Flow are NOT used, **there
+is often no cash flow!**"* Instead: **market averages by round** (NVCA,
+PitchBook). DCF *is* used in M&A and at IPO pricing.
+
+### Enterprise Value — **L1**
+`EV = Market Cap + Total Debt − Cash` (+ minority interest). *"The total cost to
+buy a company regardless of how it is financed… capital-structure neutral… the
+PE firm's true cost of ownership."* **EV in, EV out.**
+And in diligence: **`EV + WC = total needed to buy and run.`**
+
+### EBITDA / Adjusted EBITDA — **L1**
+`SRC-P-008` — *"the most commonly used private equity measure"*; closest proxy to
+cash the business throws off. **Adjusted EBITDA is negotiated and contested — and
+it sets the purchase price.**
+
+### Multiples — **L1**
+EV/EBITDA **8–14x** (PE pays ~11x; corporate M&A ~9x) · EV/Revenue 1–5x+ (used
+when EBITDA is negative) · EV/EBIT 10–18x · P/E 12–25x.
+
+### Comps vs Precedent Transactions — **L2**
+Comps: 5–10 companies, median multiples, **no control premium** (minority value).
+Precedents: 10–20 deals, **+20–40% control premium**, reads higher.
+
+### Rule of 40 — **L2**
+`growth% + margin% ≥ 40%`, using **FCF or EBITDA**, not GAAP net income.
+IPO-readiness screen.
 
 ---
 
-## Private credit and the debt stack
+## PRIVATE EQUITY
 
-`SOURCE FACT` (`SRC-P-010`) — private capital is **"now the most common way to
-do a leveraged deal"**, having **"filled a hole banks left post 2008."** The
-deck covers "The Debt/Leverage 'Stack'" and alternatives to LBO/MBO and cash.
+### Private Equity — **L1**
+`SRC-P-001` — *"money invested into a private company, or the privatization of a
+company through the investment of outside money."*
+**Steps:** invest → take all/majority stake → improve exit value → exit at a large
+profit. **"THE DOMAIN OF PROFITABLE COMPANIES PRIMARILY."**
+**vs VC:** PE buys **companies**, not stakes in startups.
 
-`CLAUDE INFERENCE` — this is a genuinely current framing: it explains the rise
-of private credit as a structural consequence of post-crisis bank retrenchment
-rather than as a mere product trend.
+### LBO — **L1**
+`SRC-P-008`, `SRC-P-009` — buy with debt **the acquired company repays**.
+Typically **1/3 equity, 2/3 debt** (range 50–90%). Stack ≈ 50% senior secured /
+20% senior unsecured / 25% junk / **5% PE equity**.
+> **"LEVERAGE AMPLIFIES…WHETHER GOOD OR BAD."**
+**~20% of large LBOs go bankrupt within 10 years vs 2% for control firms** — and
+the research finds PE *"often acquire[s] healthy companies and significantly
+increase[s] their probability of default."*
+
+### Financial Engineering — **L2**
+Returns driven by leverage rather than operating improvement. The RJR model.
+**Counter-example:** Vista/Marketo at 22% debt — operations, not engineering.
+
+### Platform / Add-On / Roll-Up — **L2**
+`SRC-P-011` — **~30% of PE deals are platforms; >60% including add-ons.** Add-ons
+are cheaper, faster (as little as 2 months), lower risk, and **attract less LP
+scrutiny.** Returns **~20% IRR vs ~15%**.
+Bolt-on = add-on · Tuck-in = tech add-on · Roll-up = cookie-cutter replication.
+> **"Flip the neighborhood ….not just the House"**
+
+### Private Credit — **L2**
+`SRC-P-010` — non-bank direct lending. **$2T in 2024 → ~$4.5T by 2030. Funds 77%
+of LBO debt.** Created by post-2008 bank retrenchment (Dodd-Frank, Basel III).
+**Not junk bonds:** bilateral, illiquid, floating rate, heavily covenanted vs
+public, fixed, tradeable. Direct lending (first lien) is ~$1.3T of the $2T.
+
+### Carried Interest & the tax argument — **L2**
+`SRC-P-011` — **carry is taxed as capital gains at 15–20%.** With the
+tax-deductibility of LBO interest (`SRC-P-010`), these are the course's two
+structural reasons the PE model is as large as it is.
+
+---
+
+## M&A
+
+### Accretion / Dilution — **L1**
+`SRC-P-013` — *"the most common first test."* Accretive = combined EPS > acquirer
+standalone. **Synergies are the primary lever**; the break-even synergy table
+turns a premium into a testable operating claim.
+
+### Synergies — **L1**
+Cost (**12–24 months, predictable**) · Revenue (**3–5 years, harder**) ·
+Financial (cost of capital, NOLs) · **Dis-synergies (always underestimated)**.
+> **"M&A is only rational if 1 + 1 > 2"**
+
+### Goodwill — **L2**
+`Purchase Price − FV of net identifiable assets`. Not amortized; **zero EPS impact
+until impaired.** Impairments are **timed strategically** — down markets provide
+cover, *"clearing of the decks."*
+
+### Merger Types — **L3**
+Horizontal (T-Mobile/Sprint) · Vertical · Conglomerate · Market-extension ·
+Product-extension. **Asset acquisition** — *"very common in deals with a large
+size difference, and in venture capital exits."*
+
+### Earnout — **L2**
+Part of price contingent on performance. Bridges valuation gaps.
+**30–40% are litigated — "sue-outs."** Worked example: Dell/BakBone/Alvarri —
+five years of revenue sharing, quarterly payments, the seller persisting as a
+shell to distribute proceeds.
+
+### The M&A base rate — **L1**
+**47% destroy value · ~73% miss the S&P · ~50% of synergy targets missed · ~30%
+divested within 5 years.** Acquirers −4 to −7% over three years; targets +20–25%.
+> **M&A's hit rate looks like VC's, not PE's.**
+
+---
+
+## EXITS
+
+### Exit types — **L1**
+IPO · merger · acquisition · sale of company/assets/IP.
+**"THERE IS NO PUBLIC MARKET and PRICING for PRIVATE COMPANIES."**
+**~90% are acquired before IPO** — *"most times because they could not scale."*
+
+### IPO — **L1**
+`SRC-P-007` — 18–24 months; spread 5–7%; greenshoe 15%; lock-up 90–180 days.
+**Oversubscription:** <1x red flag, 3–5x healthy, banks want 5–10x.
+**The pop is engineered** — deliberate 10–25% underpricing.
+**"The IPO is the place where PRIVATE VALUATIONS meet PUBLIC VALUATIONS for the
+first time."**
+
+### Secondary Markets — **L2**
+`SRC-P-012` — buying and selling existing fund commitments or direct shares. A
+**"release valve"** for liquidity; grown ~fourfold over the decade. Lets
+employees and LPs exit pre-IPO.
+
+---
+
+## ALTERNATIVES
+
+### Hedge Funds — **L2**
+`SRC-P-014` — **fee is 2% of NAV marked to market quarterly**, unlike PE/VC's fee
+on committed capital. **A $100M hedge fund is unregistered and unregulated.**
+**They don't really hedge** — the name now describes structure and fees.
+**Alpha turned negative from 2009**; the S&P beat the average hedge fund **13 of
+16 years**. **Why it broke:** the industry went from $200B to ~$6T — a **30x
+increase** — compressing the arbitrage spreads it fed on.
+**Historical note:** the **LP/GP 2-and-20 structure originates with Alfred
+Winslow Jones in 1952** — VC and PE inherited it from a hedge fund.
+
+### REITs — **L2**
+`SRC-P-014` — must distribute **90% of taxable income** and hold **75%+ in real
+estate**; this avoids double taxation. **RE pays dividends; PE does not** —
+returns are dividends **plus** appreciation.
+
+### Alpha / Beta — **L2**
+Alpha = excess return above what beta predicts. *"Positive α = good investor.
+Zero = no better than an index fund. **Negative = destroys value.**"*
+Beta = volatility vs benchmark.
