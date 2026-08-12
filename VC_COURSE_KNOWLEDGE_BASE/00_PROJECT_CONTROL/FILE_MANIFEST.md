@@ -43,9 +43,9 @@ term, and topic below are taken from each deck's own title slide.
 | ID | Filename | Type | Course | Term | Topic | Extracted? | Notes? | X-Ref? | Status |
 |---|---|---|---|---|---|---|---|---|---|
 | SRC-P-001 | 1.pptx | Deck | C1 (4350) | Spring 2025 | Course intro, syllabus, objectives; instructor background and full investment/board record | Partial | Yes | Yes | Partial — full deck not retrieved |
-| SRC-P-002 | 2.pptx | Deck | [UNCLEAR] | [UNCLEAR] | [NOT PROVIDED] | No | No | No | **Unresolved — no content returned** |
-| SRC-P-003 | 3.pptx | Deck | [UNCLEAR] | [UNCLEAR] | [NOT PROVIDED] | No | No | No | **Unresolved — no content returned** |
-| SRC-P-004 | 4.pptx | Deck | [UNCLEAR] | [UNCLEAR] | [NOT PROVIDED] | No | No | No | **Unresolved — no content returned** |
+| SRC-P-002 | 2.pptx (via PDF) | Deck | C1 (4350) | Spring 2026 | Financing the early side of private markets: the 8-method ladder, VC fund structure, cost to reach an IPO | Yes | Yes | Yes | Complete |
+| SRC-P-003 | 3.pptx (via PDF) | Deck | C1 (4350) | Spring 2026 | VC vs PE; priced vs unpriced rounds; worked valuation examples; 30 Iowa IPOs | Yes | Yes | Yes | Complete |
+| SRC-P-004 | 4.pptx | Deck | [UNCLEAR] | [UNCLEAR] | [NOT PROVIDED] | No | No | No | **Unresolved — deprioritized. Retrieve by exporting to PDF (Drive indexer skips files >~17MB)** |
 | SRC-P-005 | 5.pptx | Deck | C1 (4350) | Fall 2025 | VC: term sheets, liquidation preferences, preferred vs common, convertible notes, SAFEs, protective provisions, anti-dilution, vesting | Partial | Yes | Yes | Partial |
 | SRC-P-006 | 6.pptx | Deck | **C2 (4310)** | Fall 2024 | Corporate VC vs Fund VC; CVC landscape (50+ named corporate arms); investor pitch deck template | Partial | Yes | Yes | Partial |
 | SRC-P-007 | 7.pptx | Deck | C1 (4350) | Spring 2026 | *Silicon Cowboys* / Compaq case wrap-up; founder ownership at IPO; fund economics and carry distribution (Sevin Rosen Fund I) | Partial | Yes | Yes | Partial |
@@ -66,8 +66,12 @@ term, and topic below are taken from each deck's own title slide.
 
 **13 of the 14 decks are 4350.** Only `SRC-P-006` is 4310. The folder name
 ("Lecture notes venture capital") is therefore not a reliable course label, and
-the New Venture Finance course is represented by a single deck here — the rest
-of that course's material is **missing from this folder**.
+the New Venture Finance course is represented by a single deck here.
+
+**Retrieval note:** `SRC-P-002/003/004` initially returned empty content through
+the Drive connector. This was **not** an image-only problem — Google's text
+indexer silently skips files above ~17 MB. Decks 2 and 3 were recovered as PDF
+exports, which bypasses the ceiling entirely.
 
 ### Ordering — filename numbering does NOT equal lecture order
 
