@@ -1,7 +1,7 @@
 # EXTRACTION STATUS
 
 **Last updated:** 2026-08-12
-**Master knowledge version:** v0.5 (all 11 extractable decks done)
+**Master knowledge version:** v0.6 (13 of 14 decks done)
 
 ---
 
@@ -9,9 +9,9 @@
 
 ```
 Presentations discovered:     14   (Google Drive)
-Presentations FULLY done:     11   (every deck with extractable text)
-Unresolved (zero content):     3   (SRC-P-002, 003, 004)
-Structured notes written:     11
+Presentations FULLY done:     13   (SRC-P-001 through 014, except 004)
+Unresolved:                    1   (SRC-P-004 — deprioritized by Seth)
+Structured notes written:     13
 
 Other documents discovered:    0
 Other documents processed:     0
@@ -32,7 +32,14 @@ All 11 decks containing extractable text have been fully read and written up as
 structured notes in `02_PRESENTATION_NOTES/`. All partial snippet files have been
 deleted, superseded by the full notes.
 
-Three decks return zero content and are unresolvable by this route.
+SRC-P-002 and SRC-P-003 were recovered as PDF exports supplied directly by Seth,
+bypassing the connector size ceiling entirely. Only SRC-P-004 remains, and Seth
+has deprioritized it ("2/3 is good enough").
+
+**Root cause of the earlier failure, corrected:** it was never an image-only
+problem. Every file at or below ~17 MB extracted; all three above 65 MB returned
+empty because Google's indexer skips files that large. The PDF route proves the
+decks always had full text layers.
 
 ### SRC-P-002 / 003 / 004 — CONFIRMED UNRESOLVABLE
 

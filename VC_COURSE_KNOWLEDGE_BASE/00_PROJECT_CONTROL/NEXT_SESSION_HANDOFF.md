@@ -7,12 +7,9 @@
 
 ## LAST COMPLETED SOURCE
 
-`SRC-P-014`. **Deck extraction is COMPLETE** for all 11 decks with extractable
-text: SRC-P-001, 005, 006, 007, 008, 009, 010, 011, 012, 013, 014.
-
-`SRC-P-002/003/004` return empty content with full access granted — their slides
-carry no text layer. Seth confirms all three are slideshows, so they are
-image-based decks. Only screenshots or the original files could recover them.
+`SRC-P-002` and `SRC-P-003`, recovered as PDF exports. **13 of 14 decks are now
+fully extracted with structured notes.** Only `SRC-P-004` is outstanding, and
+Seth has deprioritized it.
 
 ## NEXT ACTION — SYNTHESIS PHASE
 
