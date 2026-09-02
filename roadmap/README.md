@@ -1,7 +1,12 @@
 # Ops Ladder
 
-A single-file, self-contained 364-day operating plan: RIA operations experience →
-Florida operations leadership / AI business analysis → $150k.
+A single-file, self-contained 364-task career system: month one at an RIA →
+Florida → the operations ladder → $130-150k.
+
+Calibrated for ~6-8 hours a week, weighted to the operations-leadership path, and
+built on a Mac toolchain (Tableau Public, DuckDB, Looker Studio) since Power BI
+Desktop is Windows-only. The compensation model runs eight years, not six, because
+that is the honest horizon from one month of experience.
 
 - `index.html` — the whole application. No build step, no dependencies. Open it in a
   browser, or publish it as a Claude Artifact.
