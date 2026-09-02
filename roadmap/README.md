@@ -10,17 +10,25 @@ Progress is stored in the browser (`localStorage`) and, when published as an Art
 with the `db` capability, synced across devices. Use **Export backup** on the left rail
 to keep a copy of your data.
 
-Nothing is fixed to its date: any task can be part-completed with the quarter
-buttons (partial minutes count toward banked hours) and pushed to the next day,
-where it reappears with its progress intact. Anything left behind shows up under
-**Carried over** on the Tonight tab.
+## How it works
 
-The Series 65 track runs as 63 daily blocks anchored to your exam date rather
-than to the program calendar — change the date on the Operating manual tab and
-the whole sequence re-anchors. While the exam is inside 75 days, the study block
-is the required item and the weeknight plan task is the one to push.
+There are 364 tasks in a fixed order and **none of them has a date**. The Tonight tab
+pulls the next few off the top of the queue and fills whatever session length you pick
+(30 minutes to a long session). Finish one and the list regenerates. Skip a week or a
+month and the same work is still there, in the same order — nothing goes overdue.
 
-Contents: 52 weeks × 7 dated tasks, 63 Series 65 study blocks, four phase gates,
-a 40-process SOP index, three skill ladders, a Tampa Bay target board with
-outreach scripts, a compensation model, a Florida move plan, 17 reusable prompts,
-8 automation recipes, a risk register, and six charts.
+Each task has quarter buttons (log how far you got — partial minutes count toward
+banked hours and the task stays pinned to the front of the queue), **Done**, and
+**Not this one** (drops it a few places down the queue).
+
+The dashboard reports a rate measured from what you have actually been doing and
+projects a finishing date from it. Gaps do not create a backlog; they move that date.
+
+The only dated things are on the Milestones tab: the Series 65 exam, the Florida move,
+and the compensation targets. The tracker does not schedule study or quiz you — the
+exam sits there as a date and a plan for the week you pass.
+
+Contents: 364 tasks across 52 blocks and 4 phases, a 40-process SOP index, three skill
+ladders, a Tampa Bay target board with outreach scripts, a compensation model, a
+Florida move plan, 17 reusable prompts, 8 automation recipes, a risk register, and six
+charts.

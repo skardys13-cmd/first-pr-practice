@@ -85,6 +85,7 @@ main{min-width:0;padding:0 0 80px}
 .g2{grid-template-columns:repeat(auto-fit,minmax(290px,1fr));align-items:start}
 .g3{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
 .g4{grid-template-columns:repeat(auto-fit,minmax(178px,1fr))}
+.g5{grid-template-columns:repeat(auto-fit,minmax(158px,1fr))}
 .sec{margin:30px 0 12px;display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap}
 .sec h2{font-size:20px}
 .sec p{margin:0;color:var(--muted);font-size:13px}
@@ -185,7 +186,6 @@ pre{background:var(--surface-2);border:1px solid var(--rule);border-radius:7px;p
 .qbtn.push{margin-left:auto;border-style:dashed}
 .qlab{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-right:2px}
 .carried{border-left:3px solid var(--warn)}
-.examcard{border:1px solid var(--rule);border-left:3px solid var(--s4);border-radius:9px;background:var(--surface);box-shadow:var(--shadow);margin-bottom:18px}
 .legend{display:flex;gap:13px;flex-wrap:wrap;align-items:center;font-family:var(--mono);font-size:10.5px;color:var(--ink-2)}
 .legend span{display:inline-flex;align-items:center;gap:5px}
 .legend i{width:9px;height:9px;border-radius:2px;display:block}
@@ -238,10 +238,10 @@ svg text{font-family:var(--mono);font-variant-numeric:tabular-nums}
 
 <main>
   <div class="topbar"><div class="topgrid">
-    <div class="tstat"><div class="v" id="tDay">&mdash;</div><div class="l">Program day</div></div>
+    <div class="tstat"><div class="v" id="tDay">&mdash;</div><div class="l">Tasks done</div></div>
     <div class="tstat"><div class="v" id="tPct">0%</div><div class="l">Complete</div></div>
     <div class="tstat"><div class="v" id="tHours">0h</div><div class="l">Hours logged</div></div>
-    <div class="tstat"><div class="v" id="tStreak">0</div><div class="l">Streak</div></div>
+    <div class="tstat"><div class="v" id="tStreak">&mdash;</div><div class="l">Last session</div></div>
     <div class="tstat"><div class="v" id="tExam">&mdash;</div><div class="l">Days to Series 65</div></div>
     <div class="tstat"><div class="v" id="tMove">&mdash;</div><div class="l">Days to Florida</div></div>
     <div class="tbar">
@@ -255,36 +255,35 @@ svg text{font-family:var(--mono);font-variant-numeric:tabular-nums}
   <!-- ============ TODAY ============ -->
   <section class="view on" id="v-today">
     <div class="vhead">
-      <div class="eyebrow" id="todayEyebrow">Tonight</div>
-      <h1 id="todayTitle">Tonight's block</h1>
-      <p>Sit down, open this, do what is on the card. The Series 65 block comes first while the exam is live. Everything is scoped to the minutes shown, and nothing has to be finished tonight &mdash; log how far you got with the quarter buttons, then push the rest to tomorrow. A carried task is still progress; an ignored one is not.</p>
+      <div class="eyebrow" id="todayEyebrow">Up next</div>
+      <h1 id="todayTitle">Tonight&rsquo;s list</h1>
+      <p>This list is pulled off the top of the queue and it regenerates every time you finish something. There are no due dates and nothing goes overdue &mdash; if you do not open this for a week, the same work is still sitting here waiting. Tell it how long you have and it fills the evening.</p>
     </div>
-    <div class="row" style="margin-bottom:16px">
-      <button class="btn ghost" id="prevDay">&larr; Previous</button>
-      <button class="btn ghost" id="nextDay">Next &rarr;</button>
-      <button class="btn ghost" id="jumpToday">Jump to today</button>
+    <div class="row" style="margin-bottom:18px">
+      <span class="eyebrow">I have</span>
+      <button class="chip" data-budget="30" aria-pressed="false">30 min</button>
+      <button class="chip" data-budget="60" aria-pressed="true">an hour</button>
+      <button class="chip" data-budget="120" aria-pressed="false">two hours</button>
+      <button class="chip" data-budget="240" aria-pressed="false">a long session</button>
       <span class="pill" id="dayStamp"></span>
     </div>
-    <div id="examCard"></div>
-    <div id="todayCard"></div>
-    <div id="overdueWrap" class="hide">
-      <div class="sec"><h2>Carried over</h2><p id="overdueNote"></p></div>
-      <div class="panel flush" id="overdueList"></div>
+    <div id="inProgressWrap" class="hide" style="margin-bottom:22px">
+      <div class="sec" style="margin-top:0"><h2>Half finished</h2><p id="inProgressNote"></p></div>
+      <div class="panel flush" id="inProgressList"></div>
     </div>
-
-    <div class="sec"><h2>Rest of this week</h2><p id="weekLoad"></p></div>
+    <div id="todayCard"></div>
+    <div class="sec"><h2>Then this</h2><p id="weekLoad"></p></div>
     <div class="panel flush" id="todayWeek"></div>
-
-    <div class="sec"><h2>Fast lane</h2><p>Under 10 minutes each. Use these when the day gets away from you &mdash; they keep the streak honest.</p></div>
+    <div class="sec"><h2>Fast lane</h2><p>Under 10 minutes each. Use these on a night when the real list is too much &mdash; they still move something.</p></div>
     <div class="grid g3" id="fastLane"></div>
   </section>
 
   <!-- ============ PLAN ============ -->
   <section class="view" id="v-plan">
     <div class="vhead">
-      <div class="eyebrow">52 weeks &middot; 4 phases &middot; 364 dated tasks</div>
+      <div class="eyebrow">364 tasks &middot; 52 blocks &middot; 4 phases</div>
       <h1>The plan</h1>
-      <p>Four 13-week phases. Each ends in a gate you either pass or repeat. Weeknights are 60 minutes, Friday is 30, Saturday is the 150-minute build block, Sunday is the 45-minute review &mdash; about 400 hours over the year. Nothing here is fixed to its date: anything you do not finish carries forward with its progress intact, and while the Series 65 is live the weeknight tasks are the ones to push.</p>
+      <p>Four phases of 91 tasks. A block is a week&rsquo;s worth of work, not a calendar week &mdash; you reach block 12 when you have finished 77 tasks, whenever that happens. The whole thing is about 400 hours. Four tasks a week finishes it in about 21 months; seven a week finishes it in a year. The dashboard tells you which one you are actually on.</p>
     </div>
     <div class="row" style="margin-bottom:14px">
       <span class="eyebrow">Filter</span>
@@ -306,14 +305,14 @@ svg text{font-family:var(--mono);font-variant-numeric:tabular-nums}
     <div class="vhead">
       <div class="eyebrow">Instrumentation</div>
       <h1>Where you actually are</h1>
-      <p>Six readings. The first two answer &ldquo;am I on pace,&rdquo; the next two answer &ldquo;is the portfolio real,&rdquo; the last two answer &ldquo;does the money move.&rdquo;</p>
+      <p>How much is done, how fast you are actually moving, and when that pace lands you at the end. No schedule to fall behind &mdash; only a rate and a finishing date that moves with it.</p>
     </div>
-    <div class="grid g4" id="dashKpis" style="margin-bottom:22px"></div>
+    <div class="grid g5" id="dashKpis" style="margin-bottom:22px"></div>
     <div class="grid g2">
-      <figure class="panel"><h3 style="font-size:15px;margin-bottom:3px">Hours: planned vs. banked</h3><p class="eyebrow" style="margin:0 0 10px">Cumulative, week 1 &rarr; 52</p><div id="chartBurn"></div><figcaption>The grey line is the schedule. Your line above it means you are ahead of the calendar; below it means the calendar is quietly moving your Florida date.</figcaption></figure>
+      <figure class="panel"><h3 style="font-size:15px;margin-bottom:3px">Hours banked over time</h3><p class="eyebrow" style="margin:0 0 10px">Plotted on the dates you actually did the work</p><div id="chartBurn"></div><figcaption>The solid line is what you have actually done. The dashed line projects your recent pace forward to the finish. Flat stretches are not failures &mdash; they just push the open circle to the right.</figcaption></figure>
       <figure class="panel"><h3 style="font-size:15px;margin-bottom:3px">Effort by track</h3><p class="eyebrow" style="margin:0 0 10px">Minutes completed, by discipline</p><div id="chartTrack"></div><figcaption>A candidate with all three &mdash; operations, data, AI &mdash; is rare. If one bar stays short, that is the interview question you will fail.</figcaption></figure>
     </div>
-    <div class="sec"><h2>Consistency</h2><p>One square per day. Dark = done.</p></div>
+    <div class="sec"><h2>When you actually work</h2><p>One square per calendar day, darker for a longer session.</p></div>
     <figure class="panel"><div id="chartHeat"></div><figcaption id="heatCap"></figcaption></figure>
     <div class="grid g2" style="margin-top:16px">
       <figure class="panel"><h3 style="font-size:15px;margin-bottom:3px">Portfolio inventory</h3><p class="eyebrow" style="margin:0 0 10px">Shipped vs. target</p><div id="chartPort"></div><figcaption>These counts are what you put in a resume bullet. Nothing counts until it exists as a file someone else could open.</figcaption></figure>
@@ -350,21 +349,18 @@ svg text{font-family:var(--mono);font-variant-numeric:tabular-nums}
     <div id="ladders" class="stack"></div>
   </section>
 
-  <!-- ============ CERTS ============ -->
+  <!-- ============ MILESTONES ============ -->
   <section class="view" id="v-certs">
     <div class="vhead">
-      <div class="eyebrow">Licensing</div>
-      <h1>Series 65, in eight weeks</h1>
-      <p>You are already studying for this one and it is booked. Everything on this page is anchored to your exam date, not to the program calendar &mdash; set the date on the Operating manual tab and the daily blocks re-sequence themselves. After it passes, this track becomes regulatory depth, which is what actually makes you useful at an RIA.</p>
+      <div class="eyebrow">The dated things</div>
+      <h1>Milestones</h1>
+      <p>Almost nothing in this system has a date on it, on purpose. These four things do &mdash; the exam, the move, the phase gates and the money. Set the dates on the Operating manual tab.</p>
     </div>
-    <div id="examTop" style="margin-bottom:22px"></div>
-    <div class="sec"><h2>The daily blocks</h2><p id="s65Note"></p></div>
-    <div class="panel flush" id="s65List" style="margin-bottom:8px"></div>
-    <div class="sec"><h2>The two exams, and why only one of them matters right now</h2><p>Facts to verify with FINRA and NASAA before you pay for anything.</p></div>
-    <div class="grid g2" id="certCards" style="margin-bottom:20px"></div>
-    <div class="callout" style="margin-bottom:20px"><strong>Verify before you pay.</strong> Exam length, passing score, fee, and enrollment windows are set by FINRA and NASAA and do change. Confirm the current numbers on finra.org and nasaa.org the day you schedule, and ask your firm whether they will reimburse the fee &mdash; many RIAs will and most employees never ask.</div>
-    <div class="sec"><h2>Study protocol</h2><p>The method matters more than the material. This is the one that survives a 9-hour workday.</p></div>
-    <div id="studyProtocol" class="stack"></div>
+    <div class="grid g2" id="mileCards" style="margin-bottom:24px"></div>
+    <div class="sec"><h2>Phase gates</h2><p>Not dated. You reach each one when the work is done, and the dashboard tells you roughly when that will be.</p></div>
+    <div class="panel flush"><div class="scroller"><table id="gateTable"></table></div></div>
+    <div class="sec"><h2>Compensation milestones</h2><p>The whole point of the exercise.</p></div>
+    <div class="panel flush"><div class="scroller"><table id="compTable"></table></div></div>
   </section>
 
   <!-- ============ TARGETS ============ -->
@@ -454,7 +450,7 @@ const TRACKS={
   sop:{name:"Process",c:"var(--s1)",note:"SOPs, process maps, operating documentation"},
   bi:{name:"Data & BI",c:"var(--s2)",note:"Power BI, SQL, Power Query, data modeling"},
   ai:{name:"AI",c:"var(--s3)",note:"Automation builds, prompt systems, tooling"},
-  cert:{name:"Licensing",c:"var(--s4)",note:"Series 65, then regulatory depth"},
+  cert:{name:"Regulatory",c:"var(--s4)",note:"Adviser regulation, tax and retirement mechanics"},
   career:{name:"Career",c:"var(--s5)",note:"Network, resume, applications, interviews"},
   review:{name:"Review",c:"var(--s6)",note:"Weekly reviews, gates, planning, logistics"}
 };
@@ -470,7 +466,7 @@ const PLAN=[
 D("sop",60,"Inventory every task you touch","Open a blank page and list every discrete thing you did at work in the last two weeks. Do not group or judge them yet: Roth distribution, address change, ACAT follow-up, meeting prep, billing check. Aim for 60 or more lines.","Process inventory, 60+ line items","You cannot document, measure, or automate what you have never named. This list is the syllabus for the entire year."),
 D("bi",60,"Install Power BI Desktop and load one file","Download Power BI Desktop (free, Windows only — on a Mac use a Windows VM or Fabric in the browser). Import any CSV of at least 500 rows, drop a table visual and one bar chart on the canvas, save the .pbix.","First .pbix file with two working visuals","The tool is free and the first hour is the only genuinely hard one. Everything after this is vocabulary."),
 D("ai",60,"Build your AI workbench and its rules","Create a dedicated project or workspace for this year. Write a one-page context doc: your role, custodian, CRM, portfolio tool, and what good output looks like. At the top, write the data rule: no client names, account numbers, balances, or screenshots, ever.","AI workspace plus a one-page data-handling rule","Guardrails written before the first prompt are what separate a career asset from a compliance incident."),
-D("cert",60,"Set up the Series 65 machine","Confirm the exam date, time and test centre. Choose ONE provider and stop shopping. Set up three things tonight: the daily study block, a miss-log document, and a scores sheet with a row per practice exam.","Exam confirmed, one provider, three study artifacts","The daily block is now the non-negotiable. Everything else in this plan bends around it until the exam is behind you."),
+D("cert",60,"Read your firm's Form ADV Part 2A","Read your own firm's brochure end to end. It describes the services, fees, conflicts and disciplinary history the firm has told regulators about. Note every place the document describes something differently from how it actually happens.","A list of documented-versus-actual gaps","Almost nobody in operations reads this. Doing it makes you the person who can answer regulator-shaped questions, and it is one evening."),
 D("career",30,"Start the evidence log","Create a table with five columns: date, what happened, the number, who noticed, artifact link. Backfill ten entries from the past six months — the error you caught, the process you sped up, the client save.","Evidence log with 10 backfilled entries","Interview answers are harvested over months, not remembered under pressure. This file becomes your resume."),
 D("review",150,"Build the workspace and run a time audit","Set up five linked databases: SOP Library, Builds, Evidence Log, Target Firms, Study Log. Then reconstruct last week hour by hour and mark which hours were repeatable work. That percentage is your automation opportunity.","Five-database workspace plus a time-audit number","One home for everything. A plan spread across four apps is dead by week six — and the audit number is a resume line."),
 D("review",45,"Set your targets and run review one","Fill in the settings on the Systems tab: start date, target move date, current salary, target salary. Read the operating manual end to end. Block next week's seven sessions in your actual calendar.","Configured tracker and week 2 on the calendar","The weekly review is this plan's immune system. Miss it twice and the plan quietly becomes a document you used to read.")]},
@@ -478,7 +474,7 @@ D("review",45,"Set your targets and run review one","Fill in the settings on the
 D("sop",60,"Write the SOP template once","Build the template every future SOP uses: purpose, trigger, who does it, systems touched, prerequisites, numbered steps with the exact screen and field names, decision points, common failure modes, expected turnaround, last reviewed date. Make it a reusable database template.","One reusable SOP template","Standardising the container is the actual skill. Forty documents in one format is a system; forty in four formats is a folder."),
 D("bi",60,"Power Query: clean a messy file","Import a deliberately messy CSV. Use only the Power Query editor: promote headers, set data types, trim and clean text, split a full-name column, remove blank rows, filter out test records. Look at the Applied Steps list when you finish.","A cleaned query with 8+ applied steps","Applied Steps is a documented, repeatable process — the same instinct as an SOP, applied to data. That framing wins interviews."),
 D("ai",60,"Generate your synthetic dataset","Prompt for a 750-row synthetic advisory book: household ID, advisor, account type, registration, market value, cash balance, inception date, last review date, birth year, fee schedule, custodian. Ask for realistic skew — a few large accounts, most small.","synthetic_book_v1.csv, 750 rows","Every dashboard, SQL exercise, and demo this year runs on this file. Real data never leaves your firm; synthetic data goes anywhere."),
-D("cert",60,"Diagnostic practice exam","Sit a full timed exam now, early, cold. It will feel bad. Score it by unit — Economic Factors, Investment Vehicles, Client Recommendations, Laws and Regulations — not just overall.","A baseline score broken down by unit","The unit breakdown is what makes the next eight weeks efficient. Without it you will study what is comfortable rather than what is failing."),
+D("cert",60,"Read the compliance manual","Read it properly, not skimmed. Mark the sections that govern something you personally do: money movement, communications, records, personal trading.","A marked-up manual and a list of the rules you personally own","You are already responsible for these obligations. Knowing which ones are yours is the difference between following a process and understanding it."),
 D("career",30,"Rebuild the LinkedIn headline","Replace your title-only headline. Use the shape: current function, plus the two capabilities you are building, plus where you are going. Something like: Wealth Management Operations | Advisory workflow, Power BI, process automation | Tampa Bay.","New headline and About paragraph draft","Recruiters search on skills, not titles. If Power BI is not on your profile, you are invisible to the search that would have found you."),
 D("sop",150,"SOP 1-3: the three you do most","Write the three processes you personally run most often. Screen-record yourself doing each once, then write the SOP from the recording so you capture the steps you do unconsciously. Include the exact form names and the fields people get wrong.","SOPs 001-003, complete and formatted","Writing from a recording catches the tacit knowledge. That undocumented middle is exactly where new hires make errors."),
 D("review",45,"Weekly review","Tick the week, update the evidence log with anything from work, check hours banked against plan on the dashboard, and read next week's seven cards so nothing is a surprise on Monday night.","Week closed, next week previewed","Reviewing forward beats reviewing back. Most missed sessions are missed because Monday's task was a surprise.")]},
@@ -486,7 +482,7 @@ D("review",45,"Weekly review","Tick the week, update the evidence log with anyth
 D("sop",60,"SOP 4: Roth IRA distribution","Document it end to end: verify the five-year clock and age condition, confirm qualified versus non-qualified, the withholding election, the exact form or e-signature path, the custodian deadline for same-day wires, and how you confirm receipt.","SOP 004 with a withholding decision table","Distributions are where operations errors become tax consequences for a client. Being the person who never gets these wrong is a reputation."),
 D("bi",60,"Load your synthetic book into Power BI","Import synthetic_book_v1.csv through Power Query. Set proper types, add a calculated Age column from birth year, and create your first measures: Total AUM, Account Count, Average Account Size.","Three working measures on real-shaped data","Measures, not columns. Understanding when to use each is the line between someone who has opened Power BI and someone who can build in it."),
 D("ai",60,"Draft-and-refine loop for SOPs","Take your rough notes for one process, have the AI format them into your template, then correct it line by line. Save the corrections as a reusable instruction block for next time.","SOP 005 drafted in half the usual time","The loop is: you supply the knowledge, the machine supplies the structure. Never the other way round — invented steps are worse than no SOP."),
-D("cert",60,"Rework the diagnostic and build the miss-log","Write your own explanation for every wrong answer, in your own words. Group them by concept, not by question order. Tag each as did-not-know, misread, or careless.","A miss-log grouped by concept","The miss-log becomes the highest-density study document you own. By exam week you will study from it and nothing else."),
+D("cert",60,"Map who regulates your firm","Work out whether your firm is SEC-registered or state-registered, why, and what that changes. Note the assets-under-management thresholds and what a notice filing is.","A one-paragraph note on your firm's regulatory position","This is the first question a hiring manager at another RIA will ask about your firm. Not knowing it reads as never having looked up."),
 D("career",30,"Evidence and one touch","Log this week's evidence entries with numbers attached. Then send one message: reconnect with a former colleague, or comment substantively on a post by someone who works at a Tampa firm.","Evidence logged, one relationship touched","Fifty small touches over a year builds a network. Fifty messages in one week when you need a job is a smell everyone recognises."),
 D("sop",150,"SOP 6-8: Traditional IRA, RMD, beneficiary change","Traditional IRA distribution with the federal and state withholding rules, the RMD process including how you verify the calculation and the deadline calendar, and a beneficiary change including what makes the form NIGO.","SOPs 006-008 plus an RMD deadline calendar","RMD failures carry real penalties. A documented, dated process for them is genuinely valuable and every operations manager knows it."),
 D("review",45,"Weekly review","Close the week, update the SOP count on the Portfolio tab, and check that your hours line on the dashboard has not drifted below the plan line.","Week closed, portfolio counts updated","Three weeks in is where the first drift shows. Catch it now while it is one session and not eleven.")]},
@@ -494,7 +490,7 @@ D("review",45,"Weekly review","Close the week, update the SOP count on the Portf
 D("sop",60,"SOP 9: new account opening, individual","The full path: data gathering, application, funding method, the identity requirements, e-signature routing, what to check before submission, expected turnaround by custodian, and how you track it to funded.","SOP 009 with a pre-submission checklist","The pre-submission checklist is the piece that prevents rework. That is the exact thing a hiring manager pays extra for."),
 D("bi",60,"DAX: CALCULATE and filter context","Learn the one function that matters. Write AUM for a single advisor, AUM excluding cash, and percentage of total AUM. Get the difference between row context and filter context clear in your head.","Three CALCULATE measures that return correct numbers","CALCULATE is where most people stall and quit. Push through this evening and the rest of DAX becomes readable."),
 D("ai",60,"Meeting Prep Generator, version 1","Write the prompt: input is pasted CRM notes and holdings summary (synthetic), output is a one-page brief with household snapshot, since-last-meeting changes, three talking points, two risks, and a follow-up task list. Test on three synthetic households.","Working prompt plus three sample outputs","This is the flagship demo. It maps directly onto the job you have, which is exactly why interviewers believe it."),
-D("cert",60,"Weak unit drill","Take your worst unit from the diagnostic and do 60 questions in it. Read every explanation, including for the ones you got right — those catch the lucky guesses.","60 questions in your weakest unit","Lucky guesses are hidden gaps. They are the questions that turn into misses on exam day when the wording changes slightly."),
+D("cert",60,"The Investment Advisers Act in one page","The definition of an investment adviser and the three-prong test: advice about securities, as a business, for compensation. Then the main exclusions and exemptions.","A one-page summary in your own words","This is the legal frame your entire industry sits inside. One page of your own writing beats fifty of someone else's."),
 D("career",30,"Portfolio site skeleton","Claim a simple site — Notion public page, Carrd, or GitHub Pages. Five sections: who I am, operations documentation, dashboards, automations, contact. Nothing published yet, just the frame.","A live URL with five empty sections","The URL on a resume is what makes someone spend nine minutes on you instead of nine seconds. Build the frame before you have anything to hang on it."),
 D("ai",150,"Harden the Meeting Prep Generator","Build an eval set of five synthetic households with known correct answers. Run the prompt against all five, mark what it got wrong, fix the prompt, re-run. Write down the before and after error counts.","Version 2 prompt with a documented error rate","Anyone can show a prompt that worked once. Showing a measured error rate before and after is what an analyst does, and it is rare."),
 D("review",45,"Weekly review","Close the week. Then write three sentences: what you would tell an interviewer you built this month, in plain language, with a number in it.","Week closed, one interview sentence drafted","If you cannot say it in three sentences, it is not yet a portfolio piece — it is just work you did.")]},
@@ -502,7 +498,7 @@ D("review",45,"Weekly review","Close the week. Then write three sentences: what 
 D("sop",60,"SOP 10-11: ACH setup and standing instructions","Document adding bank instructions, the verification method and why it exists, first-use hold periods, recurring distribution setup, and what to do when a client wants money moved to a third party.","SOPs 010-011 with a fraud-check note","Money movement is the highest-risk operations function that exists. Documenting the controls shows you understand risk, not just process."),
 D("bi",60,"Build a proper star schema","Split your flat file into fact and dimension tables: fact_accounts, dim_advisor, dim_client, dim_account_type, dim_date. Create the relationships in model view and set the correct cardinality.","A star schema with five related tables","Flat files break at the third dashboard. Star schema is the thing that separates real BI work from spreadsheet work in a portfolio review."),
 D("ai",60,"Install DuckDB and write your first SELECT","Install DuckDB (or SQLite) with DBeaver as the client. Load synthetic_book_v1.csv. Write SELECT, WHERE, ORDER BY, LIMIT. Answer: what are the 20 largest accounts and who advises them.","A working database and 10 saved queries","SQL is the single most transferable skill on this list. It survives every tool migration your industry will make."),
-D("cert",60,"Practice exam two","Full timed exam under real conditions: no phone, no notes, one sitting, correct time limit. Log it on the scores sheet with the unit breakdown.","Second score with unit trends","Two data points make a trend. If a unit has not moved, the method is wrong for that unit, not the hours."),
+D("cert",60,"Your own registration position","Work out what registration you personally hold or would need: investment adviser representative, Form U4, the CRD record, and what a licence does and does not let you do.","A written note on your own position","You will be asked this in interviews and you should never guess. It also tells you exactly what changes on the day the licence lands."),
 D("career",30,"Evidence and one touch","Log evidence. Then identify one person at a Tampa Bay firm doing the job you want in three years and read everything public they have written. Do not message yet.","One profile studied, evidence logged","Research before contact. A message that references something specific they said gets a reply; a generic one does not."),
 D("bi",150,"Answer ten questions with SQL","Write queries that answer real operational questions: accounts with over 8 percent in cash, households with no review in 12 months, accounts opened but never funded, advisor AUM ranked, average account size by registration type.","A .sql file of 10 documented business queries","These five questions are literally the Revenue Leak Dashboard you build in phase two. You are building its engine tonight."),
 D("review",45,"Weekly review","Close the week. Rate your honest confidence on Power BI and SQL from zero to five on the Skills tab and note what specifically you cannot yet do.","Week closed, two skills rated","Naming the specific gap is what makes the next session efficient. Vague weakness produces vague study.")]},
@@ -510,31 +506,31 @@ D("review",45,"Weekly review","Close the week. Rate your honest confidence on Po
 D("sop",60,"Design the NIGO log","Build a table to capture every item that comes back not-in-good-order: date, process, form, what was wrong, who caught it, how long the fix took, root cause category. Start logging tomorrow and never stop.","A live NIGO log with defined categories","This becomes the single most valuable exhibit you own. Six months of it is a defect-rate dataset almost nobody in operations has."),
 D("bi",60,"Power BI: cards, slicers, and a real layout","Build page one of the AUM dashboard: four KPI cards across the top, a bar chart of AUM by advisor, a slicer for account type. Fix the fonts and remove default chart junk.","Dashboard page 1, laid out deliberately","A tidy layout reads as competence before anyone checks a number. Ugly dashboards get dismissed even when the model behind them is right."),
 D("ai",60,"Prompt-to-checklist generator","Build a tool that takes an account type and a request type and returns the required forms, signature requirements, withholding elections, and likely NIGO causes. Base it on your own SOPs — paste them as reference context.","Distribution checklist tool, version 1","Grounding the tool in your own documented SOPs is what makes it accurate. This is retrieval done manually, and it is the honest version."),
-D("cert",60,"Rework, then drill the numbers","Explanations for every miss first. Then twenty minutes of flashcards on the pure memorisation items: registration thresholds, timeframes, dollar limits, filing deadlines.","Miss-log updated, number facts drilled","Memorisation items are free points. Every one you drop is a point you already paid thirty hours of study to earn."),
+D("cert",60,"Read a client agreement properly","Read your firm's advisory agreement: the fee schedule and how it is calculated, termination, assignment, discretionary authority, and what the client actually consented to.","Notes on the agreement you administer every week","You process billing and account changes against this document. Reading it once explains half the exceptions you have ever had to handle."),
 D("career",30,"Draft one resume bullet properly","Take one thing from the evidence log and write it in result-first form: what changed, by how much, using what, over what period. The shape is: cut new-account rework by documenting 12 recurring processes over 6 weeks.","One bullet written result-first","Result-first bullets survive a six-second scan. Duty-first bullets describe a job description, which every other applicant also has."),
 D("sop",150,"SOP 12-15: transfers","ACAT in, ACAT out, non-ACAT transfers, and the partial transfer case. Document what makes each one reject, the realistic timelines, how you chase a stalled transfer, and what you tell the client at day 5, 10, and 20.","SOPs 012-015 plus a transfer-chase cadence","Transfers are the most complained-about process in the industry. Owning a documented chase cadence for them is instantly credible."),
 D("review",45,"Weekly review","Close the week and check the consistency grid on the dashboard. If there are more than two gaps this phase, shorten weeknight sessions to 45 minutes rather than missing them.","Week closed, cadence adjusted if needed","Adjusting the plan to reality is discipline. Abandoning it because it no longer fits reality is not.")]},
-{n:7,ph:1,th:"Decision tools and the third practice exam",days:[
+{n:7,ph:1,th:"Decision tools and standards",days:[
 D("sop",60,"SOP 16-17: meeting prep and follow-up","Document your advisor meeting-prep process end to end and the post-meeting follow-up: what gets prepared, from which systems, how far ahead, and what happens to every action item afterwards.","SOPs 016-017 with a timing standard","Meeting prep is the process closest to the advisor's experience of you. Standardising it is the most visible improvement you can make."),
 D("bi",60,"Time intelligence in DAX","Add a proper date table and mark it as a date table. Write measures for AUM prior month, month-over-month change, and year-to-date net new money.","A date table plus three time-intelligence measures","Every executive question is a comparison over time. Without a date table you cannot answer any of them properly."),
 D("ai",60,"Test the checklist tool against reality","Run ten real scenarios from your own memory through the checklist tool and mark every error. Fix the source SOPs where the tool was wrong, because the tool was probably right about the gap.","Error log plus corrected SOPs","When the tool is wrong, the documentation is usually wrong first. Testing the tool is a free audit of your own process library."),
-D("cert",60,"Practice exam three","Full timed exam. You want to be at or above the passing line by now, with clear separation on your two strongest units.","Third score logged","Practice scores typically run higher than exam-day scores. Aim to clear the line by a real margin, not by one question."),
+D("cert",60,"Where operations sits relative to advice","Draw the line clearly: what you may tell a client, what must go to an advisor, and where an operational answer becomes a recommendation.","A written boundary note with three worked examples","Getting this line right protects you and the firm. Being able to articulate it is a genuinely senior thing to be able to do."),
 D("career",30,"Evidence and one touch","Log evidence. Send the first outreach message of the year to the person you researched in week 5, referencing something specific they wrote.","One message sent","The first one is the hardest. After it, this becomes routine — and routine outreach is a genuine competitive advantage."),
 D("bi",150,"AUM dashboard page 2: growth","Build the growth page: net new money by month, AUM trend line, new accounts opened, closed accounts. Add a slicer for advisor and make every visual respond to it correctly.","Dashboard page 2, cross-filtering correctly","Growth is what leadership looks at. Building the page that answers their question is how you become the person they ask."),
-D("review",45,"Weekly review","Close the week and log your practice exam score with the date on the Licensing tab. Plot it against the passing line — you want a clear upward trend, not one good result.","Week closed, score logged","One score is noise. The trend across four practice exams is the only reliable signal of readiness.")]},
+D("review",45,"Weekly review","Close the block: tick what you finished, log anything from work into the evidence log with a number, and glance at the finishing date on the dashboard.","Block closed, evidence logged","The finishing date is the only pace signal that matters here, and it only moves when you do the work.")]},
 {n:8,ph:1,th:"Process maps a manager can read",days:[
 D("sop",60,"Map the onboarding swimlane","Draw the new-client onboarding process as a swimlane: client, advisor, you, custodian. Mark every handoff and every wait. Use Mermaid, Excalidraw, or Lucidchart — tool does not matter, clarity does.","Onboarding swimlane diagram","Handoffs and waits are where time is lost. A map that shows them is an argument for change that a manager can act on."),
 D("bi",60,"Conditional formatting and drill-through","Add data bars and colour rules to a table, then build a drill-through page so clicking an advisor opens their detail view. Test that the breadcrumb back works.","Working drill-through with formatting","Drill-through is what makes a dashboard feel like software instead of a report. It takes an hour to learn and it lands in every demo."),
 D("ai",60,"Automate one real annoyance","Pick the most repetitive non-client-data task in your week and automate it: a recurring reminder built from a checklist, a template generator, a folder-naming script. Time it before and after.","One automation plus a minutes-saved figure","Small automations you actually use beat impressive ones you demo once. And the minutes-saved figure is the resume bullet."),
-D("cert",60,"Final review pass","One complete pass through every unit using only your own notes and miss-log. Do not open the textbook — retrieval is what moves material, re-reading only produces recognition.","A complete review pass from your own materials","Reading the book again feels productive and is not. Your own notes force recall, which is what the exam actually tests."),
+D("cert",60,"Write the regulatory note for your firm","Pick one thing your firm handles loosely \u2014 disclosure timing, a records detail, a withholding practice \u2014 and write a short note proposing the fix, with the rule behind it.","One written proposal to your manager","This is what a compliance-literate operations person does, unprompted. It is the most quietly impressive thing you can hand a manager."),
 D("career",30,"Publish SOP work to the portfolio","Put two genuinely generic SOPs on your portfolio site — nothing firm-specific, nothing identifiable. Add one line above them describing the standard you built.","Two SOPs public with a framing line","Public proof beats claimed experience. Two visible documents change what the first interview conversation is about."),
 D("sop",150,"Map distributions and the annual review","Two more swimlanes: the distribution process from request to settled cash, and the annual review cycle from scheduling to filed notes. Mark every point where the process waits on someone else.","Two more process maps","Three maps is a portfolio section. Interviewers linger on diagrams far longer than on prose — they can evaluate them at a glance."),
-D("review",45,"Weekly review","Close the week and count: SOPs written, dashboard pages, automations, practice exam scores. Compare against the phase one gate on the Plan tab.","Week closed, gate progress checked","Halfway through phase one. This is the moment to trade breadth for depth if you are behind on any one number.")]},
+D("review",45,"Weekly review","Close the block and count what exists: SOPs written, dashboard pages, automations shipped. Compare against the phase one gate on the Milestones tab.","Block closed, gate progress checked","Halfway through phase one. This is the moment to trade breadth for depth if any one number is lagging.")]},
 {n:9,ph:1,th:"The AUM dashboard, finished",days:[
 D("sop",60,"SOP 18-19: fee billing and reconciliation","Document the quarterly billing cycle: how fees are calculated, what gets verified before the run, the exception cases, and how billing errors are found and corrected.","SOPs 018-019 with a pre-billing verification list","Billing errors are the ones that reach clients and principals. Being the person who catches them before the run is career-defining leverage."),
 D("bi",60,"Client demographics page","Build the demographics page: AUM by client age band, account count by registration type, average account size by advisor, and the share of AUM held by clients over 70.","Dashboard page 3, demographics","The over-70 concentration number is the single most strategically important figure in most advisory books. Knowing it makes you sound senior."),
 D("ai",60,"Write the tool documentation","Document your two AI tools properly: what problem each solves, the input, the output, how it was tested, error rate, and the limitations. One page each.","Two tool one-pagers","Undocumented tools read as toys. Documented tools with stated limitations read as engineering, and that judgment is what gets hired."),
-D("cert",60,"Exam week","Sit it. Arrive early with the right identification. Log the result the same evening either way — and if it did not go your way, rebook before you go to bed.","Result logged, next step taken","Rebooking the same night keeps a setback to three weeks instead of three months. The material is never fresher than it is tonight."),
+D("cert",60,"Plan what the licence changes","Decide in advance what you ask for when it lands: which titles you apply to, what scope you request internally, and what you say when someone asks what it means.","A written plan for the week after you pass","Deciding this calmly now means the week you pass is spent converting rather than wondering what to do with it."),
 D("career",30,"Evidence and one touch","Log evidence. Follow up on your week 7 message if there was no reply, or thank them and ask one specific question if there was.","Follow-up sent","One polite follow-up doubles response rates. Two is persistence. Three is a problem — know where the line is."),
 D("bi",150,"Ship the AUM dashboard","Finish all four pages, add a title bar, consistent colours, a last-refreshed stamp, and a notes page explaining the data model. Record a three-minute walkthrough video of yourself using it.","Dashboard v1 shipped plus a walkthrough recording","The recording is what you send with an application. A .pbix file nobody opens proves nothing; three minutes of you explaining it proves everything."),
 D("review",45,"Weekly review","Close the week. Add the dashboard to the Portfolio tab with its link and its one-line result. Update your Power BI self-rating.","Week closed, first dashboard logged","First major artifact done. Note how long it actually took versus what you assumed — use that ratio to plan every future build.")]},
@@ -542,7 +538,7 @@ D("review",45,"Weekly review","Close the week. Add the dashboard to the Portfoli
 D("sop",60,"Scope the RIA efficiency audit","Define the flagship project: three processes (onboarding, distributions, beneficiary changes), measured on cycle time, touch count, handoffs, and error rate. Write the one-page scope before collecting anything.","Project 1 scope document","Scoping before measuring is the analyst habit. Unscoped analysis expands forever and never becomes a deliverable."),
 D("bi",60,"Power Query: combine multiple files","Learn folder-based import: point Power Query at a folder of monthly CSVs and have it combine them automatically. Add a source-file column so you can trace any row back.","A query combining 6+ files automatically","This is the single most useful Power Query skill in an operations job. Everyone has a folder of monthly exports."),
 D("ai",60,"Build the audit data collection sheet","Design how you will capture cycle time and touch count without recording anything client-identifying: a tally sheet with process, start, end, touches, waits, and NIGO flag. Start using it tomorrow.","Audit collection instrument","Measurement design is the whole game. A badly designed collection sheet produces two weeks of unusable data and you will not notice until the end."),
-D("cert",60,"Broadcast the credential","Add it to LinkedIn, your resume, your portfolio site and your email signature. Tell your manager. Message every contact in your tracker — a new credential is a legitimate reason to re-contact everyone.","Credential visible in four places plus your network","An unannounced credential is worth a fraction of an announced one. Visibility is the entire point of certification."),
+D("cert",60,"When it lands: broadcast it","Add the credential to LinkedIn, your resume, your portfolio site and your email signature. Tell your manager. Message every contact in the target tracker.","Credential visible in four places plus your network","An unannounced credential is worth a fraction of an announced one. Visibility is the entire point of getting it."),
 D("career",30,"Update the resume with what exists","Rewrite two bullets using this month's real artifacts: the documented processes with a count, and the dashboard with what it shows. Numbers only, no adjectives.","Two rewritten resume bullets","Rewrite the resume as evidence accumulates, not once in a panic in month eleven when you cannot remember the numbers."),
 D("sop",150,"SOP 20-23: the exception cases","Document four exception processes: death of an account holder, transfer of assets between spouses, power of attorney on file, and a client who cannot be reached for a required signature.","SOPs 020-023","Exception handling is what separates the operations person people trust from the one who escalates everything. Documenting exceptions is documenting judgment."),
 D("review",45,"Weekly review","Close the week. You are three weeks from the phase one gate: exam behind you, 23 SOPs, one dashboard, portfolio live. Name the one that is furthest behind and load the next three weeks toward it.","Week closed, gate gap identified","Late-phase triage. Protect the gate criteria and let the optional work slide, not the reverse.")]},
@@ -550,20 +546,20 @@ D("review",45,"Weekly review","Close the week. You are three weeks from the phas
 D("sop",60,"SOP 24-25: advisory onboarding and the IPS","Document the advisory-specific onboarding: agreement execution, fee schedule setup, billing group assignment, model assignment, and the initial funding sequence.","SOPs 024-025","Advisory onboarding is the process most firms handle worst and most want fixed. Owning it in an interview is a strong position."),
 D("bi",60,"Publish to the Power BI service","Sign up for the free tier, publish your report, build a dashboard from pinned tiles, and set up a scheduled refresh (it will fail on a local file — understand why).","Report published, refresh attempted and understood","Publishing and refresh is where portfolio projects meet production reality. Knowing why the local file fails is a genuine interview answer."),
 D("ai",60,"Zapier or Make: the first scenario","Create a free account. Build one working automation end to end: a form submission that creates a task and sends a formatted email. Test it three times and add error notification.","One live automation with error handling","Error handling is the difference between an automation and a liability. Build it in the first one so it becomes a habit."),
-D("cert",60,"Convert the credential","Rewrite your positioning around it, then apply to five roles you would not have been considered for a month ago. Reprice yourself immediately.","Five stretch applications sent","The credential changes which roles are realistic. Do not spend three months applying at the old level out of habit."),
+D("cert",60,"When it lands: convert it","Rewrite your positioning around the credential, then apply to five roles you would not have been considered for a month earlier.","Five stretch applications sent","The licence changes which roles are realistic. Reprice yourself immediately rather than applying at the old level out of habit."),
 D("career",30,"Evidence and one touch","Log evidence. Send a second outreach message, this time to someone at a firm on your target list — ask about their operations stack, not for a job.","Second outreach sent","Asking about their work gets answers. Asking for a job gets silence. The job conversation happens later, and they start it."),
 D("ai",150,"Distribution Checklist Tool, version 2","Rebuild the tool properly: structured input (account type, distribution type, amount, timing), structured output (forms, withholding, signatures, deadline, NIGO risks). Test against all your distribution SOPs.","Checklist tool v2 with test results","Structured in, structured out. That discipline is what makes an AI tool reliable enough that someone else would trust it."),
-D("review",45,"Weekly review","Close the week. With the exam done, decide how much of the reclaimed study hour goes back into builds and how much you keep as rest.","Week closed, hours reallocated","Reclaiming an hour a day is the reward for passing. Spend it deliberately or it evaporates into nothing.")]},
+D("review",45,"Weekly review","Close the block. Look at the last four weeks on the activity grid and decide honestly what a sustainable rate is for you \u2014 then set the finishing date expectation from that, not from optimism.","Block closed, real rate acknowledged","A rate you can actually hold beats a rate you meant to hold. The plan works at four tasks a week; it just takes longer.")]},
 {n:12,ph:1,th:"Consolidate and publish",days:[
-D("cert",60,"Turn the exam into job knowledge","Go back through the fiduciary duty and suitability material and write one page on how it actually applies to three things you do at work every week.","A one-page applied note","Exam knowledge that stays theoretical fades in a month. Applied to your own workflow, it changes how you talk to advisors permanently."),
-D("cert",60,"Read your firm's ADV and compliance manual","Read your own firm's Form ADV Part 2A and the compliance manual. Note every place where the document describes something differently from how it actually happens.","A list of documented-versus-actual gaps","Nobody in operations reads these. Doing so makes you the person who can answer regulator-shaped questions, which is a genuine differentiator."),
-D("cert",60,"Decide the next credential honestly","Score the candidates on cost, hours, and whether any job posting you have actually seen requires it: CFP, CIMA, the SIE if you ever move to a broker-dealer, or nothing at all.","A written decision with reasoning","The honest answer for the next twelve months is probably nothing. A portfolio beats a fourth credential for operations roles, every time."),
-D("cert",60,"Write the regulatory note for your firm","Pick one thing the exam taught you that your firm handles loosely — disclosure timing, a books-and-records detail, a withholding rule — and write a short note proposing the fix.","One written proposal to your manager","This is what a compliance-literate operations person does. It is also the most quietly impressive thing you can hand a manager unprompted."),
+D("cert",60,"Suitability in operational terms","Learn what the client profile is for, what information must be gathered and refreshed, and how that connects to the paperwork you process.","Notes linking the profile to the forms you handle","Suitability sounds like an advisor concept until you realise it is the reason half your documentation requirements exist."),
+D("cert",60,"The annual review cycle","Learn what an RIA is expected to review annually: the compliance programme, client suitability, fees, and the adviser's own policies. Map who does each at your firm.","A note on the annual cycle and its owners","The annual review is a practice manager's responsibility. Understanding it before you have the title is how you get considered for it."),
+D("cert",60,"Complaint handling and escalation","Learn what counts as a complaint, what must be recorded, the timelines, and the escalation path. Then check what your firm actually does with one.","Notes plus your firm's complaint process","Complaints are rare and high-stakes. Being the person who knows the process cold is disproportionately valuable."),
+D("cert",60,"Understand the custodian relationship","Learn what the agreement between your firm and the custodian covers, who is responsible for what, and where the custodian's obligations end and yours begin.","A note on the division of responsibility","Every escalation you have ever had turned on this boundary. Knowing where it sits makes you faster and calmer than everyone around you."),
 D("career",30,"Prepare the portfolio launch","Write the three paragraphs for your portfolio homepage: who you are, what you build, what you are looking for. Plain, specific, no adjectives.","Homepage copy drafted","Draft it now so launch day next week requires nothing from you but a publish button."),
 D("review",150,"Catch-up block and rest","Use this block on whatever has been carried forward the most times — the task at the top of your overdue list. Then stop early and rest.","Carried-over work cleared","A scheduled catch-up block is what stops a backlog becoming a reason to quit. Clearing it is real progress, not admin."),
 D("review",45,"Weekly review","Close the week and prepare the gate: gather every artifact link into one document, and check the phase one criteria one by one.","Week closed, gate prepared","Preparing the gate the night before makes the gate review honest instead of rushed.")]},
 {n:13,ph:1,th:"GATE: credential and portfolio v1",gate:true,days:[
-D("cert",60,"Credential audit at the gate","Confirm the credential is recorded everywhere it should be, that your firm reimbursed the fee if they offer that, and that your resume states it correctly.","Credential fully processed","Loose ends here cost nothing to close now and are embarrassing to discover in an interview."),
+D("cert",60,"Where the firm is exposed","Write down honestly the three places where documented policy and actual practice diverge most at your firm. Do not send this anywhere \u2014 it is for your own understanding.","A private three-item risk note","Seeing risk clearly is the analyst instinct applied to your own workplace. It also gives you three concrete things to propose fixing."),
 D("career",60,"Update everything with the result","Add the credential to LinkedIn, your resume, your portfolio site, and your email signature. Tell your manager. Thank whoever helped.","Credential visible in four places","An unannounced credential is worth a fraction of an announced one. Visibility is not bragging, it is the entire point of certification."),
 D("career",60,"Publish the portfolio","Go live: two SOPs, three process maps, the dashboard walkthrough video, two AI tool one-pagers, and the homepage copy. Send the link to two people you trust and ask what is confusing.","Portfolio v1 live and reviewed by two people","Feedback from two people catches the things you cannot see. Publish before it is ready — it never becomes ready in private."),
 D("review",60,"Phase one gate review","Score yourself against the gate: Series 65 passed, 25 SOPs, one dashboard, portfolio live. Write one honest paragraph on what worked and what did not.","Written gate assessment","An honest gate review is the only thing that stops phase two repeating phase one's mistakes at higher stakes."),
@@ -579,7 +575,7 @@ D("ai",60,"Annual review brief generator","Build the prompt: input is a househol
 D("sop",60,"SOP 26-27: trading and rebalancing","Document how trade requests are placed, checked and confirmed, and how model rebalancing is initiated, reviewed and reconciled afterwards.","SOPs 026-027","Trading errors are the fastest way to lose an operations job. A documented check step is the control that prevents them."),
 D("career",30,"Evidence and one touch","Log evidence. Message one person who works in Tampa Bay operations and ask what their firm uses for portfolio management and reporting.","Third outreach sent","Stack-level questions are easy for people to answer, which is why they get replies. They also tell you exactly what to learn."),
 D("bi",150,"Revenue Leak Dashboard: scope and model","Define four leaks: cash held too long, households with no review in 12 months, pending paperwork past SLA, and inactive accounts. Build the data model to support all four on one page.","Project 3 scope plus data model","Naming a dollar figure against an operational problem is how operations people get taken seriously by principals. This is that project."),
-D("review",45,"Weekly review","Close the week and open phase two properly: read the phase goal, count what is left to hit 40 SOPs, and decide where the reclaimed study hour now goes.","Week closed, phase two loaded","Phase two is where most self-directed plans die, because the novelty is gone and the payoff is not yet visible.")]},
+D("review",45,"Weekly review","Close the block and open phase two properly: read the phase goal and count what is left to hit 40 SOPs.","Block closed, phase two loaded","Phase two is where most self-directed plans die, because the novelty is gone and the payoff is not yet visible.")]},
 {n:15,ph:2,th:"Interactivity and the automation habit",days:[
 D("bi",60,"Bookmarks and buttons","Add bookmarks and navigation buttons to the AUM dashboard so a user can switch views without leaving the page. Make one toggle between chart and table view.","Working bookmark navigation","This is what makes a report feel like an application. It takes one evening and it is the detail people comment on."),
 D("ai",60,"Automation two: the meeting-prep pipeline","Wire it up: a form or trigger collects the meeting details, the AI step drafts the brief, the output lands in a document and a task appears with a due date. Use synthetic data only.","End-to-end automation, tested three times","Chaining beats one-shot prompting. A pipeline someone else could run is a system; a prompt you paste is a habit."),
@@ -993,89 +989,17 @@ const LADDERS=[
 ["Teach","A documented method someone else can run without you.","Week 51"]]}
 ];
 const RATINGS=[["ops","Operations depth"],["bi","Power BI"],["sql","SQL & data"],["ai","AI automation"],["client","Advisor & client"],["lead","Leadership & comms"]];
-const CERTS=[
-{k:"Series 65",name:"Uniform Investment Adviser Law Examination",when:"Live now — daily blocks, anchored to your exam date",
-facts:[["Questions","130 scored (plus 10 unscored pretest)"],["Time","3 hours"],["Passing","72% — 94 of 130 correct"],["Fee","around $187 — verify with NASAA"],["Sponsor","Not required in most cases"],["Weighting","Laws & regulations 30% · Recommendations 30% · Vehicles 25% · Economics 15%"]],
-why:"This is the credential that changes which roles will consider you at all. It says you understand fiduciary obligation and adviser regulation, which is the language RIAs actually operate in — and for an operations candidate it is a genuine differentiator, because almost nobody in an operations seat has it.",
-plan:["Set your exam date on the Operating manual tab — every daily block below re-sequences from it","One block every single day, including weekends. The weekend blocks are longer because they carry the practice exams","Four full timed practice exams at 36, 22, 8 and 3 days out. Sit each one in one sitting, no phone, no notes","Score every practice exam by unit, never just overall — after the second one, study only your two weakest units","Every wrong answer gets an explanation written in your own words, grouped by concept. That miss-log becomes your final-week material","Laws and regulations is 30% of the exam and the least intuitive. It gets the last two weeks, when your retention is highest","Stop new material 48 hours out. Numbers, definitions and sleep only","If a block lands on a bad day, push it — the tracker carries it forward. Two pushes in a row means shorten the block, not skip it"]},
-{k:"SIE",name:"Securities Industry Essentials — deliberately not now",when:"Only if a broker-dealer role appears",
-facts:[["Questions","75 scored (plus 10 unscored)"],["Time","1 hour 45 minutes"],["Passing","70%"],["Fee","around $80 — verify with FINRA"],["Sponsor","Not required"],["Relevance to you","Low while you are targeting RIAs"]],
-why:"The SIE is the broker-dealer entry credential. For RIA operations roles it adds very little that the Series 65 does not already cover, and the hours it costs are better spent on the portfolio. Revisit it only if you end up targeting a wirehouse or a dually registered firm where it is expected.",
-plan:["Do not take it this year unless a specific employer asks for it","Revisit the decision at week 12, with real job postings in front of you rather than from memory","If you do need it later, it is roughly six weeks of evenings after the Series 65 — most of the securities content overlaps","Never take a second exam to feel productive. A portfolio artifact beats a fourth credential for every operations role on your target board"]}
-];
-/* Series 65 daily blocks, indexed by days remaining: index 0 = 63 days out, index 62 = tomorrow */
-const S65=[
-["Economics",40,"Orientation: the outline and the weights","Read the NASAA content outline. Write the four unit weights on a card and stick it where you study. Decide now which nights the heaviest unit gets."],
-["Economics",50,"The business cycle","Expansion, peak, contraction, trough. Leading, lagging and coincident indicators, and which is which. GDP and what it does and does not measure."],
-["Economics",50,"Inflation and real return","CPI, inflation and deflation, purchasing power risk, and the difference between nominal and real return. Be able to compute a real return in your head."],
-["Economics",50,"Monetary policy","The Federal Reserve, open market operations, the discount rate, reserve requirements, and the difference between the fed funds rate and the discount rate."],
-["Economics",50,"Fiscal policy and the yield curve","Taxation and government spending as policy tools. Normal, flat and inverted yield curves, and what each one is telling you."],
-["Economics",50,"Interest rates and bond prices","The inverse relationship, why long bonds move more than short ones, and an intuitive grasp of duration before you meet the formal version."],
-["Economics",90,"Weekend block: Unit 1 review","Re-read your own notes for the whole economics unit, then do 40 questions. Log the score. Anything under 70% here means re-read tomorrow, not next month."],
-["Vehicles",50,"Reading financial statements","Balance sheet, income statement, cash flow statement. What each one tells you and what an analyst looks at first."],
-["Vehicles",50,"Ratios that appear on the exam","Current and quick ratio, price to earnings, price to book, debt to equity, earnings per share. Know what a high or low value implies."],
-["Economics",45,"Global factors and currency","Exchange rates, balance of trade, and how currency movement affects the return on foreign holdings."],
-["Vehicles",50,"Common and preferred stock","Voting rights, dividends, liquidation priority, and the preferred variants: cumulative, participating, convertible, callable."],
-["Vehicles",50,"Rights, warrants, ADRs and REITs","What each instrument is, who issues it, and the tax and income characteristics that make it appear in a recommendation question."],
-["Vehicles",45,"Corporate actions","Stock splits and reverse splits, stock and cash dividends, tender offers, and the four dates that matter for dividends."],
-["Vehicles",90,"Weekend block: equities drill","50 questions across everything so far. Write out every miss with your own explanation. Log the score by unit."],
-["Vehicles",55,"Bond fundamentals","Par, coupon, current yield, yield to maturity, yield to call. The premium and discount relationships — know the ordering cold, both directions."],
-["Vehicles",50,"Government and agency securities","Treasury bills, notes and bonds. TIPS and how the inflation adjustment works. STRIPS, agency debt, and mortgage-backed basics."],
-["Vehicles",50,"Municipal securities","General obligation versus revenue bonds, the tax treatment, and computing a tax-equivalent yield. Know when a muni is the wrong answer."],
-["Vehicles",50,"Corporate debt and credit","Ratings and the investment grade line, seniority, secured versus debenture, callable and convertible features."],
-["Vehicles",45,"Money market instruments","Commercial paper, banker's acceptances, repos, negotiable CDs. Maturities, safety and the role in a portfolio."],
-["Vehicles",50,"Duration and immunisation","Duration as price sensitivity, what raises or lowers it, and immunising a portfolio against rate moves for a known liability."],
-["Vehicles",90,"Weekend block: fixed income drill","50 fixed income questions. This unit is 25% of the exam and it rewards drilling more than reading."],
-["Vehicles",55,"Mutual funds","Share classes and what each costs whom, sales loads and breakpoints, 12b-1 fees, net asset value and forward pricing."],
-["Vehicles",50,"ETFs, closed-end funds and UITs","How each is structured, how each trades, and the practical differences in pricing, liquidity and tax efficiency."],
-["Vehicles",50,"Alternatives and private offerings","Hedge funds, private placements, Regulation D, the accredited investor definition, and the suitability problems these create."],
-["Vehicles",50,"Options","Calls and puts, long and short, the four basic positions and what each expects the market to do. Hedging and income uses, not the maths."],
-["Vehicles",45,"Futures, forwards and commodities","What a futures contract is, how it differs from a forward, and how commodity exposure behaves in a portfolio."],
-["Vehicles",55,"Annuities and insurance products","Fixed, variable and indexed annuities. Accumulation versus annuitisation, surrender charges, and the tax treatment of each phase."],
-["Vehicles",180,"PRACTICE EXAM ONE","Full timed exam, one sitting, no notes, no phone. If this lands midweek, sit it on the nearest weekend day and push the surrounding blocks — the tracker carries them forward."],
-["Vehicles",60,"Rework practice exam one","Write your own explanation for every wrong answer. Group by concept, not by question number. Tag each as did-not-know, misread or careless."],
-["Vehicles",45,"Life insurance in planning","Term, whole, universal and variable life. What each is for and the tax treatment of the death benefit and cash value."],
-["Recommendations",55,"Taxation of investments","Ordinary income, qualified dividends, short and long term capital gains, the wash sale rule, and cost basis."],
-["Recommendations",55,"Retirement accounts","Traditional and Roth IRAs, contribution and income limits, early withdrawal penalties and exceptions, and required minimum distributions."],
-["Recommendations",55,"Employer plans and ERISA","401(k), 403(b), 457, SEP and SIMPLE. Vesting, the fiduciary standard under ERISA, and who can establish what."],
-["Recommendations",45,"Education and custodial accounts","529 plans, Coverdell accounts, UTMA and UGMA. Control, ownership, tax treatment and financial aid effects."],
-["Recommendations",90,"Weekend block: tax and retirement drill","50 questions across taxation and retirement. This material is also your day job — the return on this block is unusually high."],
-["Recommendations",50,"Client profiling","Time horizon, liquidity needs, tax status, and the difference between risk tolerance and risk capacity. Constraints and objectives."],
-["Recommendations",50,"Types of clients","Individuals, joint owners, trusts, estates, corporations and partnerships. Who has authority and what documentation establishes it."],
-["Recommendations",55,"Modern portfolio theory","The efficient frontier, systematic versus unsystematic risk, correlation and diversification, and the capital asset pricing model."],
-["Recommendations",55,"Risk and performance measures","Beta, alpha, standard deviation, the Sharpe ratio and R-squared. Know what each measures and when each is the right one to cite."],
-["Recommendations",50,"Asset allocation and rebalancing","Strategic versus tactical allocation, rebalancing methods and triggers, and the effect of rebalancing on risk and return."],
-["Recommendations",45,"Portfolio styles and techniques","Active versus passive, growth versus value, dollar cost averaging, laddering and barbell strategies."],
-["Recommendations",180,"PRACTICE EXAM TWO","Full timed exam. Compare unit scores against exam one. From here, study only your two weakest units — ignore the strong ones entirely."],
-["Recommendations",60,"Rework practice exam two","Explanations for every miss, added to the miss-log. Then write down your two weakest units and plan the remaining nights around them."],
-["Recommendations",50,"Performance measurement","Time-weighted versus dollar-weighted return, total return, benchmarks and why the choice of benchmark matters."],
-["Recommendations",50,"Trading and execution","Market, limit, stop and stop-limit orders. Trading costs, bid-ask spread, and the best execution obligation."],
-["Laws",55,"The Investment Advisers Act","The definition of an investment adviser and the three-prong test: advice about securities, as a business, for compensation."],
-["Laws",55,"Exclusions and exemptions","Who is excluded from the definition, the de minimis exemption, private fund advisers, and the distinction between exclusion and exemption."],
-["Laws",55,"Federal versus state registration","The assets under management thresholds, notice filing, and when an adviser registers with the SEC rather than the states."],
-["Laws",90,"Weekend block: registration drill","50 questions on registration, exclusions and exemptions. This is dense, testable material and it rewards repetition."],
-["Laws",50,"Investment adviser representatives","Who must register as an IAR, Form U4, when registration becomes effective, and what happens on termination or transfer."],
-["Laws",55,"The Uniform Securities Act","The definitions that carry the whole act: security, sale, offer, person. Exempt securities and exempt transactions."],
-["Laws",50,"Broker-dealers and agents","Registration requirements, exclusions, the state administrator's jurisdiction, and when an agent must register."],
-["Laws",55,"Ethical practices and conflicts","Fee disclosure, conflicts of interest, soft dollar arrangements, agency cross transactions, and principal trades."],
-["Laws",55,"Prohibited practices","Churning, front running, misrepresentation, unauthorised trading, borrowing from clients, guaranteeing against loss. Know the whole list."],
-["Laws",55,"Custody, brochures and records","What constitutes custody, the brochure delivery requirements and timing, books and records obligations, and the advertising rules."],
-["Laws",180,"PRACTICE EXAM THREE","Full timed exam. You want to be clearly above the passing line with a margin, not scraping it by one or two questions."],
-["Laws",60,"Rework practice exam three","Explanations for every miss. Then rebuild your notes for the two weakest units from scratch — rewriting forces recall in a way reading does not."],
-["Review",60,"Review pass: Units 1 and 2","Economics and investment vehicles, from your own notes and miss-log only. Do not open the textbook."],
-["Review",60,"Review pass: Unit 3","Client recommendations and strategies from your own notes. This unit is 30% of the exam — give it the full hour."],
-["Review",70,"Review pass: Unit 4","Laws, regulations and prohibited practices. The other 30%, and the one most people lose points on. Your notes only."],
-["Review",180,"PRACTICE EXAM FOUR","The last full timed exam. After this, no new material at all — only numbers, definitions and rest."],
-["Review",45,"Numbers and definitions drill","Flashcards, three rounds: registration thresholds, dollar limits, timeframes, filing deadlines, contribution limits. These are free points."],
-["Review",30,"Light review, then stop","Read the miss-log once. Confirm the time, the location and your identification. Then stop early and sleep — that is the highest-yield hour left."]
-];
-const STUDY=[
-{t:"The Thursday rule",b:"Certification study sits on Thursday nights and Saturday blocks, never scattered. A fixed slot survives a bad week; a flexible one does not. If Thursday dies, the make-up is Sunday morning, not never."},
-{t:"Questions, not summaries",b:"Never write chapter summaries. Write questions you cannot yet answer, then answer them a week later from memory. Retrieval builds recall; re-reading builds only the feeling of recall, which is what fails on exam day."},
-{t:"The miss-log",b:"Every wrong practice answer gets an explanation written in your own words, grouped by concept rather than by exam. By the last fortnight the miss-log is a higher-density study document than anything the provider sold you."},
-{t:"Error categories",b:"Sort every miss into did-not-know, misread, or careless. Knowledge gaps need study. Misreads need slowing down on qualifier words. Careless errors need a checking pass. Treating all three as study is why people plateau."},
-{t:"Score trends beat scores",b:"One practice score is noise. The trend across four is signal. If the trend is flat after two exams, change the method — more hours on a method that is not working produces the same result more expensively."},
-{t:"The last 48 hours",b:"No new material. Numbers and definitions only, then rest. Sleep deprivation costs more points than the extra chapter gains. Treat rest as part of the study protocol, not as a lapse in it."}
+const CREDENTIAL={
+ name:"Series 65",full:"Uniform Investment Adviser Law Examination",
+ facts:[["Questions","130 scored, plus 10 unscored"],["Time","3 hours"],["Passing","72% \u2014 94 of 130"],["Fee","around $187 \u2014 verify with NASAA"],["Sponsor","not required in most cases"]],
+ unlocks:["Roles that list it as required or strongly preferred, which is a meaningful share of RIA operations and client-facing postings","Advisory-adjacent titles if you ever want them: advisor associate, paraplanner, relationship manager","Credibility in the fiduciary-duty conversation, which operations candidates almost never have","A legitimate reason to re-contact every person on your target board the day you pass"],
+ onpass:["Add it to LinkedIn, your resume, your portfolio site and your email signature the same week","Tell your manager, and ask whether the firm reimburses the fee. Many do; most people never ask","Message every contact in the tracker \u2014 a new credential is the easiest re-contact reason there is","Reprice yourself: apply to five roles you would not have been considered for a month earlier","Check what registration in Florida actually requires for the roles you want, and whether it is firm-dependent"]
+};
+const COMPMILES=[
+ ["Now","your current salary","The baseline everything else is measured against. Set it on the Money tab."],
+ ["The move","$80k+","Florida, an operations role, credential in hand, portfolio public."],
+ ["Year 2","$100k","Comes from scope, not tenure \u2014 a documented case made at a review cycle."],
+ ["Years 4-6","$130-150k","Director of Operations, Practice Manager, or COO at a smaller RIA."]
 ];
 const TARGETS=[
 {n:"Raymond James",l:"St. Petersburg",t:"Large brokerage / advisor platform",w:"Headquartered in the Tampa Bay area with a very large local footprint across operations, client support, technology and business analysis functions. The single most likely employer on this list simply by volume of roles."},
@@ -1235,11 +1159,13 @@ After my answers: summarise in five lines, name the single biggest risk to my tw
 Run the offer conversation realistically: make the offer, respond to my counter, push back the way a real manager would, and use at least one common tactic (an exploding deadline, a claim the band is fixed, a redirect to non-salary benefits).
 
 Afterwards, break character and tell me: what I said that weakened my position, what I left on the table, and the one sentence I should have used instead.`},
-{t:"Generate practice questions from my miss-log",u:"Exam weeks. Targets exactly the concepts you keep getting wrong.",p:`Here are the exam questions I got wrong and my notes on why: [paste miss-log].
+{t:"Turn a regulation into an operational reference",u:"The Regulatory track, every time. Turns something you read into something the team can use.",p:`Take this rule and turn it into a one-page operational reference for a registered investment adviser's operations team.
 
-Generate 25 new multiple-choice questions in the style of the Series 65 that target the same underlying concepts from different angles. Include four plausible options each — the wrong ones should be wrong for the reason people actually get this wrong, not obviously wrong.
+Structure: what the rule requires in two sentences; what it means for day-to-day operations, as a bulleted list of concrete obligations; the records or evidence that demonstrate compliance; the three most common ways firms get it wrong; and five questions I should ask my compliance officer about how we actually handle it.
 
-Give me the questions first with no answers. I will answer, then you mark them and explain each one, including why each distractor was tempting.`}
+Write it for someone doing the work, not for a lawyer. Where the rule has thresholds, dates or dollar amounts, state them plainly and flag that I should verify them against the current text.
+
+The rule: [name it, or paste the section]`}
 ];
 const RECIPES=[
 {t:"Meeting prep pipeline",tool:"Make or Zapier + AI step + Google Docs/Notion",trigger:"A calendar event tagged REVIEW appears 3 days out",steps:["Trigger reads the meeting and the household reference","Pull the prep notes from your CRM export or a form you fill in","AI step drafts the brief using your tested prompt","Create the document in a dated folder","Create a task assigned to the advisor with a due date","Notify you if any step fails"],note:"Build with synthetic data. Only deploy against real data if your firm's policy explicitly permits it and compliance has approved the tool."},
@@ -1253,10 +1179,10 @@ const RECIPES=[
 ];
 const SYSTEMS=[
 {t:"The evening protocol",b:"The plan assumes you are tired. Open this page, read the one card, set a timer for the stated minutes, and start. Do not review the whole plan, do not reorganise anything, do not read ahead. Starting is the only decision you make; the card handles the rest. If you genuinely cannot start, run a Fast Lane item instead and keep the streak — a 10-minute day beats a zero, and zeros are what end plans."},
-{t:"Carrying work forward, without lying to yourself",b:"Every task has four quarter buttons and a push. Log how far you actually got \u2014 a task at 50% keeps half its minutes in your banked hours and its progress bar survives the move. Push what is left to tomorrow. The rules that keep this honest: push a task twice and it is too big, so cut it in half and do the first half tonight; never carry more than five tasks at once, because a backlog you cannot see the end of is the thing that makes people stop opening the page. The Carried over list on Tonight is the whole backlog, always visible, and Saturday of week 12 is a scheduled catch-up block for exactly this."},{t:"Exam mode",b:"While your Series 65 sits inside 75 days, the study block is the required item and the plan task is the optional one. That is not a compromise, it is the correct priority: the exam has an external deadline and a fee attached, and the portfolio does not. Expect to push most weeknight tasks during the last three weeks before the exam and to catch up afterwards \u2014 that hour a day comes back the moment you walk out of the test centre."},{t:"The minimum viable day",b:"On the worst days, the requirement is 10 minutes and one tick. This is not a loophole, it is the design. A year with 40 minimum days and 320 real ones finishes. A year with 40 zero days usually stops at day 60, because the identity breaks before the schedule does. Your streak counts days you did something, not days you finished everything \u2014 that is deliberate."},
+{t:"How the queue works",b:"There are 364 tasks in a fixed order and none of them has a date. The Tonight tab pulls the next few off the top and fills whatever session length you pick. Finish one and the list regenerates. Skip a week, a month, a season \u2014 the same work is still sitting there, in the same order, waiting. Nothing goes red, nothing goes overdue, and there is no pace to fall behind. The only thing your gaps change is the finishing date the dashboard projects, which is calculated from what you have actually been doing rather than from what you once intended."},{t:"Three buttons, and what each one means",b:"The quarter buttons log how far you got: a task at 50% keeps half its minutes in your banked hours and stays pinned to the top of the queue under Half finished until you close it out. Done closes it. Not this one drops it a few places down the queue for when it is genuinely the wrong task tonight \u2014 the wrong tool, the wrong mood, waiting on someone else. If a task keeps getting skipped, that is information: it is either too big, in which case cut it in half, or it is not actually relevant to your firm, in which case mark it done and move on. This is your plan, not an exam syllabus."},{t:"The minimum viable day",b:"On the worst days, the requirement is 10 minutes and one tick. This is not a loophole, it is the design. The habit is what carries this, not any particular week\u2019s output. The top bar shows when you last sat down rather than a streak, because a streak you have already broken is a reason to stop opening the page."},
 {t:"The weekly review, in full",b:"Sunday, 45 minutes, same time every week. Tick the week's completed days. Update the evidence log with anything from work, with a number attached. Check hours banked against plan on the dashboard. Update portfolio counts. Read next week's seven cards so nothing is a surprise on Monday. Name the one thing that must not slip. That is the entire agenda and it does not change."},
 {t:"Phase gates and what to do when you fail one",b:"Four gates: weeks 13, 26, 39, 52. Each has explicit criteria. Failing a gate is normal and it means one thing only: you repeat the failed criterion in the next phase and cut something else to make room. It does not mean restarting, and it does not mean pretending you passed. Write the honest assessment either way — the failed gates are what make the passed ones mean something."},
-{t:"Triage rules when you fall behind",b:"Protect in this order: the Series 65 daily block, the Saturday build block, the weekly review, weeknight sessions, everything else. The exam has an external deadline and a fee, and it cannot be recovered. Builds are the portfolio and the portfolio is the plan. Weeknight sessions can be shortened to 30 minutes indefinitely without breaking anything. Cut breadth, never cut the gate criteria."},
+{t:"Triage when life gets busy",b:"Protect in this order: the long build blocks, the reviews, everything else.  Builds are the portfolio, and the portfolio is what actually gets you hired. Sessions can be 30 minutes indefinitely without breaking anything. Cut breadth, never cut the gate criteria \u2014 and never delete a task to make the number look better."},
 {t:"The compliance line — the one that ends careers",b:"No real client data ever leaves your firm's systems. No names, account numbers, balances, statements, or screenshots containing live records, in any AI tool, any personal file, any portfolio piece. Build everything on synthetic data you generated yourself. Before publishing anything, ask whether a compliance officer reading it would see firm-specific or client-specific information — if the answer is maybe, do not publish it. Check your firm's policy on AI tools in writing, and work inside it. This is not caution, it is the condition of everything else here working."},
 {t:"What counts as done",b:"A task is done when it produced the stated output as a file, a record, or a sent message. Reading about Power BI is not done. Having a good idea about an automation is not done. A .pbix that opens, an SOP a stranger could follow, a scenario that ran three times, a message that was sent — those are done. Tick nothing you could not show someone."},
 {t:"File and note structure",b:"One workspace, five databases: SOP Library (40 documents), Builds (dashboards, automations, projects with links), Evidence Log (weekly), Target Firms (pipeline), Study Log (scores and miss-logs). Everything else is a file in a dated folder. Do not build a second system for anything — the reorganising instinct is procrastination wearing a productive costume."},
@@ -1269,7 +1195,7 @@ const RISKS=[
 ["Motivation collapse in month 3-4","High","Fatal","You skip two weeknights and stop opening this page","The minimum viable day, the Sunday review, and a booked exam date you have already paid for"],
 ["Portfolio work stays private","High","High","You have artifacts but no public URL by week 13","Publish before it is ready in week 13. It never becomes ready in private"],
 ["Real client data leaks into an AI tool","Medium","Career-ending","You paste something to save time on a busy day","Synthetic data only, written rule at the top of your AI workspace, firm policy checked in writing"],
-["Series 65 fails or slips","Medium","High","A practice score is flat across two exams inside the last month","The daily block never moves, practice exams on schedule, and a retake rebooked the same night if it happens"],
+["Series 65 fails or slips","Medium","High","You keep moving the date, or you stop being able to say when it is","It is the one dated thing here. Book it, pay for it, and if it goes badly rebook the same night rather than letting it drift a quarter"],
 ["Applications with no conversations","High","High","Thirty applications, two replies, no calls held","Two conversations a week from week 28. Diagnose the funnel at week 39, not week 50"],
 ["Salary anchored too low","Medium","High","You answer the expectations question without a rehearsed number","Money tab filled in week 34, script rehearsed twice, never accept on the call"],
 ["The move happens before the offer","Medium","High","You give notice on a lease with nothing signed","Move plan only executes after a signed contract, or with a 6-month runway calculated in week 38"],
@@ -1327,7 +1253,7 @@ const MOVECHECK=[
 const FASTLANE=[
 ["Log one evidence entry","5 min","Open the evidence log and write one thing from today with a number attached."],
 ["Send one message","5 min","One outreach, one follow-up, or one thank-you. Use a template from the Target board."],
-["Twenty exam questions","10 min","Whichever exam is live. Questions only, no reading."],
+["Read one policy page","10 min","One page of your firm\u2019s compliance manual or Form ADV. Note anything that differs from practice."],
 ["Fix one SOP","10 min","Open the oldest SOP and add the failure modes section or update the review date."],
 ["Add one target","8 min","One firm to the board with name, location, type and why it fits."],
 ["Write one resume bullet","10 min","Take one evidence entry and turn it into a result-first bullet with a number."]
@@ -1341,7 +1267,7 @@ function addDays(s,n){const d=parseISO(s);d.setDate(d.getDate()+n);return d;}
 function fmt(d){return d.toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"});}
 
 function plusDays(n){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()+n);return iso(d);}
-const DEFAULTS=()=>({v:2,updatedAt:0,start:lastMonday(),move:"",exam:plusDays(60),salary:60000,target:80000,
+const DEFAULTS=()=>({v:3,updatedAt:0,start:lastMonday(),budget:60,move:plusDays(365),exam:"",salary:60000,target:80000,
   done:{},prog:{},defer:{},log:{},sops:{},port:{},moveck:{},targets:{},ratings:{ops:2,bi:0,sql:0,ai:1,client:2,lead:1},
   counts:{apps:0,convos:0,interviews:0,offers:0},theme:"auto"});
 const MERGE=o=>Object.assign(DEFAULTS(),o,{
@@ -1349,7 +1275,6 @@ const MERGE=o=>Object.assign(DEFAULTS(),o,{
   ratings:Object.assign({ops:2,bi:0,sql:0,ai:1,client:2,lead:1},o.ratings||{}),
   prog:o.prog||{},defer:o.defer||{},log:o.log||{},done:o.done||{}});
 let S=DEFAULTS();
-if(!S.move){const d=parseISO(S.start);d.setDate(d.getDate()+364);S.move=iso(d);}
 let DB=null,saveTimer=null,booted=false;
 const LSKEY="opsladder.v1";
 
@@ -1392,38 +1317,47 @@ const ALLDAYS=[];
 PLAN.forEach(w=>w.days.forEach((d,i)=>ALLDAYS.push(Object.assign({},d,{w:w.n,ph:w.ph,di:i,id:w.n+"-"+i,idx:(w.n-1)*7+i,theme:w.th,gate:!!w.gate}))));
 const TOTAL_MIN=ALLDAYS.reduce((a,d)=>a+d.m,0);
 const TRACK_MIN={};Object.keys(TRACKS).forEach(k=>TRACK_MIN[k]=ALLDAYS.filter(d=>d.x===k).reduce((a,d)=>a+d.m,0));
-function eff(d){return d.idx+(S.defer[d.id]||0);}
-function dateOf(d){return addDays(S.start,eff(d));}
+function sortKey(d){return d.idx+(S.defer[d.id]||0)*4;}
 function isDone(d){return !!S.done[d.id];}
 function progOf(d){return S.done[d.id]?100:(S.prog[d.id]||0);}
 function doneDays(){return ALLDAYS.filter(isDone);}
 function minutesDone(){return ALLDAYS.reduce((a,d)=>a+d.m*progOf(d)/100,0);}
-function markLog(){S.log[iso(new Date())]=1;}
+function minutesLeft(){return Math.max(0,TOTAL_MIN-minutesDone());}
+function started(){return ALLDAYS.filter(d=>!isDone(d)&&(S.prog[d.id]||0)>0).sort((a,b)=>sortKey(a)-sortKey(b));}
+function fresh(){return ALLDAYS.filter(d=>!isDone(d)&&!(S.prog[d.id]||0)).sort((a,b)=>sortKey(a)-sortKey(b));}
+function nextUp(){return started().concat(fresh());}
+function currentBlock(){const q=nextUp();return q.length?q[0].w:52;}
+function phaseNow(){const q=nextUp();return q.length?q[0].ph:4;}
+function markLog(mins){const k=iso(new Date());S.log[k]=(S.log[k]||0)+Math.max(0,mins||0);}
 function setProg(id,pct){
+  const d=ALLDAYS.find(x=>x.id===id);
+  const before=d?progOf(d):0;
   if(pct>=100){S.done[id]=Date.now();S.prog[id]=100;}
   else{delete S.done[id];if(pct<=0)delete S.prog[id];else S.prog[id]=pct;}
-  markLog();persist();
+  if(d&&pct>before)markLog(d.m*(pct-before)/100);
+  persist();
 }
-function pushDay(id,n){S.defer[id]=Math.max(0,(S.defer[id]||0)+(n===undefined?1:n));persist();}
-function bringToToday(d){S.defer[d.id]=Math.max(0,todayIdx()-d.idx);persist();}
-/* --- Series 65 daily blocks, anchored to the exam date --- */
+function pushDown(id){S.defer[id]=(S.defer[id]||0)+1;persist();}
 function daysToExam(){if(!S.exam)return null;return Math.ceil((parseISO(S.exam)-new Date())/DAY);}
-function s65Index(){const dl=daysToExam();if(dl===null)return null;if(dl<=0)return null;return Math.max(0,Math.min(62,63-dl));}
-function s65Id(i){return "s65-"+i;}
-function s65Prog(i){const id=s65Id(i);return S.done[id]?100:(S.prog[id]||0);}
-function s65MinutesDone(){let t=0;for(let i=0;i<S65.length;i++)t+=S65[i][1]*s65Prog(i)/100;return t;}
-function s65Total(){return S65.reduce((a,b)=>a+b[1],0);}
-function examMode(){const dl=daysToExam();return dl!==null&&dl>0&&dl<=75;}
-function todayIdx(){const t=new Date();t.setHours(0,0,0,0);const n=Math.floor((t-parseISO(S.start))/DAY);return Math.max(0,Math.min(363,n));}
-function pace(){const n=Math.max(0,Math.min(364,Math.floor((new Date()-parseISO(S.start))/DAY)+1));return ALLDAYS.slice(0,n).reduce((a,d)=>a+d.m,0);}
-function streak(){
-  let n=0;const d=new Date();d.setHours(0,0,0,0);
-  if(!S.log[iso(d)])d.setDate(d.getDate()-1);
-  while(S.log[iso(d)]){n++;d.setDate(d.getDate()-1);}
-  return n;
+function sessionDays(){return Object.keys(S.log).filter(k=>S.log[k]>0).sort();}
+function lastSession(){const d=sessionDays();return d.length?d[d.length-1]:null;}
+function daysSinceSession(){const l=lastSession();if(l===null)return null;const t=new Date();t.setHours(0,0,0,0);return Math.floor((t-parseISO(l))/DAY);}
+function recentRate(){
+  const days=sessionDays();if(!days.length)return 0;
+  const cut=new Date();cut.setHours(0,0,0,0);cut.setDate(cut.getDate()-55);
+  const first=parseISO(days[0]);
+  const from=first>cut?first:cut;
+  let mins=0;Object.keys(S.log).forEach(k=>{if(parseISO(k)>=from)mins+=S.log[k]||0;});
+  const span=Math.max(7,Math.floor((new Date().setHours(0,0,0,0)-from)/DAY)+1);
+  return mins/span*7;
 }
-function scheduledFor(i){return ALLDAYS.filter(d=>eff(d)===i);}
-function overdue(){return ALLDAYS.filter(d=>eff(d)<todayIdx()&&!isDone(d)).sort((a,b)=>eff(a)-eff(b));}
+function projection(){
+  const r=recentRate();
+  if(r<20||minutesLeft()<=0)return null;
+  const weeks=minutesLeft()/r;
+  const d=new Date();d.setDate(d.getDate()+Math.round(weeks*7));
+  return {weeks:weeks,date:d,rate:r};
+}
 function daysToMove(){if(!S.move)return null;return Math.ceil((parseISO(S.move)-new Date())/DAY);}
 function hrs(m){return (m/60).toFixed(m>=6000?0:1).replace(/\.0$/,"")+"h";}
 function phaseOf(i){return PLAN[Math.floor(i/7)]?PLAN[Math.floor(i/7)].ph:1;}
@@ -1431,7 +1365,7 @@ function phaseOf(i){return PLAN[Math.floor(i/7)]?PLAN[Math.floor(i/7)].ph:1;}
 /* ============================ shell ============================ */
 const VIEWS=[
  ["today","Tonight",1],["plan","The plan",1],["dash","Dashboard",1],
- ["portfolio","Portfolio",2],["skills","Skills",2],["certs","Licensing",2],
+ ["portfolio","Portfolio",2],["skills","Skills",2],["certs","Milestones",3],
  ["targets","Target board",3],["money","Money",3],["move","Florida move",3],
  ["delegate","Claude playbook",4],["systems","Operating manual",4]
 ];
@@ -1457,24 +1391,24 @@ function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t
 
 /* ============================ top bar ============================ */
 function renderTop(){
-  const md=minutesDone(),pct=Math.round(md/TOTAL_MIN*100),ti=todayIdx();
-  document.getElementById("tDay").textContent=(ti+1)+" / 364";
+  const md=minutesDone(),pct=Math.round(md/TOTAL_MIN*100),dn=doneDays().length;
+  document.getElementById("tDay").textContent=dn+" / 364";
   document.getElementById("tPct").textContent=pct+"%";
   document.getElementById("tHours").textContent=hrs(md)+" / "+hrs(TOTAL_MIN);
-  document.getElementById("tStreak").textContent=streak()+"d";
+  const ds=daysSinceSession();
+  document.getElementById("tStreak").textContent=ds===null?"\u2014":(ds===0?"today":ds===1?"yesterday":ds+"d ago");
   const dm=daysToMove();
   document.getElementById("tMove").textContent=dm===null?"\u2014":(dm>0?dm:"here");
   const de=daysToExam();
   document.getElementById("tExam").textContent=de===null?"\u2014":(de>0?de:"done");
   document.getElementById("tExam").parentNode.classList.toggle("hide",de===null||de<-30);
   document.getElementById("tMeter").innerHTML='<i style="width:'+Math.max(pct,0.6)+'%"></i>';
-  const ph=PHASES[phaseOf(ti)-1];
-  const behind=pace()-md;
-  document.getElementById("tPhase").textContent="Phase "+ph.n+" · "+ph.name+" · "+(behind>60?hrs(behind)+" behind pace":behind<-60?hrs(-behind)+" ahead of pace":"on pace");
+  const ph=PHASES[phaseNow()-1],pr=projection();
+  document.getElementById("tPhase").textContent="Phase "+ph.n+" \u00b7 "+ph.name+" \u00b7 block "+currentBlock()+" of 52"+
+    (pr?" \u00b7 finishing "+pr.date.toLocaleDateString(undefined,{month:"short",year:"numeric"}):"");
 }
 
 /* ============================ today ============================ */
-let viewIdx=null;
 function trackPill(x){return '<span class="pill"><i class="dot" style="background:'+TRACKS[x].c+'"></i>'+TRACKS[x].name+'</span>';}
 function progControls(id,pct,push){
   const q=[[25,"&frac14;"],[50,"&frac12;"],[75,"&frac34;"],[100,"Done"]];
@@ -1482,107 +1416,83 @@ function progControls(id,pct,push){
     '<div class="progbar'+(pct>=100?" full":"")+'"><i style="width:'+pct+'%"></i></div>'+
     '<div class="qrow"><span class="qlab">'+(pct>=100?"complete":pct>0?pct+"% in":"how far did you get")+'</span>'+
     q.map(b=>'<button class="qbtn'+(b[0]===100?" done":"")+'" data-prog="'+id+'|'+b[0]+'" aria-pressed="'+(pct===b[0]||(b[0]===100&&pct>=100))+'">'+b[1]+'</button>').join("")+
-    (push?'<button class="qbtn push" data-push="'+id+'">Push to tomorrow &rarr;</button>':"")+
+    (push?'<button class="qbtn push" data-push="'+id+'">Not this one &rarr;</button>':"")+
     '</div></div>';
 }
-function dayCard(d,carriedNote){
+function taskNo(d){return d.idx+1;}
+function dayCard(d){
   const done=isDone(d),pct=progOf(d),def=S.defer[d.id]||0;
-  return '<article class="daycard'+(done?" done":"")+(def?" carried":"")+'">'+
+  return '<article class="daycard'+(done?" done":"")+(pct>0&&pct<100?" carried":"")+'">'+
    '<div class="dayhead">'+
      '<button class="tick" aria-pressed="'+done+'" data-id="'+d.id+'" aria-label="Mark complete"><svg viewBox="0 0 20 20"><polyline points="4,10.5 8,14.5 16,5.5"></polyline></svg></button>'+
      '<div class="daymeta"><h3>'+d.t+'</h3><div class="line">'+trackPill(d.x)+
-       '<span class="pill">'+d.m+" min"+'</span><span class="pill">Week '+d.w+" \u00b7 "+DAYNAMES[d.di]+'</span>'+
-       (def?'<span class="pill warn">carried '+def+' day'+(def>1?"s":"")+'</span>':"")+
+       '<span class="pill">'+d.m+" min"+'</span><span class="pill">task '+taskNo(d)+' \u00b7 block '+d.w+'</span>'+
+       (pct>0&&pct<100?'<span class="pill warn">'+pct+'% done</span>':"")+
+       (def?'<span class="pill">skipped '+def+'\u00d7</span>':"")+
        (d.gate?'<span class="pill warn">Phase gate</span>':"")+
      '</div></div></div>'+
    '<div class="daybody">'+
-     (carriedNote?'<div class="callout">'+carriedNote+'</div>':"")+
      '<div class="field"><div class="fl">Do</div><div class="fv">'+d.d+'</div></div>'+
      '<div class="field"><div class="fl">Output</div><div class="fv"><b>'+d.o+'</b></div></div>'+
      (d.k?'<div class="field"><div class="fl">Why</div><div class="fv">'+d.k+'</div></div>':"")+
-     '<div class="field"><div class="fl">Week</div><div class="fv">'+d.theme+'</div></div>'+
+     '<div class="field"><div class="fl">Block</div><div class="fv">'+d.theme+'</div></div>'+
      progControls(d.id,pct,true)+
    '</div></article>';
 }
-function examCardHtml(){
-  const dl=daysToExam();
-  if(dl===null)return "";
-  if(dl<=0){
-    const passed=Math.abs(dl);
-    return '<div class="examcard"><div class="daybody"><div class="line" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">'+
-      '<span class="pill"><i class="dot" style="background:var(--s4)"></i>Series 65</span><span class="pill good">exam date passed</span></div>'+
-      '<h3 style="font-size:18px;margin-bottom:6px">The exam is behind you</h3>'+
-      '<p style="margin:0;color:var(--ink-2);font-size:14px">Set a new date on the Operating manual tab if you are retaking. Otherwise the licensing track has switched to regulatory depth &mdash; the custody rule, books and records, the marketing rule, tax and retirement mechanics. Those weeknight blocks are on the plan from week 14 onward, and they are what make you useful at an RIA rather than merely credentialed.</p></div></div>';
-  }
-  const i=s65Index(),b=S65[i],pct=s65Prog(i),id=s65Id(i);
-  const early=dl>63;
-  return '<div class="examcard"><div class="dayhead" style="background:transparent;border-bottom:1px solid var(--rule)">'+
-    '<button class="tick" aria-pressed="'+(pct>=100)+'" data-id="'+id+'" aria-label="Mark study block complete"><svg viewBox="0 0 20 20"><polyline points="4,10.5 8,14.5 16,5.5"></polyline></svg></button>'+
-    '<div class="daymeta"><h3>'+b[2]+'</h3><div class="line">'+
-      '<span class="pill"><i class="dot" style="background:var(--s4)"></i>Series 65 \u00b7 '+b[0]+'</span>'+
-      '<span class="pill">'+b[1]+' min</span>'+
-      '<span class="pill '+(dl<=14?"crit":dl<=30?"warn":"")+'">'+dl+' day'+(dl===1?"":"s")+' to the exam</span>'+
-      '<span class="pill">block '+(i+1)+' of 63</span>'+
-    '</div></div></div>'+
-    '<div class="daybody">'+
-      (early?'<div class="callout">Your exam is '+dl+' days out, which is more than the 63-day schedule needs. Use the extra days for question volume on whatever unit scores worst &mdash; the sequence below starts properly at 63 days out.</div>':"")+
-      '<div class="field"><div class="fl">Tonight</div><div class="fv">'+b[3]+'</div></div>'+
-      progControls(id,pct,false)+
-    '</div></div>';
-}
+let budget=60;
 function renderToday(){
-  const real=todayIdx();
-  const ti=viewIdx===null?real:viewIdx;
-  const list=scheduledFor(ti);
-  const browsing=ti!==real;
-  document.getElementById("examCard").innerHTML=browsing?"":examCardHtml();
-  document.getElementById("todayEyebrow").textContent=(browsing?"":"Tonight \u00b7 ")+"Day "+(ti+1)+" \u00b7 Phase "+phaseOf(ti)+" \u00b7 Week "+(Math.floor(ti/7)+1);
-  document.getElementById("todayTitle").textContent=browsing?"Day "+(ti+1):(examMode()?"After the study block":"Tonight's block");
-  document.getElementById("dayStamp").textContent=fmt(addDays(S.start,ti));
-  const note=examMode()&&!browsing
-    ? "The Series 65 block above comes first while the exam is live. This one is optional tonight &mdash; if the study block used your evening, push it to tomorrow and keep the streak honest."
-    : "";
-  document.getElementById("todayCard").innerHTML=list.length
-    ? list.map(d=>dayCard(d,(S.defer[d.id]?"Carried forward from "+fmt(addDays(S.start,d.idx))+". Pushed "+S.defer[d.id]+" time"+(S.defer[d.id]>1?"s":"")+" so far \u2014 if it gets to three, cut it in half and do the first half tonight.":note))).join('<div style="height:14px"></div>')
-    : '<div class="panel"><h3 style="font-size:17px;margin-bottom:6px">Nothing scheduled here</h3><p style="margin:0;color:var(--ink-2);font-size:14px">This day\u2019s task has been pushed forward, or you are looking at a day before your start date. Use the evening on the study block, on anything in Carried over below, or on a Fast lane item.</p></div>';
-  const wk=PLAN[Math.floor(ti/7)];
-  const left=wk.days.map((x,i)=>Object.assign({},x,{w:wk.n,di:i,id:wk.n+"-"+i,idx:(wk.n-1)*7+i,theme:wk.th}));
-  const remain=left.filter(x=>!S.done[x.id]).reduce((a,x)=>a+x.m*(1-(S.prog[x.id]||0)/100),0);
-  document.getElementById("weekLoad").textContent="Week "+wk.n+" \u2014 "+wk.th+". "+hrs(remain)+" left of "+hrs(left.reduce((a,x)=>a+x.m,0))+".";
-  document.getElementById("todayWeek").innerHTML=left.map(x=>rowFor(x,ti)).join("");
-  const ov=overdue();
-  document.getElementById("overdueWrap").classList.toggle("hide",!ov.length||browsing);
-  if(ov.length){
-    document.getElementById("overdueNote").innerHTML=ov.length+" task"+(ov.length>1?"s":"")+" from earlier days, "+hrs(ov.reduce((a,d)=>a+d.m*(1-progOf(d)/100),0))+" of work. Bring one to today or push it &mdash; do not let it sit unacknowledged.";
-    document.getElementById("overdueList").innerHTML=ov.map(d=>
-      '<div class="drow wide carried">'+
-      '<button class="tick" aria-pressed="false" data-id="'+d.id+'" aria-label="Mark complete" style="width:22px;height:22px"><svg viewBox="0 0 20 20"><polyline points="4,10.5 8,14.5 16,5.5"></polyline></svg></button>'+
-      '<div class="dd">'+fmt(addDays(S.start,eff(d)))+" \u00b7 "+d.m+"m</div>"+
-      '<div class="dt">'+d.t+(progOf(d)?'<div class="progbar mini"><i style="width:'+progOf(d)+'%"></i></div>':"")+'</div>'+
-      '<div class="dx">'+trackPill(d.x)+'<button class="qbtn" data-bring="'+d.id+'">Bring to today</button></div></div>').join("");
+  const q=nextUp(),st=started();
+  document.querySelectorAll("[data-budget]").forEach(c=>c.setAttribute("aria-pressed",(+c.dataset.budget===budget)?"true":"false"));
+  document.getElementById("dayStamp").textContent=new Date().toLocaleDateString(undefined,{weekday:"long",month:"short",day:"numeric"});
+  /* half-finished work always comes first */
+  /* fill the evening from the top of the queue */
+  const picked=[];let used=0;
+  for(const d of q){
+    const rem=d.m*(1-progOf(d)/100);
+    if(picked.length&&used+rem>budget*1.35)continue;
+    picked.push(d);used+=rem;
+    if(used>=budget)break;
   }
+  const dn=doneDays().length;
+  document.getElementById("todayEyebrow").textContent=dn?"Up next \u00b7 "+dn+" done, "+(364-dn)+" to go":"Up next \u00b7 start here";
+  document.getElementById("todayTitle").textContent=picked.length?(picked.length===1?"One thing":picked.length+" things"):"Nothing left";
+  document.getElementById("todayCard").innerHTML=picked.length
+    ? picked.map(dayCard).join('<div style="height:14px"></div>')
+    : '<div class="panel"><h3 style="font-size:17px;margin-bottom:6px">All 364 done</h3><p style="margin:0;color:var(--ink-2);font-size:14px">Every task in the plan is complete. Week 51 has the instructions for what a year two looks like.</p></div>';
+  const spill=st.filter(d=>picked.indexOf(d)<0);
+  document.getElementById("inProgressWrap").classList.toggle("hide",!spill.length);
+  if(spill.length){
+    document.getElementById("inProgressNote").textContent=spill.length+" more task"+(spill.length>1?"s":"")+" you started and did not finish, "+hrs(spill.reduce((a,d)=>a+d.m*(1-progOf(d)/100),0))+" left in them. They stay pinned to the front of the queue until they are closed out.";
+    document.getElementById("inProgressList").innerHTML=spill.map(d=>rowFor(d,true)).join("");
+  }
+  const rest=q.slice(picked.length,picked.length+7);
+  document.getElementById("weekLoad").textContent=rest.length
+    ? "The next "+rest.length+" in the queue, "+hrs(rest.reduce((a,d)=>a+d.m*(1-progOf(d)/100),0))+" of work. Nothing here expires."
+    : "Nothing further queued.";
+  document.getElementById("todayWeek").innerHTML=rest.map(d=>rowFor(d,false)).join("");
   document.getElementById("fastLane").innerHTML=FASTLANE.map(f=>
     '<div class="kpi"><div class="l">'+f[1]+'</div><div style="font-weight:600;font-size:14.5px">'+f[0]+'</div><div class="s">'+f[2]+'</div></div>').join("");
 }
-function rowFor(x,hi){
-  const done=!!S.done[x.id],pct=done?100:(S.prog[x.id]||0),def=S.defer[x.id]||0;
-  return '<div class="drow'+(done?" done":"")+'"'+(eff(x)===hi&&!done?' style="background:var(--accent-wash)"':'')+'>'+
+function rowFor(x,showPush){
+  const done=isDone(x),pct=progOf(x),def=S.defer[x.id]||0;
+  return '<div class="drow wide'+(done?" done":"")+(pct>0&&pct<100?" carried":"")+'">'+
    '<button class="tick" aria-pressed="'+done+'" data-id="'+x.id+'" aria-label="Mark complete" style="width:22px;height:22px"><svg viewBox="0 0 20 20"><polyline points="4,10.5 8,14.5 16,5.5"></polyline></svg></button>'+
-   '<div class="dd">'+DAYNAMES[x.di]+" \u00b7 "+x.m+"m</div>"+
+   '<div class="dd">#'+taskNo(x)+' \u00b7 '+x.m+'m</div>'+
    '<div class="dt">'+x.t+(pct>0&&pct<100?'<div class="progbar mini"><i style="width:'+pct+'%"></i></div>':"")+'</div>'+
-   '<div class="dx">'+(def?'<span class="pill warn">+'+def+'d</span>':"")+trackPill(x.x)+'</div></div>';
+   '<div class="dx">'+(def?'<span class="pill">skip '+def+'\u00d7</span>':"")+trackPill(x.x)+
+   (showPush?'<button class="qbtn" data-push="'+x.id+'">Later</button>':"")+'</div></div>';
 }
 
 /* ============================ plan ============================ */
 let trackFilter="all",openWeeks={};
 function renderPlan(){
-  const ti=todayIdx(),curW=Math.floor(ti/7)+1;
+  const curW=currentBlock();
   document.getElementById("phaseCards").innerHTML=PHASES.map(p=>{
     const days=ALLDAYS.filter(d=>d.ph===p.n),dn=days.filter(isDone).length;
     const pct=Math.round(dn/days.length*100);
-    return '<div class="kpi"><div class="l">Phase '+p.n+" · weeks "+p.weeks+'</div><div style="font-family:var(--disp);font-size:19px;font-weight:600">'+p.name+'</div>'+
+    return '<div class="kpi"><div class="l">Phase '+p.n+" \u00b7 blocks "+p.weeks+'</div><div style="font-family:var(--disp);font-size:19px;font-weight:600">'+p.name+'</div>'+
     '<div class="meter" style="margin:7px 0 5px"><i style="width:'+pct+'%"></i></div>'+
-    '<div class="s"><span class="num">'+dn+"/"+days.length+'</span> days · '+pct+'%</div>'+
+    '<div class="s"><span class="num">'+dn+"/"+days.length+'</span> tasks \u00b7 '+pct+'%</div>'+
     '<div class="s" style="margin-top:6px;color:var(--muted);font-size:11.5px">'+p.gate+'</div></div>';
   }).join("");
   const host=document.getElementById("planList");
@@ -1591,8 +1501,8 @@ function renderPlan(){
       .filter(x=>trackFilter==="all"||x.x===trackFilter);
     if(!days.length)return "";
     const all=w.days.map((x,i)=>w.n+"-"+i),dn=all.filter(id=>S.done[id]).length;
-    const open=openWeeks[w.n]===undefined?(w.n===Math.floor(ti/7)+1):openWeeks[w.n];
-    return '<button class="weekhead" data-w="'+w.n+'"><span class="wn">WK '+String(w.n).padStart(2,"0")+'</span>'+
+    const open=openWeeks[w.n]===undefined?(w.n===curW):openWeeks[w.n];
+    return '<button class="weekhead" data-w="'+w.n+'"><span class="wn">BLOCK '+String(w.n).padStart(2,"0")+'</span>'+
       '<span class="wt">'+w.th+(w.gate?' <span class="pill warn" style="margin-left:6px">Gate</span>':"")+'</span>'+
       '<span class="dd num" style="font-family:var(--mono);font-size:11px;color:var(--muted)">'+dn+'/7</span>'+
       '<span class="weekbar"><i style="width:'+Math.round(dn/7*100)+'%"></i></span></button>'+
@@ -1609,35 +1519,47 @@ function svgWrap(w,h,inner){return '<div class="scroller"><svg viewBox="0 0 '+w+
 function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");}
 
 function chartBurn(){
-  const W=580,H=250,L=52,R=58,T=14,B=30;
-  const plannedW=[],actualW=[];let pc=0,ac=0;
-  for(let w=1;w<=52;w++){
-    const ds=ALLDAYS.filter(d=>d.w===w);
-    pc+=ds.reduce((a,d)=>a+d.m,0);plannedW.push(pc/60);
-    ac+=ds.reduce((a,d)=>a+d.m*progOf(d)/100,0);actualW.push(ac/60);
-  }
-  const maxY=Math.ceil(pc/60/100)*100;
-  const x=w=>L+(w-1)/51*(W-L-R), y=v=>H-B-(v/maxY)*(H-B-T);
-  const curW=Math.min(52,Math.floor(todayIdx()/7)+1);
+  const W=580,H=250,L=52,R=64,T=14,B=30;
+  /* cumulative hours by the date you actually completed things */
+  const evts=[];
+  ALLDAYS.forEach(d=>{if(S.done[d.id]&&typeof S.done[d.id]==="number")evts.push([S.done[d.id],d.m]);});
+  evts.sort((a,b)=>a[0]-b[0]);
+  const totalH=TOTAL_MIN/60;
+  const maxY=Math.ceil(totalH/100)*100;
+  const first=evts.length?new Date(evts[0][0]):new Date();
+  first.setHours(0,0,0,0);
+  const pr=projection();
+  const endD=pr?pr.date:new Date(first.getTime()+364*DAY);
+  const span=Math.max(30,Math.ceil((endD-first)/DAY));
+  const x=ms=>L+Math.max(0,Math.min(1,(ms-first)/(span*DAY)))*(W-L-R);
+  const y=v=>H-B-(v/maxY)*(H-B-T);
   let g="";
-  for(let t=0;t<=maxY;t+=100){g+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y(t)+'" y2="'+y(t)+'" stroke="'+CSS("--rule")+'" stroke-width="1"/>'+
+  for(let t=0;t<=maxY;t+=100){g+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y(t)+'" y2="'+y(t)+'" stroke="'+CSS("--rule")+'"/>'+
     '<text x="'+(L-9)+'" y="'+(y(t)+4)+'" text-anchor="end" font-size="10" fill="'+CSS("--muted")+'">'+t+'h</text>';}
-  [1,13,26,39,52].forEach(w=>{g+='<text x="'+x(w)+'" y="'+(H-9)+'" text-anchor="middle" font-size="10" fill="'+CSS("--muted")+'">wk '+w+'</text>';});
-  const pl="M"+plannedW.map((v,i)=>x(i+1)+" "+y(v)).join(" L ");
-  const ap=actualW.slice(0,curW);
-  const al="M"+ap.map((v,i)=>x(i+1)+" "+y(v)).join(" L ");
-  const area=al+" L "+x(ap.length)+" "+y(0)+" L "+x(1)+" "+y(0)+" Z";
-  let dots="";
-  ap.forEach((v,i)=>{dots+='<rect x="'+(x(i+1)-4)+'" y="'+T+'" width="8" height="'+(H-B-T)+'" fill="transparent" data-tip="Week '+(i+1)+" — banked "+v.toFixed(1)+"h of "+plannedW[i].toFixed(1)+'h planned"/>';});
-  const last=ap.length?ap[ap.length-1]:0;
-  return svgWrap(W,H,g+
-    '<path d="'+area+'" fill="'+CSS("--accent")+'" opacity="0.13"/>'+
-    '<path d="'+pl+'" fill="none" stroke="'+CSS("--muted")+'" stroke-width="2" stroke-dasharray="5 4"/>'+
-    '<path d="'+al+'" fill="none" stroke="'+CSS("--accent")+'" stroke-width="2.5" stroke-linejoin="round"/>'+
-    (ap.length?'<circle cx="'+x(ap.length)+'" cy="'+y(last)+'" r="4.5" fill="'+CSS("--accent")+'" stroke="'+CSS("--surface")+'" stroke-width="2"/>':"")+
-    '<text x="'+(W-R+7)+'" y="'+(y(plannedW[51])+4)+'" font-size="10" fill="'+CSS("--muted")+'">planned</text>'+
-    (ap.length>1?'<text x="'+(x(ap.length)+8)+'" y="'+(y(last)-8)+'" font-size="10.5" font-weight="600" fill="'+CSS("--accent")+'">you · '+last.toFixed(0)+'h</text>':"")+
-    dots);
+  for(let f=0;f<=4;f++){
+    const d=new Date(first.getTime()+span*DAY*f/4);
+    g+='<text x="'+(L+(W-L-R)*f/4)+'" y="'+(H-9)+'" text-anchor="middle" font-size="10" fill="'+CSS("--muted")+'">'+d.toLocaleDateString(undefined,{month:"short",year:"2-digit"})+'</text>';
+  }
+  if(!evts.length){
+    g+='<text x="'+((L+W-R)/2)+'" y="'+(H/2)+'" text-anchor="middle" font-size="11.5" fill="'+CSS("--muted")+'">Tick your first task and this starts drawing</text>';
+    return svgWrap(W,H,g);
+  }
+  let cum=0;const pts=[[first.getTime(),0]];
+  evts.forEach(e=>{cum+=e[1]/60;pts.push([e[0],cum]);});
+  const now=Date.now();pts.push([now,cum]);
+  const line="M"+pts.map(p=>x(p[0])+" "+y(p[1])).join(" L ");
+  const area=line+" L "+x(now)+" "+y(0)+" L "+x(first.getTime())+" "+y(0)+" Z";
+  g+='<path d="'+area+'" fill="'+CSS("--accent")+'" opacity="0.13"/>';
+  if(pr){
+    g+='<path d="M'+x(now)+" "+y(cum)+" L "+x(pr.date.getTime())+" "+y(totalH)+'" fill="none" stroke="'+CSS("--muted")+'" stroke-width="2" stroke-dasharray="5 4"/>'+
+      '<circle cx="'+x(pr.date.getTime())+'" cy="'+y(totalH)+'" r="4" fill="none" stroke="'+CSS("--muted")+'" stroke-width="2"/>'+
+      '<text x="'+(W-R+7)+'" y="'+(y(totalH)+4)+'" font-size="10" fill="'+CSS("--muted")+'">done</text>';
+  }
+  g+='<path d="'+line+'" fill="none" stroke="'+CSS("--accent")+'" stroke-width="2.5" stroke-linejoin="round"/>'+
+    '<circle cx="'+x(now)+'" cy="'+y(cum)+'" r="4.5" fill="'+CSS("--accent")+'" stroke="'+CSS("--surface")+'" stroke-width="2"/>'+
+    '<text x="'+(x(now)+9)+'" y="'+(y(cum)-11)+'" font-size="10.5" font-weight="600" fill="'+CSS("--accent")+'">'+cum.toFixed(0)+'h banked</text>';
+  pts.slice(1,-1).forEach(p=>{g+='<circle cx="'+x(p[0])+'" cy="'+y(p[1])+'" r="6" fill="transparent" data-tip="'+esc(new Date(p[0]).toLocaleDateString()+" \u2014 "+p[1].toFixed(1)+"h banked")+'"/>';});
+  return svgWrap(W,H,g);
 }
 function chartTrack(){
   const keys=Object.keys(TRACKS),W=580,rowH=34,H=keys.length*rowH+18,L=94,R=78;
@@ -1654,15 +1576,20 @@ function chartTrack(){
   return svgWrap(W,H,out);
 }
 function chartHeat(){
-  let out="";
-  for(let w=1;w<=52;w++)for(let d=0;d<7;d++){
-    const day=ALLDAYS[(w-1)*7+d];if(!day)continue;
-    const done=isDone(day),past=day.idx<todayIdx();
-    const c=done?CSS("--accent"):(past?CSS("--crit-wash"):CSS("--surface-3"));
-    out+='<i style="background:'+c+'" data-tip="'+esc("Wk "+w+" "+DAYNAMES[d]+" — "+day.t+(done?" ✓ done":past?" · missed":""))+'"></i>';
+  const weeks=26,end=new Date();end.setHours(0,0,0,0);
+  const startD=new Date(end);startD.setDate(startD.getDate()-((end.getDay()+6)%7)-(weeks-1)*7);
+  let out="",maxv=1;
+  for(let i=0;i<weeks*7;i++){const d=new Date(startD.getTime()+i*DAY);maxv=Math.max(maxv,S.log[iso(d)]||0);}
+  for(let i=0;i<weeks*7;i++){
+    const d=new Date(startD.getTime()+i*DAY),v=S.log[iso(d)]||0,future=d>end;
+    let c=CSS("--surface-3");
+    if(v>0){const f=Math.min(1,v/Math.max(60,maxv));c="color-mix(in srgb, "+CSS("--accent")+" "+Math.round(22+f*78)+"%, "+CSS("--surface-3")+")";}
+    out+='<i style="background:'+c+(future?";opacity:.35":"")+'" data-tip="'+esc(d.toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"})+" \u2014 "+(v?Math.round(v)+" min logged":"nothing logged"))+'"></i>';
   }
   return '<div class="hm">'+out+'</div>'+
-   '<div class="legend" style="margin-top:10px"><span><i style="background:'+CSS("--accent")+'"></i>done</span><span><i style="background:'+CSS("--crit-wash")+'"></i>past, not ticked</span><span><i style="background:'+CSS("--surface-3")+'"></i>ahead</span></div>';
+   '<div class="legend" style="margin-top:10px"><span>Last 26 weeks</span><span><i style="background:'+CSS("--surface-3")+'"></i>nothing</span>'+
+   '<span><i style="background:color-mix(in srgb, '+CSS("--accent")+' 45%, '+CSS("--surface-3")+')"></i>a short session</span>'+
+   '<span><i style="background:'+CSS("--accent")+'"></i>a long one</span></div>';
 }
 function portCounts(){
   const sop=Object.keys(S.sops).filter(k=>S.sops[k]).length;
@@ -1737,23 +1664,21 @@ function drawCharts(){
   document.getElementById("chartPort").innerHTML=chartPort();
   document.getElementById("chartRadar").innerHTML=chartRadar();
   document.getElementById("chartComp").innerHTML=chartComp();
-  const md=minutesDone(),behind=pace()-md,c=portCounts();
-  const pct=md/TOTAL_MIN;
-  const proj=pct>0?Math.round(364/Math.max(0.01,(doneDays().length/Math.max(1,todayIdx()+1)))):null;
-  const de=daysToExam(),si=s65Index();
-  let sDone=0;if(si!==null)for(let k=0;k<=si;k++)if(s65Prog(k)>=100)sDone++;
-  const carried=ALLDAYS.filter(d=>(S.defer[d.id]||0)>0&&!isDone(d)).length;
+  const md=minutesDone(),c=portCounts(),pr=projection(),dn=doneDays().length;
+  const de=daysToExam(),dm=daysToMove(),st=started().length;
+  const rate=recentRate();
   document.getElementById("dashKpis").innerHTML=[
-    ["Hours banked",hrs(md),hrs(TOTAL_MIN)+" scheduled across 364 days, partial credit included"],
-    ["Against pace",(behind>0?"\u2212":"+")+hrs(Math.abs(behind)),behind>0?"behind where the calendar says you should be":"at or ahead of schedule"],
-    ["Days completed",doneDays().length+" / 364",Math.round(doneDays().length/364*100)+"% of the program \u00b7 "+carried+" carried forward"],
-    (de!==null&&de>0
-      ? ["Series 65",sDone+" / "+(si+1),hrs(s65MinutesDone())+" studied \u00b7 "+de+" days to the exam"]
-      : ["Series 65","done",hrs(s65MinutesDone())+" of study logged against this exam"]),
+    ["Tasks done",dn+" / 364",Math.round(dn/364*100)+"% of the plan"+(st?" \u00b7 "+st+" half finished":"")],
+    ["Hours banked",hrs(md),hrs(TOTAL_MIN-md)+" of work left, partial credit included"],
+    ["Current pace",rate>=20?hrs(rate)+"/wk":"\u2014",rate>=20?"averaged over your recent weeks, not assumed":"log a few sessions and this starts reporting"],
+    ["Finishing",pr?pr.date.toLocaleDateString(undefined,{month:"short",year:"numeric"}):"\u2014",pr?"at this pace, about "+Math.round(pr.weeks)+" weeks out":"needs a few weeks of history first"],
     ["Portfolio items",(c.sop.d+c.dash.d+c.auto.d+c.proj.d+c.career.d)+" / "+(40+c.dash.t+c.auto.t+c.proj.t+c.career.t),"documents, dashboards, automations and assets shipped"]
-  ].map(k=>'<div class="kpi"><div class="l">'+k[0]+'</div><div class="v">'+k[1]+'</div><div class="s">'+k[2]+'</div></div>').join("");
-  const miss=ALLDAYS.filter(d=>d.idx<todayIdx()&&!isDone(d)).length;
-  document.getElementById("heatCap").textContent="Longest run right now: "+streak()+" days. "+miss+" past days are untick"+"ed — that is "+hrs(ALLDAYS.filter(d=>d.idx<todayIdx()&&!isDone(d)).reduce((a,d)=>a+d.m,0))+" of scheduled work that did not happen. Not a judgement, just the number you plan against.";
+  ].map(k=>'<div class="kpi"><div class="l">'+k[0]+'</div><div class="v" style="font-size:'+(String(k[1]).length>9?"19px":"25px")+'">'+k[1]+'</div><div class="s">'+k[2]+'</div></div>').join("");
+  const sd=sessionDays().length,ds=daysSinceSession();
+  document.getElementById("heatCap").textContent=
+    (sd?sd+" session"+(sd>1?"s":"")+" logged so far"+(ds===null?"":", the last one "+(ds===0?"today":ds===1?"yesterday":ds+" days ago"))+". "
+      :"No sessions logged yet. ")+
+    "Gaps are expected and cost you nothing except time \u2014 the queue does not expire. What the gaps do change is the finishing date on the right of the top bar.";
 }
 /* ============================ portfolio ============================ */
 function renderPortfolio(){
@@ -1791,54 +1716,54 @@ function renderSkills(){
     '</tbody></table></div></div></details>').join("");
 }
 /* ============================ certs ============================ */
+function gateReach(phase){
+  const r=recentRate();if(r<20)return null;
+  let mins=0;
+  ALLDAYS.forEach(d=>{if(d.ph<=phase)mins+=d.m*(1-progOf(d)/100);});
+  if(mins<=0)return "reached";
+  const d=new Date();d.setDate(d.getDate()+Math.round(mins/r*7));
+  return d.toLocaleDateString(undefined,{month:"short",year:"numeric"});
+}
 function renderCerts(){
-  renderExamTop();
-  document.getElementById("certCards").innerHTML=CERTS.map(c=>
-    '<div class="panel"><div class="eyebrow">'+c.when+'</div><h3 style="font-size:21px;margin:4px 0 2px">'+c.k+'</h3>'+
-    '<p style="margin:0 0 12px;color:var(--muted);font-size:13px">'+c.name+'</p>'+
-    '<div class="scroller"><table><tbody>'+c.facts.map(f=>'<tr><td style="color:var(--muted);width:98px">'+f[0]+'</td><td class="num">'+f[1]+'</td></tr>').join("")+'</tbody></table></div>'+
-    '<p style="font-size:13.5px;color:var(--ink-2);margin:13px 0 0">'+c.why+'</p>'+
-    '<div class="eyebrow" style="margin:14px 0 7px">How you pass it</div>'+
-    '<ul style="margin:0;padding-left:18px;color:var(--ink-2);font-size:13.5px;line-height:1.65">'+c.plan.map(p=>"<li>"+p+"</li>").join("")+'</ul></div>').join("");
-  document.getElementById("s65Note").innerHTML=examTopNote();
-  const cur=s65Index();
-  document.getElementById("s65List").innerHTML=S65.map((b,i)=>{
-    const pct=s65Prog(i),dl=63-i,dt=S.exam?addDays(S.exam,-dl):null;
-    return '<div class="drow wide rich'+(pct>=100?" done":"")+'"'+(i===cur?' style="background:var(--accent-wash)"':"")+'>'+
-      '<button class="tick" aria-pressed="'+(pct>=100)+'" data-id="'+s65Id(i)+'" aria-label="Mark complete" style="width:22px;height:22px"><svg viewBox="0 0 20 20"><polyline points="4,10.5 8,14.5 16,5.5"></polyline></svg></button>'+
-      '<div class="dd">'+(dt?fmt(dt):"T\u2212"+dl)+' \u00b7 '+b[1]+'m</div>'+
-      '<div class="dt"><b>'+b[2]+'</b><div style="color:var(--ink-2);font-size:12.5px;margin-top:2px">'+b[3]+'</div>'+
-      (pct>0&&pct<100?'<div class="progbar mini"><i style="width:'+pct+'%"></i></div>':"")+'</div>'+
-      '<div class="dx"><span class="pill"><i class="dot" style="background:var(--s4)"></i>'+b[0]+'</span><span class="pill">T\u2212'+dl+'</span></div></div>';
-  }).join("");
-  document.getElementById("studyProtocol").innerHTML=STUDY.map(s=>
-    '<details><summary>'+s.t+'</summary><div class="dbody" style="color:var(--ink-2);font-size:14px">'+s.b+'</div></details>').join("");
-}
-function examTopNote(){
-  const dl=daysToExam();
-  if(dl===null)return "Set your exam date on the Operating manual tab and this whole schedule re-sequences around it.";
-  if(dl<=0)return "The exam date has passed. These blocks stay here as a record, and as a study plan if you are retaking.";
-  return "Sixty-three blocks, one a day, counting down to "+parseISO(S.exam).toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"})+". Tonight\u2019s is highlighted. The four practice exams are three hours each \u2014 sit them on a weekend day and push the neighbouring blocks forward if the dates do not line up.";
-}
-function renderExamTop(){
-  const el=document.getElementById("examTop");if(!el)return;
-  const dl=daysToExam();
-  if(dl===null||dl<=0){el.innerHTML='<div class="callout acc">'+examTopNote()+'</div>';return;}
-  const i=s65Index();
-  let doneB=0,partB=0,mins=0;
-  for(let k=0;k<=i;k++){const pct=s65Prog(k);if(pct>=100)doneB++;else if(pct>0)partB++;}
-  for(let k=0;k<S65.length;k++)mins+=S65[k][1]*s65Prog(k)/100;
-  const elapsed=i+1,rate=Math.round(doneB/Math.max(1,elapsed)*100);
-  const remainMin=S65.slice(i).reduce((a,b,idx)=>a+b[1]*(1-s65Prog(i+idx)/100),0);
-  el.innerHTML='<div class="grid g4" style="margin-bottom:14px">'+
-    [["Days to exam",dl,parseISO(S.exam).toLocaleDateString(undefined,{month:"long",day:"numeric"})],
-     ["Blocks done",doneB+" / "+elapsed,rate+"% of the blocks that have come due"+(partB?" \u00b7 "+partB+" part-done":"")],
-     ["Study banked",hrs(mins),"of "+hrs(s65Total())+" scheduled across the 63 blocks"],
-     ["Left to run",hrs(remainMin),"across "+(63-i)+" remaining blocks"]]
-    .map(k=>'<div class="kpi"><div class="l">'+k[0]+'</div><div class="v">'+k[1]+'</div><div class="s">'+k[2]+'</div></div>').join("")+'</div>'+
-    '<div class="panel"><div class="eyebrow" style="margin-bottom:8px">Countdown</div><div class="meter"><i style="width:'+Math.round((i+1)/63*100)+'%"></i></div>'+
-    '<p style="margin:10px 0 0;color:var(--ink-2);font-size:13.5px">Block '+(i+1)+' of 63. '+
-    (rate>=90?"You are holding the daily habit. Keep it exactly as it is.":rate>=70?"Good enough. Do not try to make up missed blocks by doubling \u2014 take the next one and move on.":"You are missing too many blocks. Cut each one to 30 minutes rather than skipping: a short block every day beats a long one twice a week.")+'</p></div>';
+  const de=daysToExam(),dm=daysToMove();
+  const exam=S.exam?parseISO(S.exam).toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long",year:"numeric"}):null;
+  const move=S.move?parseISO(S.move).toLocaleDateString(undefined,{day:"numeric",month:"long",year:"numeric"}):null;
+  document.getElementById("mileCards").innerHTML=
+  '<div class="panel"><div class="eyebrow">Milestone one</div>'+
+   '<h3 style="font-size:22px;margin:4px 0 2px">'+CREDENTIAL.name+'</h3>'+
+   '<p style="margin:0 0 12px;color:var(--muted);font-size:13px">'+CREDENTIAL.full+'</p>'+
+   (exam?'<div class="row" style="margin-bottom:14px"><span class="pill '+(de!==null&&de<=30?"warn":"good")+'">'+(de>0?de+" days away":de===0?"today":"passed")+'</span><span class="pill">'+exam+'</span></div>'
+        :'<div class="callout" style="margin-bottom:14px">No date set. Put it on the Operating manual tab.</div>')+
+   '<p style="margin:0 0 14px;color:var(--ink-2);font-size:14px">You are studying for this outside this tracker, which is right \u2014 nothing here schedules your revision or quizzes you. It sits here as a date, because it is the one thing in this plan with an external deadline and because the week you pass is worth planning.</p>'+
+   '<div class="scroller"><table><tbody>'+CREDENTIAL.facts.map(f=>'<tr><td style="color:var(--muted);width:96px">'+f[0]+'</td><td class="num">'+f[1]+'</td></tr>').join("")+'</tbody></table></div>'+
+   '<div class="eyebrow" style="margin:16px 0 7px">What it unlocks</div>'+
+   '<ul style="margin:0;padding-left:18px;color:var(--ink-2);font-size:13.5px;line-height:1.65">'+CREDENTIAL.unlocks.map(x=>"<li>"+x+"</li>").join("")+'</ul>'+
+   '<div class="eyebrow" style="margin:16px 0 7px">The week you pass</div>'+
+   '<ul style="margin:0;padding-left:18px;color:var(--ink-2);font-size:13.5px;line-height:1.65">'+CREDENTIAL.onpass.map(x=>"<li>"+x+"</li>").join("")+'</ul>'+
+   '<div class="callout" style="margin-top:14px">Verify the fee, format and passing score with NASAA before you pay for anything \u2014 they change.</div></div>'+
+  '<div class="panel"><div class="eyebrow">Milestone two</div>'+
+   '<h3 style="font-size:22px;margin:4px 0 2px">The Florida move</h3>'+
+   '<p style="margin:0 0 12px;color:var(--muted);font-size:13px">Tampa \u00b7 St. Petersburg \u00b7 Clearwater \u00b7 Sarasota</p>'+
+   (move?'<div class="row" style="margin-bottom:14px"><span class="pill '+(dm!==null&&dm<=90?"warn":"")+'">'+(dm>0?dm+" days away":"arrived")+'</span><span class="pill">'+move+'</span></div>'
+        :'<div class="callout" style="margin-bottom:14px">No date set. Put it on the Operating manual tab.</div>')+
+   '<p style="margin:0 0 14px;color:var(--ink-2);font-size:14px">This is a target, not a commitment. The rule that matters more than the date: a signed employment contract comes before a signed lease. A move with an offer in hand is a promotion; a move without one is a savings drawdown with a deadline attached.</p>'+
+   '<div class="eyebrow" style="margin:0 0 7px">What has to be true first</div>'+
+   '<ul style="margin:0;padding-left:18px;color:var(--ink-2);font-size:13.5px;line-height:1.65">'+
+   ["The credential in hand, or a booked date close enough to name in an interview","A public portfolio with at least three case studies on it","Twenty or more real conversations with people in the Tampa Bay market","Runway: move costs, deposit, one month of overlap, three months of reserve","An offer in writing, with the scope you actually want stated in it"].map(x=>"<li>"+x+"</li>").join("")+'</ul>'+
+   '<p style="margin:14px 0 0;color:var(--ink-2);font-size:14px">The Florida move tab has the full timeline and the checklist. This card is just the date and the preconditions.</p></div>';
+
+  document.getElementById("gateTable").innerHTML='<thead><tr><th>Phase</th><th>Gate</th><th style="width:110px">Tasks</th><th style="width:120px">Reached</th></tr></thead><tbody>'+
+    PHASES.map(p=>{
+      const days=ALLDAYS.filter(d=>d.ph===p.n),dn=days.filter(isDone).length,pct=Math.round(dn/days.length*100);
+      const reach=gateReach(p.n);
+      return '<tr><td><b>'+p.n+' \u00b7 '+p.name+'</b><div style="color:var(--muted);font-size:12px;margin-top:3px">'+p.goal+'</div></td>'+
+        '<td style="color:var(--ink-2)">'+p.gate+'</td>'+
+        '<td><div class="num" style="font-size:13px">'+dn+'/'+days.length+'</div><div class="meter" style="margin-top:5px"><i style="width:'+pct+'%"></i></div></td>'+
+        '<td class="num" style="color:'+(reach==="reached"?"var(--accent-ink)":"var(--ink-2)")+'">'+(reach||"\u2014")+'</td></tr>';
+    }).join("")+'</tbody>';
+
+  document.getElementById("compTable").innerHTML='<thead><tr><th style="width:110px">When</th><th style="width:150px">Target</th><th>What gets you there</th></tr></thead><tbody>'+
+    COMPMILES.map((m,i)=>'<tr><td class="num">'+m[0]+'</td><td class="num"><b>'+(i===0&&S.salary?"$"+(+S.salary).toLocaleString():m[1])+'</b></td><td style="color:var(--ink-2)">'+m[2]+'</td></tr>').join("")+'</tbody>';
 }
 /* ============================ targets ============================ */
 const STATUSES=["Not started","Researched","Contact found","Outreach sent","In conversation","Applied","Interviewing","Closed"];
@@ -1887,7 +1812,7 @@ function renderMove(){
   document.getElementById("moveKpis").innerHTML=[
     ["Days to target date",dm===null?"—":(dm>0?dm:"arrived"),S.move?parseISO(S.move).toLocaleDateString(undefined,{month:"long",year:"numeric"}):"set a date on the Money tab"],
     ["Readiness",ck+" / "+MOVECHECK.length,"items confirmed on the checklist below"],
-    ["Program day",(todayIdx()+1)+" / 364","the move sits in weeks 45-48"],
+    ["Plan position","block "+currentBlock()+" of 52","the move sits in blocks 45-48"],
     ["Rule","Contract first","never sign a lease before you sign an employment contract"]
   ].map(k=>'<div class="kpi"><div class="l">'+k[0]+'</div><div class="v" style="font-size:'+(String(k[1]).length>9?"17px":"25px")+'">'+k[1]+'</div><div class="s">'+k[2]+'</div></div>').join("");
   document.getElementById("moveTimeline").innerHTML=MOVE.map((m,i)=>
@@ -1938,7 +1863,8 @@ async function runPrompt(i){
 /* ============================ systems ============================ */
 function renderSystems(){
   document.getElementById("settings").innerHTML=
-    '<label class="fld"><span>Program start (a Monday)</span><input type="date" data-set="start" value="'+S.start+'"></label>'+
+    '<label class="fld"><span>Default session length</span><select data-set="budget">'+
+      [[30,"30 minutes"],[60,"an hour"],[120,"two hours"],[240,"a long session"]].map(b=>'<option value="'+b[0]+'"'+((+S.budget||60)===b[0]?" selected":"")+'>'+b[1]+'</option>').join("")+'</select></label>'+
     '<label class="fld"><span>Series 65 exam date</span><input type="date" data-set="exam" value="'+(S.exam||"")+'"></label>'+
     '<label class="fld"><span>Target Florida move date</span><input type="date" data-set="move" value="'+(S.move||"")+'"></label>'+
     '<label class="fld"><span>Year-1 salary target</span><input type="number" data-set="target" value="'+(S.target||"")+'"></label>';
@@ -1956,13 +1882,13 @@ function renderAll(){
   if(cur==="dash")drawCharts();
 }
 /* ============================ events ============================ */
-function refreshCore(){renderTop();renderToday();renderPlan();if(cur==="certs")renderCerts();if(cur==="dash")drawCharts();}
+function refreshCore(){renderTop();renderToday();renderPlan();if(cur==="dash")drawCharts();}
 document.addEventListener("click",e=>{
   const tick=e.target.closest(".tick");
   if(tick){
     const id=tick.dataset.id,was=!!S.done[id];
     setProg(id,was?0:100);refreshCore();
-    if(!was)toast("Done \u00b7 "+streak()+" day streak");
+    if(!was)toast("Done \u00b7 "+doneDays().length+" of 364 \u00b7 "+hrs(minutesDone())+" banked");
     return;
   }
   const pg=e.target.closest("[data-prog]");
@@ -1970,21 +1896,21 @@ document.addEventListener("click",e=>{
     const parts=pg.dataset.prog.split("|"),id=parts[0],pct=+parts[1];
     const now=S.done[id]?100:(S.prog[id]||0);
     setProg(id,now===pct?0:pct);refreshCore();
-    if(pct===100&&now!==100)toast("Done \u00b7 "+streak()+" day streak");
-    else if(now!==pct)toast(pct+"% logged \u2014 push the rest to tomorrow if you are out of time");
+    if(pct===100&&now!==100)toast("Done \u00b7 "+doneDays().length+" of 364 \u00b7 "+hrs(minutesDone())+" banked");
+    else if(now!==pct)toast(pct+"% logged \u00b7 it stays at the top of the queue until you finish it");
     return;
   }
   const pu=e.target.closest("[data-push]");
   if(pu){
-    const id=pu.dataset.push;pushDay(id);refreshCore();
-    toast("Pushed \u00b7 it becomes tomorrow night\u2019s card");
+    pushDown(pu.dataset.push);refreshCore();
+    toast("Moved down the queue \u00b7 it will come back around");
     return;
   }
-  const br=e.target.closest("[data-bring]");
-  if(br){
-    const d=ALLDAYS.find(x=>x.id===br.dataset.bring);
-    if(d){bringToToday(d);refreshCore();toast("Moved to today");}
-    return;
+  const bu=e.target.closest("[data-budget]");
+  if(bu){
+    budget=+bu.dataset.budget;S.budget=budget;persist();
+    document.querySelectorAll("[data-budget]").forEach(c=>c.setAttribute("aria-pressed",c===bu?"true":"false"));
+    renderToday();return;
   }
   const cp=e.target.closest("[data-copy]");
   if(cp){const el=document.getElementById(cp.dataset.copy);
@@ -2010,14 +1936,11 @@ document.addEventListener("change",e=>{
   if(t.dataset.target!==undefined){S.targets[t.dataset.target]=t.value;persist();return;}
   if(t.dataset.set!==undefined){
     const k=t.dataset.set;S[k]=t.type==="number"?+t.value:t.value;
-    if(k==="start"&&!S.start)S.start=lastMonday();
-    persist();viewIdx=null;renderAll();return;}
+    if(k==="budget"){budget=+t.value;}
+    persist();renderAll();return;}
 });
-document.getElementById("prevDay").onclick=()=>{viewIdx=Math.max(0,(viewIdx===null?todayIdx():viewIdx)-1);renderToday();};
-document.getElementById("nextDay").onclick=()=>{viewIdx=Math.min(363,(viewIdx===null?todayIdx():viewIdx)+1);renderToday();};
-document.getElementById("jumpToday").onclick=()=>{viewIdx=null;renderToday();};
 document.getElementById("expandAll").onclick=()=>{
-  const p=phaseOf(todayIdx());PLAN.forEach(w=>openWeeks[w.n]=(w.ph===p));renderPlan();
+  const p=phaseNow();PLAN.forEach(w=>openWeeks[w.n]=(w.ph===p));renderPlan();
 };
 /* theme */
 function applyTheme(){
@@ -2063,7 +1986,7 @@ function overlay(text,onOk){
 document.getElementById("resetProgress").onclick=()=>{if(confirm("Clear every ticked day? Your portfolio, settings and counters stay."))
   {S.done={};persist();renderAll();toast("Days cleared");}};
 document.getElementById("resetAll").onclick=()=>{if(confirm("Reset absolutely everything on this page?"))
-  {const th=S.theme;S=DEFAULTS();S.theme=th;const d=parseISO(S.start);d.setDate(d.getDate()+364);S.move=iso(d);persist();renderAll();toast("Reset");}};
+  {const th=S.theme;S=DEFAULTS();S.theme=th;persist();renderAll();toast("Reset");}};
 /* tooltips */
 const tipEl=document.getElementById("tip");
 document.addEventListener("mousemove",e=>{
@@ -2078,7 +2001,7 @@ document.addEventListener("mousemove",e=>{
 });
 /* ============================ boot ============================ */
 loadLocal();
-if(!S.move){const d=parseISO(S.start);d.setDate(d.getDate()+364);S.move=iso(d);}
+budget=+S.budget||60;
 buildNav();applyTheme();renderAll();go("today");
 connect();
 matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>{if(cur==="dash")drawCharts();});
