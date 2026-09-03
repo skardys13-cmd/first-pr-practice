@@ -281,9 +281,9 @@ svg text{font-family:var(--mono);font-variant-numeric:tabular-nums}
   <!-- ============ PLAN ============ -->
   <section class="view" id="v-plan">
     <div class="vhead">
-      <div class="eyebrow">364 tasks &middot; 52 blocks &middot; 4 phases</div>
+      <div class="eyebrow" id="planEyebrow">378 tasks &middot; 54 blocks &middot; 4 phases</div>
       <h1>The plan</h1>
-      <p>Weighted to Path 1, the operations ladder, with the data and automation work kept as the thing that separates you rather than as a second career. Four phases of 91 tasks. A block is a week&rsquo;s worth of work, not a calendar week &mdash; you reach block 12 when you have finished 77 tasks, whenever that happens. The whole thing is about 400 hours, so at your six to eight hours a week it runs roughly twelve months. The dashboard tracks the rate you actually keep.</p>
+      <p>Weighted to the operations ladder, aimed at a COO seat. A block is a week&rsquo;s worth of work, not a calendar week &mdash; you reach block 12 when you have finished 77 tasks, whenever that happens. Blocks 1&ndash;52 build the operator; blocks 53 and 54 are the COO track. About 420 hours in total, so at six to eight hours a week it runs a little over twelve months. The dashboard tracks the rate you actually keep.</p>
     </div>
     <div class="row" style="margin-bottom:14px">
       <span class="eyebrow">Filter</span>
@@ -347,6 +347,23 @@ svg text{font-family:var(--mono);font-variant-numeric:tabular-nums}
     </div>
     <div class="panel" style="margin-bottom:20px"><div class="eyebrow" style="margin-bottom:12px">Self-rating &mdash; feeds the radar on the dashboard</div><div class="grid g3" id="ratings"></div></div>
     <div id="ladders" class="stack"></div>
+  </section>
+
+  <!-- ============ COO ============ -->
+  <section class="view" id="v-coo">
+    <div class="vhead">
+      <div class="eyebrow">The destination</div>
+      <h1>Chief Operating Officer</h1>
+      <p>An RIA COO owns operations, the firm&rsquo;s economics, its people and its projects. This tab is the map of that seat, what this plan does and does not build toward it, and the three ways people actually get there. Your target is a $1&ndash;5b firm.</p>
+    </div>
+    <div class="callout crit" style="margin-bottom:22px"><strong>The part no plan fixes:</strong> you cannot build your way to this seat. Documentation, reporting and automation compress the first two steps hard &mdash; Operations Manager and Director of Operations are evaluated on exactly that work, and arriving with a real record takes years off each. The last step is gated on two things a portfolio cannot supply: having managed people, and having owned a number. Blocks 53 and 54 get you as close to both as is possible from outside the role.</div>
+    <div class="grid g4" id="cooKpis" style="margin-bottom:22px"></div>
+    <div class="sec"><h2>What the seat owns</h2><p>Nine areas, and where this plan leaves you on each.</p></div>
+    <div class="panel flush"><div class="scroller"><table id="cooTable"></table></div></div>
+    <div class="sec"><h2>The COO track</h2><p>Fourteen tasks at the end of the queue. Several are worth pulling forward &mdash; the economics ones especially, since they are portfolio pieces in their own right.</p></div>
+    <div class="panel flush" id="cooTasks"></div>
+    <div class="sec"><h2>Three routes to the seat</h2><p>Almost everyone who holds this job arrived by one of these.</p></div>
+    <div id="cooRoutes" class="stack"></div>
   </section>
 
   <!-- ============ MILESTONES ============ -->
@@ -461,7 +478,7 @@ const PHASES=[
  {n:1,name:"Foundation",weeks:"1-13",goal:"Learn the job by documenting it. 25 processes written as you are taught them, first dashboard live, portfolio public.",gate:"Series 65 passed &middot; 25 SOPs &middot; 1 dashboard &middot; portfolio site live"},
  {n:2,name:"Proof",weeks:"14-26",goal:"Turn documentation into evidence. 40 SOPs complete, three dashboards, four automations, regulatory depth building.",gate:"40 SOPs &middot; 3 dashboards &middot; 4 automations &middot; 3 written case studies"},
  {n:3,name:"Market",weeks:"27-39",goal:"Stop building in private. 40 targets mapped, conversations running weekly, applications flowing at associate and specialist level.",gate:"40 targets &middot; 10 conversations &middot; 30 applications &middot; 5 case studies"},
- {n:4,name:"Launch",weeks:"40-52",goal:"Convert. Interview loops, an offer negotiated at the top of your band, the move executed, first 90 days planned.",gate:"Offer signed &middot; move dated &middot; 90-day plan written"}
+ {n:4,name:"Launch",weeks:"40-54",goal:"Convert. Interview loops, an offer negotiated at the top of your band, the move executed, first 90 days planned.",gate:"Offer signed &middot; move dated &middot; 90-day plan written"}
 ];
 const PLAN=[
 {n:1,ph:1,th:"Baseline and instrumentation",days:[
@@ -885,7 +902,24 @@ D("career",60,"Set the next target","Name the next role, the next number, and th
 D("review",60,"Archive and simplify","Archive what is finished, delete what you never used, and keep only the systems you actually run: evidence log, portfolio, target board, maintenance cadence.","A simplified permanent system","A system you maintain beats a system you admire. Cut it down to what survived contact with a full-time job."),
 D("career",30,"Thank the network","Message everyone who helped, tell them where you landed, and offer something back. Then keep two conversations a month running forever.","Network thanked and maintained","This is what makes the next move take three months instead of twelve. It is the highest-return habit in the entire plan."),
 D("review",150,"Write what you would tell yourself","Write the honest account for the version of you in week one: what mattered, what was wasted effort, what you underestimated, what you would do first.","A written retrospective letter","This is the most useful document you will produce. It is also what you send to the next person who asks how you did it."),
-D("review",45,"Close the program","Close the final week. Look at the consistency grid, the hours banked, and the artifact counts. Then take a week off entirely.","Program closed","364 days. The credentials and the job matter, but the durable result is that you now know exactly what you can execute in a year.")]}
+D("review",45,"Close the program","Close the final week. Look at the consistency grid, the hours banked, and the artifact counts. Then take a week off entirely.","Program closed","The credentials and the job matter, but the durable result is that you now know exactly what you can execute in a year. Blocks 53 and 54 are the COO track \u2014 keep going.")]},
+{n:53,ph:4,th:"Firm economics",days:[
+D("bi",60,"Build the revenue model","On your synthetic book, build the top line the way a principal sees it: assets by household, the fee schedule applied by tier, gross revenue per client, per advisor and per segment. Get the fee tiering exactly right \u2014 breakpoints are where most of these models go wrong.","A revenue model with per-client and per-advisor totals","Operations people talk about processes and principals talk about revenue. This is the first document that puts you in the second conversation."),
+D("bi",60,"Comp ratio and operating margin","Learn the cost structure of an advisory firm: compensation as a share of revenue is the largest line by far, then technology, occupancy, custody and platform costs, marketing, and professional fees. Build a simple P&L for your synthetic firm and calculate the operating margin.","A synthetic firm P&L with a margin figure","A COO who cannot discuss comp ratio and margin is a Director of Operations with a better title. Principals work this out in one conversation."),
+D("bi",60,"The three productivity ratios","Revenue per advisor, revenue per employee, and revenue per household. Calculate all three on your model and work out what would move each one. These are the numbers a firm is benchmarked on.","Three ratios with the levers behind each","These ratios are how firms compare themselves to their peers. Knowing yours, and knowing which lever moves which, is operating-partner literacy."),
+D("bi",60,"Cost to serve, by segment","Allocate operations time to client tiers using your own process timings: how many minutes a year does a $250k household consume versus a $3m one. Find the segment where cost to serve exceeds the revenue it produces.","A cost-to-serve analysis naming the unprofitable segment","Almost every advisory firm has a segment it loses money on and has never measured. Being the person who measured it is a genuinely senior contribution."),
+D("career",30,"Ask one economics question","Not for numbers \u2014 for the structure. Ask your manager or a principal how the firm thinks about profitability, or what actually drives margin here. Listen, write it down, do not push.","Their answer, written down","Asking about firm economics marks you as someone thinking about the business rather than the task. It also tells you how open this firm is, which you need to know."),
+D("bi",150,"The capacity model","Model when the firm needs its next hire. Total the recurring operations hours from your workload model, add growth assumptions, and find the point where capacity breaks. Then calculate the break-even on an additional advisor: revenue needed to cover fully loaded cost.","A capacity model with a break point and a break-even","When to hire is one of the two or three decisions a COO actually owns. Having modelled it before you have the title is how you get asked into the conversation."),
+D("review",45,"Write the economics one-pager","Turn the block into a single page you could hand a principal: revenue picture, margin, the three ratios, the unprofitable segment, and when the next hire is needed. No jargon, numbers first.","A one-page firm economics summary","This document is the audition. It is the difference between an operations candidate and a COO candidate, and it takes one page.")]},
+{n:54,ph:4,th:"People and change",days:[
+D("sop",60,"Write a real job description and scorecard","For the role that would report to you first. Not a duty list \u2014 outcomes: what this person must achieve in 90 days, in 12 months, and the four or five competencies you would actually screen for. Add the scoring rubric you would use in interviews.","A job description plus a hiring scorecard","Hiring is the competency that most often blocks Director of Operations from COO. Writing one properly before you need it is free practice at the thing you cannot fake."),
+D("sop",60,"Design the 30-day onboarding programme","Build the programme you would run for that hire, using your SOP library as the backbone: what they read, in what order, who they meet, what they own by day 10, 20 and 30, and how you would know it went well.","A 30-day onboarding programme","Your process library was always going to become this. The library is the asset; the programme is the thing that proves you can scale yourself through other people."),
+D("career",60,"The delegation ladder","List everything you do. Mark what you would hand off first, second and third, and write what has to be true before each handoff is safe \u2014 usually a documented process and one supervised run.","A delegation ladder with preconditions","Managers who cannot delegate never become COOs, and the reason is almost always that nothing is documented. You are solving that problem in the right order."),
+D("career",60,"Prepare and hold one feedback conversation","Real practice on something small and real. Write it out first: the specific observation, the impact, the ask, and the space for their side. Then actually have it \u2014 with a peer, a junior colleague, or a vendor.","One conversation prepared and held","This is the single least practised skill on the list and the one that most reliably separates people who get promoted into management from people who do not."),
+D("career",30,"Volunteer for the next firm-scale project","Put your hand up, in writing, for whatever the next conversion, migration, integration or system change is. You do not need to lead it. You need to be in the room and to own a piece of it.","One request on record with your manager","A firm-scale project is the line item a COO search actually looks for, and it cannot be built at home. You either volunteer or you wait years for one to land on you."),
+D("sop",150,"Build the project kit","Four reusable documents: a project charter (objective, scope, success measures, who decides), a stakeholder map, a cutover runbook with rollback steps, and a post-mortem template. Build them generically so they are ready when the project arrives.","A four-document project kit","Turning up on day one of a conversion with a charter and a runbook already written is how a participant becomes the person running it."),
+D("review",45,"Team structure proposal","Design how you would organise operations at your firm at twice the client count: the roles, who owns what, the reporting lines, and what breaks first if nothing changes. One page, honest about the tradeoffs.","A team structure proposal","This is a COO artifact. It is also, quietly, the most useful thing you could hand your current firm \u2014 and the reason someone senior starts asking your opinion.")]}
+
 );
 const SOPS=[
 [1,"New account opening — individual brokerage","Account opening",2],[2,"New account opening — joint / TOD","Account opening",2],
@@ -998,6 +1032,22 @@ const CREDENTIAL={
  unlocks:["Roles that list it as required or strongly preferred, which is a meaningful share of RIA operations and client-facing postings","Advisory-adjacent titles if you ever want them: advisor associate, paraplanner, relationship manager","Credibility in the fiduciary-duty conversation, which operations candidates almost never have","A legitimate reason to re-contact every person on your target board the day you pass"],
  onpass:["Add it to LinkedIn, your resume, your portfolio site and your email signature the same week","Tell your manager, and ask whether the firm reimburses the fee. Many do; most people never ask","Message every contact in the tracker \u2014 a new credential is the easiest re-contact reason there is","Reprice yourself: apply to five roles you would not have been considered for a month earlier","Check what registration in Florida actually requires for the roles you want, and whether it is firm-dependent"]
 };
+const COO_OWNS=[
+["Operations and service delivery","Covered","The core of blocks 1-30. Process library, service standards, workflow design, defect measurement."],
+["Reporting and firm KPIs","Covered","Blocks 6-31. Dashboards, data modelling, the operations scorecard at block 50."],
+["Technology strategy and implementation","Covered","Blocks 11-48. Automation builds, the AI implementation proposal, adoption rather than admiration."],
+["Regulatory and compliance oversight","Partial","Blocks 14-35 make you literate. Accountable is different, and it arrives with the title."],
+["Firm economics and P&L","Block 53","Revenue model, comp ratio, margin, the three productivity ratios, cost to serve, the capacity model."],
+["Org design, hiring and people","Block 54","Job description and scorecard, onboarding programme, delegation ladder, one real feedback conversation, team structure."],
+["Firm-scale project delivery","Block 54","The project kit is buildable. The project itself is not \u2014 you volunteer for it and wait for one to land."],
+["Vendor contracts and budget ownership","Not covered","Signing authority and renewal negotiation come with the seat. Nothing here simulates it honestly."],
+["Principal-level communication","Partial","The economics one-pager and the team structure proposal are both written for that room."]
+];
+const COO_ROUTES=[
+["Internal promotion","Ops Manager \u2192 Director of Ops \u2192 COO at one firm","Slowest and least likely, because it needs the seat to open above you at exactly the right moment. Best odds at a firm that is growing fast or acquiring.","medium"],
+["Lateral in as a sitting COO","COO at a $200m-$1b firm first, then move up","The standard route, and typically three to five years faster to the title. The small-firm COO is a working operator, often with equity. You have chosen $1-5b as the target, so this is the route you are currently not taking \u2014 worth revisiting at the phase three gate.","strong"],
+["In from the ecosystem","Custodian, RIA platform or consultancy, then into a firm","Schwab, Fidelity, Dynasty, or an RIA consulting practice. You see fifty firms instead of one, which is exactly the pattern-recognition a COO search values. Slower on salary early, unusually fast on credibility.","medium"]
+];
 const COMPMILES=[
  ["Now","your current salary","Month one, learning the seat."],
  ["3-6 months","$65k","Associate Advisor, gated on the Series 65. Your number, your firm, already on the table."],
@@ -1183,7 +1233,7 @@ const RECIPES=[
 ];
 const SYSTEMS=[
 {t:"The evening protocol",b:"The plan assumes you are tired. Open this page, read the one card, set a timer for the stated minutes, and start. Do not review the whole plan, do not reorganise anything, do not read ahead. Starting is the only decision you make; the card handles the rest. If you genuinely cannot start, run a Fast Lane item instead and keep the streak — a 10-minute day beats a zero, and zeros are what end plans."},
-{t:"How the queue works",b:"There are 364 tasks in a fixed order and none of them has a date. The Tonight tab pulls the next few off the top and fills whatever session length you pick. Finish one and the list regenerates. Skip a week, a month, a season \u2014 the same work is still sitting there, in the same order, waiting. Nothing goes red, nothing goes overdue, and there is no pace to fall behind. The only thing your gaps change is the finishing date the dashboard projects, which is calculated from what you have actually been doing rather than from what you once intended."},{t:"Three buttons, and what each one means",b:"The quarter buttons log how far you got: a task at 50% keeps half its minutes in your banked hours and stays pinned to the top of the queue under Half finished until you close it out. Done closes it. Not this one drops it a few places down the queue for when it is genuinely the wrong task tonight \u2014 the wrong tool, the wrong mood, waiting on someone else. If a task keeps getting skipped, that is information: it is either too big, in which case cut it in half, or it is not actually relevant to your firm, in which case mark it done and move on. This is your plan, not an exam syllabus."},{t:"The minimum viable day",b:"On the worst days, the requirement is 10 minutes and one tick. This is not a loophole, it is the design. The habit is what carries this, not any particular week\u2019s output. The top bar shows when you last sat down rather than a streak, because a streak you have already broken is a reason to stop opening the page."},
+{t:"How the queue works",b:"There are 378 tasks in a fixed order and none of them has a date. The Tonight tab pulls the next few off the top and fills whatever session length you pick. Finish one and the list regenerates. Skip a week, a month, a season \u2014 the same work is still sitting there, in the same order, waiting. Nothing goes red, nothing goes overdue, and there is no pace to fall behind. The only thing your gaps change is the finishing date the dashboard projects, which is calculated from what you have actually been doing rather than from what you once intended."},{t:"Three buttons, and what each one means",b:"The quarter buttons log how far you got: a task at 50% keeps half its minutes in your banked hours and stays pinned to the top of the queue under Half finished until you close it out. Done closes it. Not this one drops it a few places down the queue for when it is genuinely the wrong task tonight \u2014 the wrong tool, the wrong mood, waiting on someone else. If a task keeps getting skipped, that is information: it is either too big, in which case cut it in half, or it is not actually relevant to your firm, in which case mark it done and move on. This is your plan, not an exam syllabus."},{t:"The minimum viable day",b:"On the worst days, the requirement is 10 minutes and one tick. This is not a loophole, it is the design. The habit is what carries this, not any particular week\u2019s output. The top bar shows when you last sat down rather than a streak, because a streak you have already broken is a reason to stop opening the page."},
 {t:"The weekly review, in full",b:"Sunday, 45 minutes, same time every week. Tick the week's completed days. Update the evidence log with anything from work, with a number attached. Check hours banked against plan on the dashboard. Update portfolio counts. Read next week's seven cards so nothing is a surprise on Monday. Name the one thing that must not slip. That is the entire agenda and it does not change."},
 {t:"Phase gates and what to do when you fail one",b:"Four gates: weeks 13, 26, 39, 52. Each has explicit criteria. Failing a gate is normal and it means one thing only: you repeat the failed criterion in the next phase and cut something else to make room. It does not mean restarting, and it does not mean pretending you passed. Write the honest assessment either way — the failed gates are what make the passed ones mean something."},
 {t:"Triage when life gets busy",b:"Protect in this order: the long build blocks, the reviews, everything else.  Builds are the portfolio, and the portfolio is what actually gets you hired. Sessions can be 30 minutes indefinitely without breaking anything. Cut breadth, never cut the gate criteria \u2014 and never delete a task to make the number look better."},
@@ -1193,7 +1243,7 @@ const SYSTEMS=[
 {t:"Tool stack and what it costs",b:"Tableau Public: free, and it hosts your work publicly. DuckDB with a SQL client: free. Looker Studio: free. Power BI Desktop is Windows-only \u2014 budget a used Windows laptop at around $200 in month six, or a Fabric trial in the browser, purely so you can say you have converted work into it. Notion personal: free. Mermaid or Excalidraw: free. GitHub Pages, Carrd or a Notion public page: free to about $20 a year. Zapier or Make free tiers: enough to build and demo everything here. Series 65 study package plus the exam fee: roughly $300-500, and many firms reimburse. The whole year costs a few hundred dollars, and the exam is the only part with a deadline attached."},
 {t:"Two conversations a week beats two hundred applications",b:"From week 28, the cadence is five to eight applications and two conversations weekly. Applications are the weak channel and you run them anyway because they are cheap. Conversations are the strong channel and almost nobody runs them systematically. Every conversation ends with one question: who else should I be talking to. That single question is what turns a list of strangers into a network."},
 {t:"How to use AI here without hollowing yourself out",b:"Use it to draft structure, generate synthetic data, write code you then read and understand, and drill you with questions. Do not use it to produce knowledge you cannot defend. In an interview you will be asked how a measure works or why a process step exists, and there is no recovery from not knowing what your own portfolio does. The test: could you rebuild this from scratch, slowly, if the tool disappeared? If not, you have not learned it yet."},
-{t:"The associate advisor step is the whole game right now",b:"You have something most people building a plan like this do not: a defined internal promotion, with a number and a timeline, gated on one exam. That is worth more than anything else in these 364 tasks, and it reorders the priorities. Pass the Series 65. Get the terms in writing rather than as a verbal understanding. Take the title. Then go to market as an associate advisor with a credential and a portfolio, instead of as someone with a year of experience and a plan. The plan\u2019s job for the next six months is to make sure that when the title lands you also have 25 documented processes and a dashboard behind it \u2014 because the title gets you read, and the portfolio is what gets you the top of the band."},{t:"Where being the hardest worker in the room actually pays",b:"It is a real asset and it does not pay evenly. Internally it is close to decisive: your manager watches you for a year, and two early promotions is the whole difference between the solid line and the dashed one on the compensation chart. Externally, at thirteen months, it is nearly invisible \u2014 a recruiter screening on years of experience never meets the person who works harder than everyone else, and \u2018hard worker\u2019 in an interview sounds identical coming from every candidate who says it. Being good in a room has the same shape: enormously valuable once you are in the room, worth nothing against a filter. So the plan puts effort where it converts. The documentation, the reporting and the evidence log turn effort into artifacts someone else can see. The conversation cadence \u2014 now starting at block 14 rather than block 28 \u2014 gets you into rooms instead of into application queues. Neither is a substitute for the work ethic; both are the delivery mechanism for it."},{t:"Document as you learn, not from memory",b:"Everyone else writing SOPs is writing down what they already know. You are writing them the week you are taught each process, which is better in three ways: you catch the steps an experienced person does unconsciously and never thinks to mention, the act of writing it teaches it to you properly, and by the time you have finished learning the job you also own its documentation. Ask to be walked through a process a second time and record it with permission. Nobody minds \u2014 being asked to explain your work is flattering."},{t:"Why this combination is the actual bet",b:"Operations knowledge is common. Reporting skill is common. AI implementation ability is becoming common. All three in one person who has also sat with advisors and knows why a distribution deadline matters — that is genuinely rare, and it is the position this plan is building toward. Do not let one of the three lag, because the combination is the entire value proposition and two out of three is just a normal candidate."}
+{t:"The associate advisor step is the whole game right now",b:"You have something most people building a plan like this do not: a defined internal promotion, with a number and a timeline, gated on one exam. That is worth more than anything else in this plan, and it reorders the priorities. Pass the Series 65. Get the terms in writing rather than as a verbal understanding. Take the title. Then go to market as an associate advisor with a credential and a portfolio, instead of as someone with a year of experience and a plan. The plan\u2019s job for the next six months is to make sure that when the title lands you also have 25 documented processes and a dashboard behind it \u2014 because the title gets you read, and the portfolio is what gets you the top of the band."},{t:"Where being the hardest worker in the room actually pays",b:"It is a real asset and it does not pay evenly. Internally it is close to decisive: your manager watches you for a year, and two early promotions is the whole difference between the solid line and the dashed one on the compensation chart. Externally, at thirteen months, it is nearly invisible \u2014 a recruiter screening on years of experience never meets the person who works harder than everyone else, and \u2018hard worker\u2019 in an interview sounds identical coming from every candidate who says it. Being good in a room has the same shape: enormously valuable once you are in the room, worth nothing against a filter. So the plan puts effort where it converts. The documentation, the reporting and the evidence log turn effort into artifacts someone else can see. The conversation cadence \u2014 now starting at block 14 rather than block 28 \u2014 gets you into rooms instead of into application queues. Neither is a substitute for the work ethic; both are the delivery mechanism for it."},{t:"Document as you learn, not from memory",b:"Everyone else writing SOPs is writing down what they already know. You are writing them the week you are taught each process, which is better in three ways: you catch the steps an experienced person does unconsciously and never thinks to mention, the act of writing it teaches it to you properly, and by the time you have finished learning the job you also own its documentation. Ask to be walked through a process a second time and record it with permission. Nobody minds \u2014 being asked to explain your work is flattering."},{t:"Why this combination is the actual bet",b:"Operations knowledge is common. Reporting skill is common. AI implementation ability is becoming common. All three in one person who has also sat with advisors and knows why a distribution deadline matters — that is genuinely rare, and it is the position this plan is building toward. Do not let one of the three lag, because the combination is the entire value proposition and two out of three is just a normal candidate."}
 ];
 const RISKS=[
 ["Motivation collapse in month 3-4","High","Fatal","You skip two weeknights and stop opening this page","The minimum viable day, the Sunday review, and a booked exam date you have already paid for"],
@@ -1335,6 +1385,7 @@ async function connect(){
 const ALLDAYS=[];
 PLAN.forEach(w=>w.days.forEach((d,i)=>ALLDAYS.push(Object.assign({},d,{w:w.n,ph:w.ph,di:i,id:w.n+"-"+i,idx:(w.n-1)*7+i,theme:w.th,gate:!!w.gate}))));
 const TOTAL_MIN=ALLDAYS.reduce((a,d)=>a+d.m,0);
+const NTASK=ALLDAYS.length,NBLOCK=PLAN.length;
 const TRACK_MIN={};Object.keys(TRACKS).forEach(k=>TRACK_MIN[k]=ALLDAYS.filter(d=>d.x===k).reduce((a,d)=>a+d.m,0));
 function sortKey(d){return d.idx+(S.defer[d.id]||0)*4;}
 function isDone(d){return !!S.done[d.id];}
@@ -1345,7 +1396,7 @@ function minutesLeft(){return Math.max(0,TOTAL_MIN-minutesDone());}
 function started(){return ALLDAYS.filter(d=>!isDone(d)&&(S.prog[d.id]||0)>0).sort((a,b)=>sortKey(a)-sortKey(b));}
 function fresh(){return ALLDAYS.filter(d=>!isDone(d)&&!(S.prog[d.id]||0)).sort((a,b)=>sortKey(a)-sortKey(b));}
 function nextUp(){return started().concat(fresh());}
-function currentBlock(){const q=nextUp();return q.length?q[0].w:52;}
+function currentBlock(){const q=nextUp();return q.length?q[0].w:NBLOCK;}
 function phaseNow(){const q=nextUp();return q.length?q[0].ph:4;}
 function markLog(mins){const k=iso(new Date());S.log[k]=(S.log[k]||0)+Math.max(0,mins||0);}
 function setProg(id,pct){
@@ -1384,7 +1435,7 @@ function phaseOf(i){return PLAN[Math.floor(i/7)]?PLAN[Math.floor(i/7)].ph:1;}
 /* ============================ shell ============================ */
 const VIEWS=[
  ["today","Tonight",1],["plan","The plan",1],["dash","Dashboard",1],
- ["portfolio","Portfolio",2],["skills","Skills",2],["certs","Milestones",3],
+ ["portfolio","Portfolio",2],["skills","Skills",2],["coo","COO track",3],["certs","Milestones",3],
  ["targets","Target board",3],["money","Money",3],["move","Florida move",3],
  ["delegate","Claude playbook",4],["systems","Operating manual",4]
 ];
@@ -1411,7 +1462,7 @@ function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t
 /* ============================ top bar ============================ */
 function renderTop(){
   const md=minutesDone(),pct=Math.round(md/TOTAL_MIN*100),dn=doneDays().length;
-  document.getElementById("tDay").textContent=dn+" / 364";
+  document.getElementById("tDay").textContent=dn+" / "+NTASK;
   document.getElementById("tPct").textContent=pct+"%";
   document.getElementById("tHours").textContent=hrs(md)+" / "+hrs(TOTAL_MIN);
   const ds=daysSinceSession();
@@ -1423,7 +1474,7 @@ function renderTop(){
   document.getElementById("tExam").parentNode.classList.toggle("hide",de===null||de<-30);
   document.getElementById("tMeter").innerHTML='<i style="width:'+Math.max(pct,0.6)+'%"></i>';
   const ph=PHASES[phaseNow()-1],pr=projection();
-  document.getElementById("tPhase").textContent="Phase "+ph.n+" \u00b7 "+ph.name+" \u00b7 block "+currentBlock()+" of 52"+
+  document.getElementById("tPhase").textContent="Phase "+ph.n+" \u00b7 "+ph.name+" \u00b7 block "+currentBlock()+" of "+NBLOCK+
     (pr?" \u00b7 finishing "+pr.date.toLocaleDateString(undefined,{month:"short",year:"numeric"}):"");
 }
 
@@ -1473,11 +1524,11 @@ function renderToday(){
     if(used>=budget)break;
   }
   const dn=doneDays().length;
-  document.getElementById("todayEyebrow").textContent=dn?"Up next \u00b7 "+dn+" done, "+(364-dn)+" to go":"Up next \u00b7 start here";
+  document.getElementById("todayEyebrow").textContent=dn?"Up next \u00b7 "+dn+" done, "+(NTASK-dn)+" to go":"Up next \u00b7 start here";
   document.getElementById("todayTitle").textContent=picked.length?(picked.length===1?"One thing":picked.length+" things"):"Nothing left";
   document.getElementById("todayCard").innerHTML=picked.length
     ? picked.map(dayCard).join('<div style="height:14px"></div>')
-    : '<div class="panel"><h3 style="font-size:17px;margin-bottom:6px">All 364 done</h3><p style="margin:0;color:var(--ink-2);font-size:14px">Every task in the plan is complete. Week 51 has the instructions for what a year two looks like.</p></div>';
+    : '<div class="panel"><h3 style="font-size:17px;margin-bottom:6px">All '+NTASK+' done</h3><p style="margin:0;color:var(--ink-2);font-size:14px">Every task in the plan is complete. Week 51 has the instructions for what a year two looks like.</p></div>';
   const spill=st.filter(d=>picked.indexOf(d)<0);
   document.getElementById("inProgressWrap").classList.toggle("hide",!spill.length);
   if(spill.length){
@@ -1548,7 +1599,7 @@ function chartBurn(){
   const first=evts.length?new Date(evts[0][0]):new Date();
   first.setHours(0,0,0,0);
   const pr=projection();
-  const endD=pr?pr.date:new Date(first.getTime()+364*DAY);
+  const endD=pr?pr.date:new Date(first.getTime()+NTASK*DAY);
   const span=Math.max(30,Math.ceil((endD-first)/DAY));
   const x=ms=>L+Math.max(0,Math.min(1,(ms-first)/(span*DAY)))*(W-L-R);
   const y=v=>H-B-(v/maxY)*(H-B-T);
@@ -1693,7 +1744,7 @@ function drawCharts(){
   const de=daysToExam(),dm=daysToMove(),st=started().length;
   const rate=recentRate();
   document.getElementById("dashKpis").innerHTML=[
-    ["Tasks done",dn+" / 364",Math.round(dn/364*100)+"% of the plan"+(st?" \u00b7 "+st+" half finished":"")],
+    ["Tasks done",dn+" / "+NTASK,Math.round(dn/NTASK*100)+"% of the plan"+(st?" \u00b7 "+st+" half finished":"")],
     ["Hours banked",hrs(md),hrs(TOTAL_MIN-md)+" of work left, partial credit included"],
     ["Current pace",rate>=20?hrs(rate)+"/wk":"\u2014",rate>=20?"averaged over your recent weeks, not assumed":"log a few sessions and this starts reporting"],
     ["Finishing",pr?pr.date.toLocaleDateString(undefined,{month:"short",year:"numeric"}):"\u2014",pr?"at this pace, about "+Math.round(pr.weeks)+" weeks out":"needs a few weeks of history first"],
@@ -1799,6 +1850,35 @@ function renderCerts(){
   document.getElementById("compTable").innerHTML='<thead><tr><th style="width:110px">When</th><th style="width:150px">Target</th><th>What gets you there</th></tr></thead><tbody>'+
     COMPMILES.map((m,i)=>'<tr><td class="num">'+m[0]+'</td><td class="num"><b>'+(i===0&&S.salary?"$"+(+S.salary).toLocaleString():m[1])+'</b></td><td style="color:var(--ink-2)">'+m[2]+'</td></tr>').join("")+'</tbody>';
 }
+function renderCoo(){
+  const cooDays=ALLDAYS.filter(d=>d.w>=53);
+  const dn=cooDays.filter(isDone).length;
+  const mins=cooDays.reduce((a,d)=>a+d.m*(1-progOf(d)/100),0);
+  const covered=COO_OWNS.filter(r=>r[1]==="Covered").length;
+  const pos=nextUp().length?doneDays().length+1:NTASK;
+  document.getElementById("cooKpis").innerHTML=[
+    ["Seat covered by the plan",covered+" of "+COO_OWNS.length,"areas fully built; two more arrive with blocks 53-54"],
+    ["COO track",dn+" / "+cooDays.length,hrs(mins)+" of work left in it"],
+    ["Where you are now","task "+pos,"of "+NTASK+" \u00b7 block "+currentBlock()+" of "+NBLOCK],
+    ["Target firm size","$1-5b","manager-of-managers seat \u00b7 12+ years is the usual profile"]
+  ].map(k=>'<div class="kpi"><div class="l">'+k[0]+'</div><div class="v" style="font-size:'+(String(k[1]).length>9?"18px":"25px")+'">'+k[1]+'</div><div class="s">'+k[2]+'</div></div>').join("");
+  document.getElementById("cooTable").innerHTML='<thead><tr><th style="width:250px">Area</th><th style="width:120px">Status</th><th>Where it comes from</th></tr></thead><tbody>'+
+    COO_OWNS.map(r=>{const cls=r[1]==="Covered"?"good":r[1]==="Not covered"?"crit":r[1]==="Partial"?"warn":"";
+      return '<tr><td><b>'+r[0]+'</b></td><td><span class="pill '+cls+'">'+r[1]+'</span></td><td style="color:var(--ink-2)">'+r[2]+'</td></tr>';}).join("")+'</tbody>';
+  document.getElementById("cooTasks").innerHTML=cooDays.map(d=>{
+    const done=isDone(d),pct=progOf(d);
+    return '<div class="drow wide rich'+(done?" done":"")+'">'+
+      '<button class="tick" aria-pressed="'+done+'" data-id="'+d.id+'" aria-label="Mark complete" style="width:22px;height:22px"><svg viewBox="0 0 20 20"><polyline points="4,10.5 8,14.5 16,5.5"></polyline></svg></button>'+
+      '<div class="dd">#'+(d.idx+1)+' \u00b7 '+d.m+'m</div>'+
+      '<div class="dt"><b>'+d.t+'</b><div style="color:var(--ink-2);font-size:12.5px;margin-top:2px">'+d.d+'</div>'+
+      (pct>0&&pct<100?'<div class="progbar mini"><i style="width:'+pct+'%"></i></div>':"")+'</div>'+
+      '<div class="dx">'+trackPill(d.x)+'<span class="pill">'+d.theme+'</span></div></div>';
+  }).join("");
+  document.getElementById("cooRoutes").innerHTML=COO_ROUTES.map(r=>
+    '<details><summary><span>'+r[0]+'</span><span class="pill '+(r[3]==="strong"?"good":"")+'">'+(r[3]==="strong"?"fastest":"viable")+'</span></summary>'+
+    '<div class="dbody"><div class="field"><div class="fl">Shape</div><div class="fv">'+r[1]+'</div></div>'+
+    '<p style="margin:12px 0 0;color:var(--ink-2);font-size:14px">'+r[2]+'</p></div></details>').join("");
+}
 /* ============================ targets ============================ */
 const STATUSES=["Not started","Researched","Contact found","Outreach sent","In conversation","Applied","Interviewing","Closed"];
 function renderTargets(){
@@ -1848,7 +1928,7 @@ function renderMove(){
   document.getElementById("moveKpis").innerHTML=[
     ["Days to target date",dm===null?"—":(dm>0?dm:"arrived"),S.move?parseISO(S.move).toLocaleDateString(undefined,{month:"long",year:"numeric"}):"set a date on the Money tab"],
     ["Readiness",ck+" / "+MOVECHECK.length,"items confirmed on the checklist below"],
-    ["Plan position","block "+currentBlock()+" of 52","the move sits in blocks 45-48"],
+    ["Plan position","block "+currentBlock()+" of "+NBLOCK,"the move sits in blocks 45-48"],
     ["Rule","Contract first","never sign a lease before you sign an employment contract"]
   ].map(k=>'<div class="kpi"><div class="l">'+k[0]+'</div><div class="v" style="font-size:'+(String(k[1]).length>9?"17px":"25px")+'">'+k[1]+'</div><div class="s">'+k[2]+'</div></div>').join("");
   document.getElementById("moveTimeline").innerHTML=MOVE.map((m,i)=>
@@ -1914,17 +1994,17 @@ function renderSystems(){
 /* ============================ render all ============================ */
 function renderAll(){
   renderTop();renderToday();renderPlan();renderPortfolio();renderSkills();renderCerts();
-  renderTargets();renderMoney();renderMove();renderDelegate();renderSystems();
+  renderCoo();renderTargets();renderMoney();renderMove();renderDelegate();renderSystems();
   if(cur==="dash")drawCharts();
 }
 /* ============================ events ============================ */
-function refreshCore(){renderTop();renderToday();renderPlan();if(cur==="dash")drawCharts();}
+function refreshCore(){renderTop();renderToday();renderPlan();if(cur==="coo")renderCoo();if(cur==="dash")drawCharts();}
 document.addEventListener("click",e=>{
   const tick=e.target.closest(".tick");
   if(tick){
     const id=tick.dataset.id,was=!!S.done[id];
     setProg(id,was?0:100);refreshCore();
-    if(!was)toast("Done \u00b7 "+doneDays().length+" of 364 \u00b7 "+hrs(minutesDone())+" banked");
+    if(!was)toast("Done \u00b7 "+doneDays().length+" of "+NTASK+" \u00b7 "+hrs(minutesDone())+" banked");
     return;
   }
   const pg=e.target.closest("[data-prog]");
@@ -1932,7 +2012,7 @@ document.addEventListener("click",e=>{
     const parts=pg.dataset.prog.split("|"),id=parts[0],pct=+parts[1];
     const now=S.done[id]?100:(S.prog[id]||0);
     setProg(id,now===pct?0:pct);refreshCore();
-    if(pct===100&&now!==100)toast("Done \u00b7 "+doneDays().length+" of 364 \u00b7 "+hrs(minutesDone())+" banked");
+    if(pct===100&&now!==100)toast("Done \u00b7 "+doneDays().length+" of "+NTASK+" \u00b7 "+hrs(minutesDone())+" banked");
     else if(now!==pct)toast(pct+"% logged \u00b7 it stays at the top of the queue until you finish it");
     return;
   }
