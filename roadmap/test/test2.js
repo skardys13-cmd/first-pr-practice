@@ -29,14 +29,18 @@ const pass=[],fail=[]; const t=(n,c,d='')=>c?pass.push(n):fail.push(n+(d?' :: '+
    return n;});
  t('no stale week-N references',stale===0,'found='+stale);
 
- // FIX 4: all 40 SOPs produced
- const sops=await p.evaluate(()=>{
-   const set=new Set();
-   for(const w of PLAN) for(const d of w.days)
-     for(const m of (d.o+' '+d.t).matchAll(/SOPs? (\d+)(?:-(\d+))?/g)){
-       const a=+m[1],bb=m[2]?+m[2]:+m[1]; for(let i=a;i<=bb;i++) set.add(i);}
-   return [...Array(40)].map((_,i)=>i+1).filter(n=>!set.has(n));});
- t('all 40 SOPs are produced by a task',sops.length===0,'missing='+sops);
+ // DIVISION OF LABOUR: the internal SOP library now lives in the handoff plan,
+ // so Ops Ladder should be publishing sanitised versions, not authoring firm SOPs.
+ const split=await p.evaluate(()=>{
+   let pub=0, authoring=0;
+   for(const w of PLAN) for(const d of w.days){
+     const t=(d.t+' '+d.d+' '+d.o).toLowerCase();
+     if(/sanitis|public version|generalis|publish/.test(t)) pub++;
+     if(/write the sop while observing|document as you learn/.test(t)) authoring++;
+   }
+   return {pub,authoring};});
+ t('plan publishes sanitised work',split.pub>=15,'found='+split.pub);
+ t('plan no longer authors firm SOPs from scratch',split.authoring===0,'found='+split.authoring);
 
  // storage indicator
  t('storage status renders',(await p.textContent('#syncNote')).includes('This browser only'));
