@@ -388,7 +388,7 @@ svg text{font-family:var(--mono);font-variant-numeric:tabular-nums}
     </div>
     <div class="panel" style="margin-bottom:20px"><div class="grid g3" id="moneyInputs"></div></div>
     <div class="grid g3" id="moneyKpis" style="margin-bottom:20px"></div>
-    <div class="callout acc" style="margin-bottom:16px"><strong>Path 1 is your spine, and Associate Advisor is the door into it.</strong> Scenario A is the plan you chose. Scenario C is the same ladder climbed faster because you can also build &mdash; that is where $130&ndash;150k lands inside your window. Scenario B is now genuinely open to you rather than theoretical, and it is worth pricing rather than drifting past: the advisory ladder pays higher and earlier, with a different kind of pressure attached. Decide it deliberately at the phase two gate.</div><div id="scenarios" class="stack"></div>
+    <div class="callout acc" style="margin-bottom:16px"><strong>Path 1 is your spine, and Associate Advisor is the door into it.</strong> Scenario A is the plan you chose. Scenario C is the same ladder climbed faster because you can also build &mdash; that is where $130&ndash;150k lands inside your window. Scenario B is the alternate route from your original plan, kept on file rather than recommended.</div><div id="scenarios" class="stack"></div>
     <div class="sec"><h2>What actually moves these numbers</h2><p>The bands are a base case, not a ceiling. Here is where effort and being good in a room convert into money &mdash; and where they do not.</p></div>
     <div class="panel flush" style="margin-bottom:8px"><div class="scroller"><table id="leverTable"></table></div></div>
     <div class="sec"><h2>Negotiation, in order</h2><p>The single highest paid hour of the entire year is the one where you answer &ldquo;what are you looking for?&rdquo;</p></div>
@@ -1209,19 +1209,18 @@ const RISKS=[
 ];
 const SCENARIOS=[
 {k:"A",t:"Advisory operations leadership",p:"85-90% \u2014 your spine",g:"var(--s1)",
-d:"You take the associate advisor seat, then build the operations and systems side around it. Associate advisor is a stronger launch point than a pure operations seat because it is client-facing and advisor-facing at once \u2014 you see the whole practice, not one function of it. From there the operations leadership ladder is a deliberate turn, and the documentation and reporting portfolio is what makes it a turn rather than a sideways move.",
+d:"You take the associate advisor seat for what it gives you \u2014 the title, the number, and a view of the whole practice rather than one function of it \u2014 and build the operations and systems side around it. This is the path you chose, and everything in the plan is weighted to it.",
 y:[["3-6 months","$65k","Associate Advisor \u2014 confirmed internally, gated on the Series 65"],
    ["Year 1 \u00b7 the move","$80-95k","Associate Advisor, Client Service Manager, Operations Specialist in Tampa Bay"],
    ["Year 2","$95-110k","Senior Associate Advisor, Operations Manager"],
    ["Years 4-6","$130-155k","Director of Operations, Practice Manager, COO track at a smaller RIA"]],
 need:["The Series 65 \u2014 it is the gate on the associate advisor title","40 documented processes, built as you learn them","One reporting artifact a real person uses weekly","A defect-rate study from your own logged data","The move handled with an offer in hand, not before"]},
-{k:"B",t:"The advisor track",p:"Open to you, and worth pricing",g:"var(--s3)",
-d:"Associate Advisor is the first rung of the advisory ladder, not only a stepping stone to operations. If you are genuinely good in a room \u2014 and you say you are \u2014 this track pays earlier and higher than operations does, because compensation eventually attaches to relationships and revenue rather than to a salary band. The trade is that it is a sales-adjacent career with a different kind of pressure, and it is a decision worth making deliberately rather than drifting into or past.",
-y:[["3-6 months","$65k","Associate Advisor"],
-   ["Year 1-2","$80-100k","Associate Advisor with your own service book"],
-   ["Year 3-4","$100-135k","Advisor / Service Advisor, base plus incentive"],
-   ["Years 5-7","$140-200k+","Lead Advisor \u2014 wider range, because it is partly revenue-linked"]],
-need:["The Series 65, then the CFP if you commit to this track","Client-facing hours and a book you actually service","Comfort with the business development side, eventually","A decision made on purpose at the phase two gate"]},
+{k:"B",t:"AI / business analyst",p:"The alternate route from your own plan",g:"var(--s3)",
+d:"Path 2 from your original thinking, kept here as a documented alternative rather than a recommendation. You lead with the analysis and automation portfolio and move into a business analyst or transformation role, potentially outside wealth management. Higher ceiling in some places, more competition, and it uses less of what you already know about how an advisory firm actually runs.",
+y:[["Year 1","$80-95k","Operations Analyst, Business Analyst"],
+   ["Year 2-3","$95-120k","Business Analyst, Senior Analyst"],
+   ["Years 4-6","$125-160k","AI Program Manager, Business Operations Manager, Director of Business Transformation"]],
+need:["Power BI or Tableau and SQL at a demonstrable level","A quantified efficiency audit with before-and-after numbers","Two measured automation projects","Comfort presenting findings to people senior to you"]},
 {k:"C",t:"The one almost nobody is",p:"Where the ceiling actually is",g:"var(--s4)",
 d:"Advisor-facing knowledge, real client experience, and the ability to build the systems \u2014 documentation, reporting, automation. Firms have people who can do one of those. Almost none have someone who does all three, and that person ends up running the practice rather than working in it. This is the same ladder as A, climbed faster, and it is where your original $130-150k target lands comfortably inside the window you named.",
 y:[["Year 1","$85-100k","Associate Advisor with a systems remit"],
@@ -1234,7 +1233,6 @@ const LEVERS=[
 ["Negotiating at the top of the band","+$5-10k on day one, compounding forever","Same offer, same role, same firm. The candidate who states a number and then stops talking lands at the top; the one who justifies and apologises lands in the middle. Every future raise is a percentage of that number.","strong"],
 ["Promotion velocity inside a firm","Pulls every band forward 9-18 months","This is where being the hardest worker in the room actually pays, and it pays internally. An outside hiring manager screens you against a rubric before ever meeting you; your own manager watches you for a year and can move you early. Two internal promotions is the difference between the solid line and the dashed one.","strong"],
 ["Being visible to people above your manager","Multiplier on everything above","Hard work nobody senior sees is a hobby. The documented processes, the reporting and the evidence log exist partly so your work is legible to people who were not watching you do it.","strong"],
-["The advisor track","A different, higher curve","Not hypothetical any more \u2014 associate advisor is the first rung of it. Advisory compensation eventually attaches to relationships and revenue rather than a salary band, which is why the top of that curve is well above the operations one. The trade is a sales-adjacent career with a different kind of pressure. Price it properly at the phase two gate instead of drifting past it.","strong"],
 ["The portfolio","Buys a band your years do not","The only lever that argues directly against the experience rubric \u2014 and the slowest. It works best as the reason someone stretches for you, not as a substitute for time in seat.","medium"],
 ["Working harder at the same job","Roughly nothing, externally","The uncomfortable one. Effort with no artifact and no audience does not appear on a resume, does not survive a recruiter screen, and cannot be described in an interview without sounding generic. Everything in this plan exists to convert effort into something someone else can see.","weak"]
 ];
@@ -1656,7 +1654,7 @@ function chartComp(){
   const assoc=65000;
   const curves=[
     {k:"C",n:"Ops+systems",c:CSS("--s4"),v:[cur,92000,112000,128000,145000,158000,172000]},
-    {k:"B",n:"Advisor track",c:CSS("--s3"),v:[cur,88000,104000,120000,138000,158000,182000]},
+    {k:"B",n:"Analyst",c:CSS("--s3"),v:[cur,85000,99000,112000,126000,141000,156000]},
     {k:"A",n:"Ops ladder",c:CSS("--s1"),v:[cur,86000,101000,114000,128000,142000,152000]}
   ];
   const tgt=[[1,+S.target||80000],[2,100000],[5,140000]];
@@ -1772,7 +1770,7 @@ function renderCerts(){
    '<h3 style="font-size:22px;margin:4px 0 2px">Associate Advisor</h3>'+
    '<p style="margin:0 0 12px;color:var(--muted);font-size:13px">Internal \u00b7 three to six months \u00b7 around $65k</p>'+
    '<div class="row" style="margin-bottom:14px"><span class="pill good">gated on the Series 65</span><span class="pill">your firm, already on the table</span></div>'+
-   '<p style="margin:0 0 14px;color:var(--ink-2);font-size:14px">This is the most valuable thing in the whole plan and it costs you one exam. A promotion into a client-facing title inside your own firm beats any external move you could make at this stage: no interview, no relocation risk, and it puts the title on your resume before you go to market. Everything after it negotiates from a higher base.</p>'+
+   '<p style="margin:0 0 14px;color:var(--ink-2);font-size:14px">This is the most valuable thing in the whole plan and it costs you one exam. A promotion inside your own firm beats any external move at this stage: no interview, no relocation risk, and the title and the number are on your resume before you go to market. Everything after it negotiates from a higher base, and the client and advisor exposure that comes with the seat is exactly the experience operations leadership roles ask for.</p>'+
    '<div class="eyebrow" style="margin:0 0 7px">Pin it down, in writing</div>'+
    '<ul style="margin:0;padding-left:18px;color:var(--ink-2);font-size:13.5px;line-height:1.65">'+
    ["What exactly triggers it \u2014 the exam alone, or the exam plus a review date","The number, and whether it is a band or a fixed figure","What the role actually includes: client meetings, plan prep, your own service book, or all three","Who decides, and when the conversation happens","What excellent looks like in the role twelve months after you are in it"].map(x=>"<li>"+x+"</li>").join("")+'</ul>'+
