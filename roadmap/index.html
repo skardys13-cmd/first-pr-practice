@@ -190,6 +190,28 @@ pre{background:var(--surface-2);border:1px solid var(--rule);border-radius:7px;p
 .nudge b{color:var(--ink)}
 .nudge .x{margin-left:auto;background:none;border:0;color:var(--muted);cursor:pointer;font-family:var(--mono);font-size:16px;line-height:1;padding:0 2px}
 .nudge .x:hover{color:var(--ink)}
+.ws{border-top:1px solid var(--rule);background:var(--surface-2);padding:16px 17px;display:flex;flex-direction:column;gap:15px}
+.ws h4{font-family:var(--mono);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);font-weight:500;margin:0 0 7px}
+.ws textarea{background:var(--surface);min-height:96px}
+.ws input[type="text"]{background:var(--surface)}
+.wsbtn{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.steps{margin:0;padding-left:0;list-style:none;counter-reset:st;display:flex;flex-direction:column;gap:7px}
+.steps li{counter-increment:st;display:flex;gap:10px;font-size:13.5px;color:var(--ink-2);line-height:1.5}
+.steps li::before{content:counter(st);font-family:var(--mono);font-size:10px;color:var(--muted);background:var(--surface);border:1px solid var(--rule);border-radius:4px;min-width:19px;height:19px;display:grid;place-items:center;flex:none;margin-top:1px}
+.steps li.on{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--rule-strong)}
+.steps li .sx{cursor:pointer;flex:1}
+.items{display:flex;flex-direction:column;gap:5px}
+.item{display:flex;gap:8px;align-items:center;background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:6px 9px;font-size:13.5px}
+.item .n{font-family:var(--mono);font-size:10px;color:var(--muted);min-width:20px}
+.item .rm{margin-left:auto;background:none;border:0;color:var(--muted);cursor:pointer;font-family:var(--mono);font-size:14px;line-height:1;padding:0 3px}
+.item .rm:hover{color:var(--crit)}
+.addrow{display:flex;gap:8px}
+.addrow input{flex:1}
+.wsopen{border-color:var(--accent) !important}
+.workbtn{background:var(--accent);color:#fff;border:0;border-radius:6px;padding:7px 14px;font-size:13px;font-weight:600;cursor:pointer}
+.workbtn.ghost{background:var(--surface);color:var(--ink-2);border:1px solid var(--rule)}
+.workbtn.ghost:hover{border-color:var(--rule-strong);color:var(--ink)}
+.wsnote{font-size:12px;color:var(--muted)}
 .storage{display:flex;gap:7px;align-items:flex-start;font-size:10.5px;line-height:1.45;padding:7px 8px;border-radius:5px;background:var(--surface-2);border:1px solid var(--rule)}
 .storage .dot{width:7px;height:7px;border-radius:99px;flex:none;margin-top:4px}
 .legend{display:flex;gap:13px;flex-wrap:wrap;align-items:center;font-family:var(--mono);font-size:10.5px;color:var(--ink-2)}
@@ -1360,12 +1382,12 @@ function fmt(d){return d.toLocaleDateString(undefined,{weekday:"short",month:"sh
 
 function plusDays(n){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()+n);return iso(d);}
 const DEFAULTS=()=>({v:3,updatedAt:0,start:lastMonday(),budget:60,move:plusDays(365),exam:"",salary:52000,target:80000,
-  done:{},prog:{},defer:{},log:{},sops:{},port:{},moveck:{},targets:{},ratings:{ops:2,bi:0,sql:0,ai:1,client:2,lead:1},
+  done:{},prog:{},defer:{},log:{},work:{},sops:{},port:{},moveck:{},targets:{},ratings:{ops:2,bi:0,sql:0,ai:1,client:2,lead:1},
   counts:{apps:0,convos:0,interviews:0,offers:0},theme:"auto",lastExport:0,nudgeSeen:0});
 const MERGE=o=>Object.assign(DEFAULTS(),o,{
   counts:Object.assign({apps:0,convos:0,interviews:0,offers:0},o.counts||{}),
   ratings:Object.assign({ops:2,bi:0,sql:0,ai:1,client:2,lead:1},o.ratings||{}),
-  prog:o.prog||{},defer:o.defer||{},log:o.log||{},done:o.done||{}});
+  prog:o.prog||{},defer:o.defer||{},log:o.log||{},work:o.work||{},done:o.done||{}});
 let S=DEFAULTS();
 let DB=null,saveTimer=null,booted=false;
 const LSKEY="opsladder.v1";
@@ -1529,10 +1551,68 @@ function progControls(id,pct,push){
     '</div></div>';
 }
 function taskNo(d){return d.idx+1;}
+/* ---------- per-task workspace ---------- */
+const STEPS={
+"1-0":["Use Your list below \u2014 type one item, press return, repeat. It saves with the task and goes into your backup.","Think through one normal day at work, start to finish, and write down every separate thing you did. One line each.","Do the same for the last two weeks: anything you were shown once, anything you watched someone else do.","Now add the things you know exist but have not seen \u2014 write those with a ? at the front. Those are your gaps.","Stop at 40 lines or 30 minutes, whichever comes first. This list keeps growing all year; it does not have to be finished tonight."],
+"1-1":["Go to tableau.com/products/public/download and install Tableau Public. It is free and it runs on macOS.","Open it. On the left, choose Text file, and pick any CSV you have \u2014 a bank export, anything with 500+ rows.","Drag a field to Columns and another to Rows. That is a chart. It will look bad. That is fine.","Save it to your Tableau Public profile so you have a live URL from night one.","Paste that URL into Where it lives below."],
+"1-2":["Open Claude and start a new project or a long-running chat you will keep coming back to.","Write a short context note: your role, your custodian, your CRM, your portfolio tool, what good output looks like.","At the very top of it, write the rule in your own words: no client names, account numbers, balances, statements or screenshots of live records. Ever.","Paste that context note into the Work area below so you have a copy.","Check your firm's written policy on AI tools this week and add one line about what it permits."],
+"1-3":["Open the Milestones tab and set your Series 65 exam date if it is not already there.","Write down which provider you are using and how far through the material you are.","Note what still has to happen before the exam: units left, practice exams, the booking itself.","Nothing else. This tracker does not schedule your study \u2014 it just holds the date."],
+"1-4":["Use the Work area below as your evidence log, or start a spreadsheet if you prefer \u2014 but pick one and only one.","Five columns: date, what happened, the number, who noticed, link to the artifact.","Write what you have from your first month. Include things you learned, not just things you delivered.","Set a recurring reminder for Friday at 4pm to add one entry. Every Friday, forever."],
+"1-5":["Pick where your work lives: Notion, Obsidian, Google Drive, a folder. One place.","Create five containers: SOP Library, Builds, Evidence Log, Target Firms, Study Log.","Move anything you have already made into the right one.","Paste the link to the top-level page into Where it lives below.","Do not spend the whole block choosing a tool. Any of them works; switching later costs you nothing."],
+"1-6":["Open the Operating manual tab and set your exam date, move date, current salary and target.","Read the Operating manual end to end. It is about ten minutes and it explains how the queue works.","Come back to Tonight and look at what is next. That is all planning is here."],
+"2-0":["Open a new document. This is the template every future SOP copies.","Write the headings: Purpose, Trigger, Systems, Prerequisites, Steps, Decision table, Failure modes, Turnaround, Verification, Client communication.","Under Steps, write the format you will use: exact screen path, then exact field, then exact value.","Save it as a template you can duplicate. Paste the link below."],
+};
+function work(id){
+  const w=S.work[id]||{};
+  if(typeof w.notes!=="string")w.notes="";
+  if(!Array.isArray(w.items))w.items=[];
+  if(typeof w.link!=="string")w.link="";
+  if(typeof w.steps!=="string")w.steps="";
+  if(!w.sdone||typeof w.sdone!=="object")w.sdone={};
+  S.work[id]=w; return w;
+}
+function isListy(d){return /\b(list|inventory|names|stories|questions|entries|targets|bullets|log)\b/i.test(d.t+" "+d.o);}
+function wsHasContent(id){const w=S.work[id];if(!w)return false;return !!(w.notes||w.link||(w.items&&w.items.length)||w.steps);}
+function stepList(d){
+  const w=work(d.id);
+  const built=STEPS[d.id];
+  const gen=w.steps?w.steps.split("\n").map(x=>x.replace(/^\s*\d+[.)]\s*/,"").trim()).filter(Boolean):null;
+  return built||gen||null;
+}
+function wsHtml(d){
+  const w=work(d.id),listy=isListy(d),st=stepList(d);
+  let h='<div class="ws" id="ws-'+d.id+'">';
+  h+='<div><h4>How to do it</h4>';
+  if(st){
+    h+='<ul class="steps">'+st.map((x,i)=>'<li class="'+(w.sdone[i]?"on":"")+'"><span class="sx" data-step="'+d.id+'|'+i+'">'+esc(x)+'</span></li>').join("")+'</ul>';
+    h+='<div class="wsbtn" style="margin-top:9px"><button class="workbtn ghost" data-steps="'+d.id+'">'+(STEPS[d.id]?"Ask Claude for more detail":"Ask again")+'</button></div>';
+  }else{
+    h+='<p class="wsnote" style="margin:0 0 9px">No walkthrough written for this one yet. Ask and you will get steps for exactly this task, in your situation.</p>'+
+       '<div class="wsbtn"><button class="workbtn ghost" data-steps="'+d.id+'">Walk me through it</button></div>';
+  }
+  h+='<pre class="hide" id="sout-'+d.id+'" style="margin-top:10px"></pre></div>';
+  h+='<div><h4>'+(listy?"Your list":"Your work")+'</h4>';
+  if(listy){
+    h+='<div class="items">'+(w.items.length?w.items.map((x,i)=>'<div class="item"><span class="n">'+(i+1)+'</span><span>'+esc(x)+'</span><button class="rm" data-rm="'+d.id+'|'+i+'" aria-label="Remove">\u00d7</button></div>').join(""):'<p class="wsnote" style="margin:0">Nothing yet. Add the first one below.</p>')+'</div>';
+    h+='<div class="addrow" style="margin-top:8px"><input type="text" id="add-'+d.id+'" placeholder="Type one and press return"><button class="workbtn ghost" data-add="'+d.id+'">Add</button></div>';
+    h+='<p class="wsnote" style="margin:8px 0 0">'+w.items.length+' so far. Everything here saves with the task and goes into your backup.</p>';
+  }else{
+    h+='<textarea data-notes="'+d.id+'" placeholder="Draft it here. It saves as you type and it is included in your backup.">'+esc(w.notes)+'</textarea>';
+  }
+  h+='</div>';
+  h+='<div><h4>Where it lives</h4><input type="text" data-link="'+d.id+'" value="'+esc(w.link)+'" placeholder="Paste a link \u2014 Tableau workbook, Notion page, Drive file"></div>';
+  h+='<div class="wsbtn" style="border-top:1px solid var(--rule);padding-top:13px">'+
+     '<button class="workbtn" data-prog="'+d.id+'|100">Mark this done</button>'+
+     '<button class="workbtn ghost" data-prog="'+d.id+'|50">Half done, save it</button>'+
+     '<button class="workbtn ghost" data-push="'+d.id+'">Not tonight</button>'+
+     '<span class="wsnote" style="margin-left:auto">Saves automatically</span></div>';
+  return h+'</div>';
+}
+let openWs={};
 function dayCard(d){
-  const done=isDone(d),pct=progOf(d),def=S.defer[d.id]||0;
-  return '<article class="daycard'+(done?" done":"")+(pct>0&&pct<100?" carried":"")+'">'+
-   '<div class="dayhead">'+
+  const done=isDone(d),pct=progOf(d),def=S.defer[d.id]||0,open=!!openWs[d.id];
+  return '<article class="daycard'+(done?" done":"")+(pct>0&&pct<100?" carried":"")+(open?" wsopen":"")+'">'+
+   '<div class="dayhead" data-ws="'+d.id+'" style="cursor:pointer">'+
      '<button class="tick" aria-pressed="'+done+'" data-id="'+d.id+'" aria-label="Mark complete"><svg viewBox="0 0 20 20"><polyline points="4,10.5 8,14.5 16,5.5"></polyline></svg></button>'+
      '<div class="daymeta"><h3>'+d.t+'</h3><div class="line">'+trackPill(d.x)+
        '<span class="pill">'+d.m+" min"+'</span><span class="pill">task '+taskNo(d)+' \u00b7 block '+d.w+'</span>'+
@@ -1546,7 +1626,9 @@ function dayCard(d){
      (d.k?'<div class="field"><div class="fl">Why</div><div class="fv">'+d.k+'</div></div>':"")+
      '<div class="field"><div class="fl">Block</div><div class="fv">'+d.theme+'</div></div>'+
      progControls(d.id,pct,true)+
-   '</div></article>';
+     '<div class="wsbtn"><button class="workbtn'+(open?"":" ghost")+'" data-ws="'+d.id+'">'+(open?"Hide workspace":"Work on this")+'</button>'+
+     (wsHasContent(d.id)&&!open?'<span class="wsnote">you have work saved here</span>':"")+'</div>'+
+   '</div>'+(open?wsHtml(d):"")+'</article>';
 }
 let budget=60;
 function backupDue(){
@@ -2059,6 +2141,7 @@ function refreshCore(){renderTop();renderToday();renderPlan();if(cur==="coo")ren
 document.addEventListener("click",e=>{
   const tick=e.target.closest(".tick");
   if(tick){
+    e.stopPropagation();
     const id=tick.dataset.id,was=!!S.done[id];
     setProg(id,was?0:100);refreshCore();
     if(!was)toast("Done \u00b7 "+doneDays().length+" of "+NTASK+" \u00b7 "+hrs(minutesDone())+" banked");
@@ -2081,6 +2164,20 @@ document.addEventListener("click",e=>{
     toast(wasTop&&nowTop&&wasTop.id!==nowTop.id?"Moved down the queue \u00b7 it will come back around":"Pushed \u00b7 it stays near the front while it is unfinished");
     return;
   }
+  const wsb=e.target.closest("[data-ws]");
+  if(wsb&&!e.target.closest(".ws")&&!e.target.closest("[data-prog]")&&!e.target.closest("[data-push]")){
+    const id=wsb.dataset.ws; openWs[id]=!openWs[id]; renderToday();
+    if(openWs[id]) setTimeout(()=>{const el=document.getElementById("ws-"+id);if(el)el.scrollIntoView({block:"nearest",behavior:"smooth"});},60);
+    return;
+  }
+  const st=e.target.closest("[data-step]");
+  if(st){const [id,i]=st.dataset.step.split("|");const w=work(id);w.sdone[i]=!w.sdone[i];persist();renderToday();return;}
+  const rm=e.target.closest("[data-rm]");
+  if(rm){const [id,i]=rm.dataset.rm.split("|");const w=work(id);w.items.splice(+i,1);persist();renderToday();return;}
+  const ad=e.target.closest("[data-add]");
+  if(ad){addItem(ad.dataset.add);return;}
+  const sg=e.target.closest("[data-steps]");
+  if(sg){genSteps(sg.dataset.steps);return;}
   const nd=e.target.closest("[data-nudge]");
   if(nd){S.nudgeSeen=Date.now();persist();renderToday();return;}
   const bu=e.target.closest("[data-budget]");
@@ -2103,6 +2200,32 @@ document.addEventListener("click",e=>{
   if(chip){trackFilter=chip.dataset.track;
     document.querySelectorAll(".chip[data-track]").forEach(c=>c.setAttribute("aria-pressed",c===chip?"true":"false"));
     renderPlan();return;}
+});
+function addItem(id){
+  const inp=document.getElementById("add-"+id); if(!inp)return;
+  const v=inp.value.trim(); if(!v)return;
+  const w=work(id); w.items.push(v); persist(); renderToday();
+  setTimeout(()=>{const n=document.getElementById("add-"+id); if(n){n.focus();}},50);
+}
+async function genSteps(id){
+  const d=ALLDAYS.find(x=>x.id===id); if(!d)return;
+  const out=document.getElementById("sout-"+id); if(out){out.classList.remove("hide");out.textContent="Thinking\u2026";}
+  if(SAMPLE===null&&window.claude&&window.claude.use){ try{SAMPLE=await window.claude.use("sample");}catch(e){SAMPLE=false;} }
+  if(!SAMPLE){ if(out)out.textContent="Claude is not available in this view. Copy the task into a chat and ask: how do I do this, step by step, on a Mac, working at a small RIA?"; return; }
+  const prompt="I am one month into my first job in operations at a registered investment adviser. I work on a Mac. I use Tableau Public, DuckDB and Notion. I am working through a career plan and tonight's task is below. Write me the numbered steps to actually do it \u2014 concrete and specific, naming the exact tool, menu or document at each step. Between five and eight steps. No preamble, no encouragement, just the numbered steps, one per line. If the task needs something I have to get from someone else, say who to ask and what to ask them.\n\nTASK: "+d.t+"\nWHAT IT SAYS: "+d.d+"\nWHAT IT SHOULD PRODUCE: "+d.o;
+  try{
+    const r=await SAMPLE(prompt,{onText:({text})=>{if(out)out.textContent=text;}});
+    const txt=(r&&r.text)||(out?out.textContent:"");
+    work(id).steps=txt; persist(); renderToday();
+  }catch(e){ if(out)out.textContent="Could not reach Claude ("+((e&&e.code)||"error")+"). Copy the task into a chat instead."; }
+}
+document.addEventListener("keydown",e=>{
+  if(e.key==="Enter"&&e.target&&e.target.id&&e.target.id.indexOf("add-")===0){e.preventDefault();addItem(e.target.id.slice(4));}
+});
+document.addEventListener("input",e=>{
+  const t=e.target;
+  if(t.dataset&&t.dataset.notes!==undefined){work(t.dataset.notes).notes=t.value;persist();return;}
+  if(t.dataset&&t.dataset.link!==undefined){work(t.dataset.link).link=t.value;persist();return;}
 });
 document.addEventListener("change",e=>{
   const t=e.target;
