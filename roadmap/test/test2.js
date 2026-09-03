@@ -66,6 +66,16 @@ const pass=[],fail=[]; const t=(n,c,d='')=>c?pass.push(n):fail.push(n+(d?' :: '+
  t('nudge clears after exporting',(await p.textContent('#backupNudge')).trim()===''); 
  t('storage note shows backup age',(await p.textContent('#syncNote')).includes('Backup exported'));
 
+ // uniqueness: no two tasks share a title or a Do text
+ const uniq=await p.evaluate(()=>{
+   const t=[],d=[];
+   for(const w of PLAN) for(const x of w.days){t.push(x.t);d.push(x.d);}
+   const dupe=a=>a.filter((v,i)=>a.indexOf(v)!==i);
+   return {n:t.length,titles:dupe(t),dos:dupe(d)};});
+ t('every task title is unique',uniq.titles.length===0,uniq.titles.slice(0,3).join(' | '));
+ t('every task Do text is unique',uniq.dos.length===0,uniq.dos.slice(0,2).join(' | '));
+ t('task count still 385',uniq.n===385,'n='+uniq.n);
+
  // regression sweep: all tabs still render
  const names=await p.evaluate(()=>Array.from(document.querySelectorAll('.nav button')).map(b=>b.textContent));
  for(let i=0;i<names.length;i++){
