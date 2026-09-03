@@ -1,6 +1,6 @@
 # Ops Ladder
 
-A single-file, self-contained 378-task career system: month one at an RIA →
+A single-file, self-contained 385-task career system: month one at an RIA →
 Florida → the operations ladder → COO of a $1-5b RIA.
 
 Calibrated for ~6-8 hours a week, weighted to the operations-leadership path, and
@@ -36,7 +36,7 @@ The only dated things are on the Milestones tab: the Series 65 exam, the Florida
 and the compensation targets. The tracker does not schedule study or quiz you — the
 exam sits there as a date and a plan for the week you pass.
 
-Contents: 378 tasks across 54 blocks and 4 phases, a COO track (firm economics,
+Contents: 385 tasks across 55 blocks and 4 phases, a COO track (firm economics,
 people and hiring, change management), a 40-process SOP index, three skill
 ladders, a Tampa Bay target board with outreach scripts, a compensation model, a
 Florida move plan, 17 reusable prompts, 8 automation recipes, a risk register, and six
