@@ -5,8 +5,11 @@ Florida → the operations ladder → $130-150k.
 
 Calibrated for ~6-8 hours a week, weighted to the operations-leadership path, and
 built on a Mac toolchain (Tableau Public, DuckDB, Looker Studio) since Power BI
-Desktop is Windows-only. The compensation model runs eight years, not six, because
-that is the honest horizon from one month of experience.
+Desktop is Windows-only.
+
+The compensation model is anchored on a known step: Associate Advisor at around
+$65k, three to six months out, gated on the Series 65. Targets are $80k+ on the
+move, $100k at year two, $130-150k at years four to six.
 
 - `index.html` — the whole application. No build step, no dependencies. Open it in a
   browser, or publish it as a Claude Artifact.
