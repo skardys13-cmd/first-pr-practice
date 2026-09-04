@@ -34,6 +34,7 @@ ROLE_NOT_PERMITTED = "role_not_permitted"          # Constitution VI
 HUMAN_ACTIVE = "human_active_in_session"           # F-13, F-14
 ENVIRONMENT_INTERRUPTED = "environment_interrupted"  # F-44
 EXTRACTION_FAILED = "extraction_failed"            # F-30, Constitution V
+MISSING_INFORMATION = "missing_information"        # Step 13, an unresolved entity
 
 STOP_REASONS = frozenset({
     SESSION_EXPIRED, ELEMENT_NOT_FOUND, AMBIGUOUS_MATCH, DATA_MISMATCH,
@@ -42,7 +43,7 @@ STOP_REASONS = frozenset({
     TRANSACTION_PAGE, CLICK_BUDGET_EXCEEDED, REPEAT_ACTION,
     CONSENT_INTERSTITIAL, VERIFICATION_FAILED, UNRECOGNISED_TASK,
     NOT_WHITELISTED, ROLE_NOT_PERMITTED, HUMAN_ACTIVE,
-    ENVIRONMENT_INTERRUPTED, EXTRACTION_FAILED,
+    ENVIRONMENT_INTERRUPTED, EXTRACTION_FAILED, MISSING_INFORMATION,
 })
 
 # Default next step per reason. A caller may pass something more specific, but
@@ -71,6 +72,7 @@ SUGGESTED_NEXT_STEP = {
     HUMAN_ACTIVE: "You were working in the same session, so the agent yielded. Re-run when you are done.",
     ENVIRONMENT_INTERRUPTED: "The machine slept, the browser closed, or the connection dropped. Re-run when the environment is stable.",
     EXTRACTION_FAILED: "The agent could not read a value and refused to guess. Read it yourself.",
+    MISSING_INFORMATION: "The task does not say enough to act on. Add the missing detail to the task, then re-run.",
 }
 
 

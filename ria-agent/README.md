@@ -33,6 +33,14 @@ tooling (F-40).
 
     python -m ria_agent.cli --help
 
+The intended order for a new install:
+
+    ria-agent seed                       # synthetic queue, to live in for a week
+    ria-agent serve                      # the review queue on localhost
+    ria-agent shadow                     # classify real tasks, act on none
+    ria-agent shadow-report --labels ... # score it against a human review
+    ria-agent shadow-report --labels ... --write-whitelist
+
 Tests need `pytest`:
 
     pytest
@@ -53,4 +61,13 @@ Tests need `pytest`:
       web.py             that queue on localhost
       seeded_errors.py   deliberate faults and the catch rate (off by default)
       synthetic.py       fake data for using the queue before real data exists
-      cli.py             serve, seed, export, verify
+      cli.py             serve, seed, shadow, shadow-report, export, verify
+      crm.py             read-only CRM interface, and a fixture-backed stand-in
+      classifier.py      rules first, model for the tail, unrecognised otherwise
+      normalizer.py      task -> resolved intent, with provenance on every value
+      matching.py        exact identifier matching; substring matching is banned
+      untrusted.py       content from outside, fenced as data
+      workflows.py       the six clusters and the workflows in them
+      roles.py           what each role's agent may do
+      shadow.py          shadow mode and its per-template report
+      whitelist.py       the whitelist and the single entry point that enforces it

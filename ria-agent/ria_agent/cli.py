@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from pathlib import Path
 
@@ -95,6 +96,59 @@ def cmd_export(args) -> int:
     return 0
 
 
+def cmd_shadow(args) -> int:
+    """Step 15: classify real tasks, take no action, log everything."""
+    from .classifier import Classifier
+    from .crm import FixtureCrm
+    from .shadow import ShadowRunner
+
+    app = _app(args)
+    crm = FixtureCrm(path=args.tasks) if args.tasks else FixtureCrm.from_bundled_fixtures()
+    runner = ShadowRunner(crm, Classifier(), app.log, operator=app.operator,
+                          role=app.role, model_version=app.model_version)
+    observations = runner.run(owner=args.owner)
+    recognised = sum(1 for o in observations if o.recognised)
+    print(f"Observed {len(observations)} tasks. No action was taken on any of them.")
+    print(f"  recognised   {recognised}")
+    print(f"  unrecognised {len(observations) - recognised}  (a success state)")
+    print(f"\nReceipts are in {app.log.db_path}.")
+    print("Review them, write a labels file, then run: ria-agent shadow-report")
+    app.close()
+    return 0
+
+
+def cmd_shadow_report(args) -> int:
+    """Step 16: score the shadow log against a human review."""
+    from .shadow import build_report, observations_from_log
+    from .whitelist import Whitelist
+
+    app = _app(args)
+    observations = observations_from_log(app.log)
+    labels = json.loads(Path(args.labels).read_text(encoding="utf-8")) if args.labels else {}
+    labels = {
+        task_id: (value if isinstance(value, dict) else {"workflow": value})
+        for task_id, value in labels.items()
+    }
+    report = build_report(observations, labels)
+    print(report.summary())
+    if report.unlabelled:
+        print(f"\n{len(report.unlabelled)} classifications are not yet reviewed "
+              "and were not scored.")
+
+    clean = report.clean_templates(min_samples=args.min_samples)
+    print(f"\nFit to whitelist at n>={args.min_samples}: {len(clean)} template(s)")
+    for template in sorted(clean):
+        print(f"  {template}")
+
+    if args.write_whitelist:
+        path = Whitelist(clean).save(Path(app.storage_dir) / "whitelist.json")
+        print(f"\nWrote {path}. The agent will act on these task types and no others.")
+    else:
+        print("\nNothing was locked in. Re-run with --write-whitelist to enforce this.")
+    app.close()
+    return 0
+
+
 def cmd_verify(args) -> int:
     """Check the log's two copies still agree, and report the catch rate."""
     app = _app(args)
@@ -152,6 +206,22 @@ def build_parser() -> argparse.ArgumentParser:
     export.add_argument("--outcome"), export.add_argument("--since")
     export.add_argument("--until"), export.add_argument("--firm", default="")
     export.set_defaults(func=cmd_export)
+
+    shadow = subparsers.add_parser(
+        "shadow", help="classify real tasks and act on none of them")
+    shadow.add_argument("--owner", default=None, help="only this person's tasks")
+    shadow.add_argument("--tasks", default=None, help="task fixture JSON to read")
+    shadow.set_defaults(func=cmd_shadow)
+
+    report = subparsers.add_parser(
+        "shadow-report", help="score the shadow log against a human review")
+    report.add_argument("--labels", default=None,
+                        help="JSON of task_id -> workflow, or -> {workflow, account, period}")
+    report.add_argument("--min-samples", type=int, default=20,
+                        help="samples a template needs before it can be whitelisted")
+    report.add_argument("--write-whitelist", action="store_true",
+                        help="lock the clean templates in as the whitelist")
+    report.set_defaults(func=cmd_shadow_report)
 
     verify = subparsers.add_parser("verify", help="check the log verifies")
     verify.set_defaults(func=cmd_verify)
