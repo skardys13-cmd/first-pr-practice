@@ -113,12 +113,18 @@ and the count of consecutive clean runs, and write workflows on approval rate
 errors decided is refused, in as many words: without them, that number is
 indistinguishable from nobody reading.
 
-### 10. No baseline measurement step — status: open
+### 10. No baseline measurement step — status: open, and now visible
 
 §1.10 requires time-to-complete to drop by at least 50%, and no step in Phases
-0–7 measures the current time. The baseline has to be captured before the pilot
-workflow is automated, by hand, with a stopwatch. It is not a coding task, and
-without it the pilot has nothing to subtract from.
+0–7 measures the current time. The baseline has to be captured by hand, with a
+stopwatch, before the pilot workflow is automated. It is not a coding task.
+
+What is built is the refusal to paper over it: `ria_agent.health` reports time
+returned only for workflows with a recorded manual baseline, and names the ones
+without so the gap is on the weekly report rather than absent from it. Time
+returned also counts finished work only — an item awaiting review saved the
+retrieval, but the review is new cost, and counting it whole would overstate
+exactly the number the pilot is judged on.
 
 ### 11. No claim or lease protocol — status: open
 

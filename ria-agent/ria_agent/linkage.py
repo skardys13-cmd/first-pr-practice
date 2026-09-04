@@ -71,12 +71,37 @@ class LinkageReport:
         return "\n".join(lines)
 
 
-def check(records: list[AccountRecord]) -> LinkageReport:
+#: Systems this firm expects every custodial account to appear in. A system
+#: that contributes no records at all is a finding, not silence: a book where
+#: the CRM returned nothing would otherwise report "all linked correctly",
+#: which is the most dangerous possible answer.
+DEFAULT_EXPECTED = ("redtail",)
+
+
+def check(
+    records: list[AccountRecord],
+    expected_systems: tuple[str, ...] = DEFAULT_EXPECTED,
+) -> LinkageReport:
     """Is every custodial account linked correctly in every system?"""
-    systems = sorted({record.system for record in records})
+    present = {record.system for record in records}
+    systems = sorted(present | set(expected_systems))
     report = LinkageReport(systems=tuple(systems))
 
+    for system in expected_systems:
+        if system not in present and any(
+            SYSTEM_KINDS.get(r.system.lower()) == CUSTODIAN for r in records
+        ):
+            report.findings.append(Finding(
+                NOT_LINKED, f"(every account)",
+                f"{system} returned no accounts at all",
+                f"Check {system} is readable and actually holds these accounts. "
+                "A system that returns nothing looks identical to a system where "
+                "everything is linked, and it is the opposite.",
+            ))
+
     by_system: dict[str, list[AccountRecord]] = {system: [] for system in systems}
+    for system in systems:
+        by_system.setdefault(system, [])
     for record in records:
         by_system[record.system].append(record)
 

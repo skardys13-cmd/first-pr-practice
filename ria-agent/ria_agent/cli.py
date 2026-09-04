@@ -246,6 +246,52 @@ def cmd_promotion(args) -> int:
     return 0
 
 
+def cmd_health(args) -> int:
+    """Step 45: the weekly summary the firm's owner reads."""
+    from .health import Baselines, build
+
+    app = _app(args)
+    baselines = Baselines.load(Path(app.storage_dir) / "baselines.json")
+    print(build(app.log, baselines, days=args.days).summary())
+    app.close()
+    return 0
+
+
+def cmd_doctor(args) -> int:
+    """Everything an install must satisfy before it works."""
+    from .install import doctor
+
+    import os
+    storage = args.home or os.environ.get("RIA_AGENT_HOME") or str(Path.home() / ".ria-agent")
+    checks = doctor(storage, os.environ.get("RIA_AGENT_MINIMUM_VERSION"))
+    for check in checks:
+        print(f"  {'ok  ' if check.ok else 'FAIL'} {check.detail}")
+    failed = [c for c in checks if not c.ok]
+    print("\n" + ("Ready." if not failed else f"{len(failed)} problem(s). Not ready."))
+    return 1 if failed else 0
+
+
+def cmd_bundle(args) -> int:
+    """A diagnostic package with no client data in it (F-41)."""
+    from .install import diagnostic_bundle
+
+    import os
+    storage = args.home or os.environ.get("RIA_AGENT_HOME") or str(Path.home() / ".ria-agent")
+    written = diagnostic_bundle(storage, args.out)
+    print(f"Wrote {written} ({written.stat().st_size} bytes).")
+    print("Read it before you send it. It holds versions, stop reasons and "
+          "timings, and no client data.")
+    return 0
+
+
+def cmd_scaling(args) -> int:
+    """Step 40: how much tuning each custodian costs."""
+    from .custodians import scaling_report
+
+    print(scaling_report())
+    return 0
+
+
 def cmd_verify(args) -> int:
     """Check the log's two copies still agree, and report the catch rate."""
     app = _app(args)
@@ -340,6 +386,22 @@ def build_parser() -> argparse.ArgumentParser:
     promotion.add_argument("--promote", action="store_true")
     promotion.add_argument("--demote", metavar="REASON", default=None)
     promotion.set_defaults(func=cmd_promotion)
+
+    health = subparsers.add_parser("health", help="the weekly summary")
+    health.add_argument("--days", type=int, default=7)
+    health.set_defaults(func=cmd_health)
+
+    doctor_cmd = subparsers.add_parser("doctor", help="is this install fit to run?")
+    doctor_cmd.set_defaults(func=cmd_doctor)
+
+    bundle = subparsers.add_parser(
+        "bundle", help="a diagnostic package with no client data in it")
+    bundle.add_argument("out", help="where to write it")
+    bundle.set_defaults(func=cmd_bundle)
+
+    scaling = subparsers.add_parser(
+        "scaling", help="per-custodian tuning cost")
+    scaling.set_defaults(func=cmd_scaling)
 
     verify = subparsers.add_parser("verify", help="check the log verifies")
     verify.set_defaults(func=cmd_verify)

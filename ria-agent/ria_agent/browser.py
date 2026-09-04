@@ -101,6 +101,16 @@ class BrowserDriver(ABC):
     def screenshot(self, destination: Path) -> Path:
         """Capture the current view."""
 
+    def home(self) -> PageObservation:
+        """Return to the portal's entry point.
+
+        A browser keeps its place between tasks, so a workflow that chains
+        several retrievals would otherwise start each one wherever the last left
+        off -- and looking for account B on account A's page finds nothing. Every
+        task begins from a known page.
+        """
+        return self.observe()
+
     def is_authenticated(self) -> bool:
         return self.observe().authenticated
 
@@ -132,6 +142,10 @@ class FakePortalConfig:
     lookalike_account: str | None = None
     #: Put a transaction confirmation page one click from the dashboard.
     transaction_page: bool = True
+    #: How this custodian arranges its statements. Step 39 says adding a
+    #: custodian must not need a custodian-specific script, so these are the
+    #: shapes the one navigator has to cope with.
+    layout: str = "flat"
 
 
 class FakePortal(BrowserDriver):
@@ -193,6 +207,11 @@ class FakePortal(BrowserDriver):
         destination.write_bytes(render_statement_pdf(statement))
         return destination
 
+    def home(self) -> PageObservation:
+        if self.config.authenticated and self._path not in ("/login", "/mfa", "/notice"):
+            self._path = "/dashboard"
+        return self.observe()
+
     def screenshot(self, destination: Path) -> Path:
         destination.parent.mkdir(parents=True, exist_ok=True)
         page = self._page(self._path)
@@ -225,7 +244,16 @@ class FakePortal(BrowserDriver):
         if builder is not None:
             return builder()
         if path.startswith("/accounts/"):
-            return self._account(path.rsplit("/", 1)[-1])
+            parts = [piece for piece in path.split("/") if piece]
+            account = parts[1]
+            if len(parts) == 2:
+                return self._account(account)
+            tail = parts[2]
+            if tail == "documents":
+                return self._documents(account)
+            if tail.startswith("y"):
+                return self._year(account, tail[1:])
+            return self._account(account)
         return PageObservation(self.url, "Not found", "That page does not exist.")
 
     def _login(self) -> PageObservation:
@@ -259,6 +287,18 @@ class FakePortal(BrowserDriver):
         )
 
     def _dashboard(self) -> PageObservation:
+        if self.config.layout == "dashboard_direct":
+            # Everything on one page: accounts and their statements together.
+            elements: list[Element] = []
+            for account in sorted({s.account for s in self.statements}):
+                elements.append(Element(f"acct-{account}", LINK,
+                                        f"Account {account}", href=f"/accounts/{account}"))
+                elements.extend(self._statement_elements(account, self._periods(account)))
+            if self.config.transaction_page:
+                elements.append(Element("transfer", BUTTON, "Transfer funds",
+                                        href="/transfer"))
+            return PageObservation(self.url, "Accounts overview", "Your accounts",
+                                   tuple(elements))
         accounts = sorted({s.account for s in self.statements})
         if self.config.lookalike_account:
             accounts = sorted(set(accounts) | {self.config.lookalike_account})
@@ -280,23 +320,68 @@ class FakePortal(BrowserDriver):
             "Your accounts", tuple(elements),
         )
 
-    def _account(self, account: str) -> PageObservation:
-        holder = next((s.holder for s in self.statements if s.account == account), "Unknown")
-        periods = sorted(
+    def _periods(self, account: str) -> list[str]:
+        return sorted(
             {s.period for s in self.statements if s.account == account}, reverse=True
         )
-        elements = [
+
+    def _statement_elements(self, account: str, periods) -> list[Element]:
+        return [
             Element(f"stmt-{account}-{period}", DOWNLOAD,
                     self._label(f"Statement {period}", f"{period} document"),
                     href=f"{account}|{period}")
             for period in periods
         ]
-        elements.append(Element("update-banking", BUTTON,
-                                self._label("Update banking details", "Edit bank info"),
-                                href="/transfer"))
+
+    def _holder(self, account: str) -> str:
+        return next((s.holder for s in self.statements if s.account == account), "Unknown")
+
+    def _account(self, account: str) -> PageObservation:
+        layout = self.config.layout
+        periods = self._periods(account)
+        banking = Element("update-banking", BUTTON,
+                          self._label("Update banking details", "Edit bank info"),
+                          href="/transfer")
+
+        if layout == "tabbed":
+            # Statements live behind a documents tab, not on the account page.
+            elements = [
+                Element(f"docs-{account}", LINK,
+                        self._label("Documents", "Paperless documents"),
+                        href=f"/accounts/{account}/documents"),
+                Element(f"positions-{account}", LINK, "Positions",
+                        href=f"/accounts/{account}"),
+                banking,
+            ]
+        elif layout == "year_first":
+            years = sorted({period[:4] for period in periods}, reverse=True)
+            elements = [
+                Element(f"year-{account}-{year}", LINK, f"{year} statements",
+                        href=f"/accounts/{account}/y{year}")
+                for year in years
+            ] + [banking]
+        else:
+            elements = self._statement_elements(account, periods) + [banking]
+
         return PageObservation(
             self.url, f"Account {account}",
-            f"Account {account}\nAccount holder: {holder}\nStatements", tuple(elements),
+            f"Account {account}\nAccount holder: {self._holder(account)}\nStatements",
+            tuple(elements),
+        )
+
+    def _documents(self, account: str) -> PageObservation:
+        return PageObservation(
+            self.url, f"Documents for {account}",
+            f"Account {account}\nAccount holder: {self._holder(account)}\nStatements",
+            tuple(self._statement_elements(account, self._periods(account))),
+        )
+
+    def _year(self, account: str, year: str) -> PageObservation:
+        periods = [p for p in self._periods(account) if p.startswith(year)]
+        return PageObservation(
+            self.url, f"{year} statements for {account}",
+            f"Account {account}\nAccount holder: {self._holder(account)}",
+            tuple(self._statement_elements(account, periods)),
         )
 
     def _transfer(self) -> PageObservation:

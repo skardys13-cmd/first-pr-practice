@@ -78,8 +78,26 @@ class Policy(ABC):
         """One action, a Violation to stop on, or None when there is nothing left to try."""
 
 
+#: Words that suggest a control leads toward filed documents. General to
+#: custodian portals, not tuned to any one of them -- Step 39 says a new
+#: custodian must not need its own script, so a portal that hides statements
+#: behind a tab is the navigator's problem to solve, not the custodian's to be
+#: special-cased for.
+DOCUMENT_HINTS = (
+    "statement", "document", "paperless", "activity", "history",
+    "correspondence", "e-delivery", "edelivery", "archive",
+)
+
+
 class StatementRetrievalPolicy(Policy):
-    """Find an account, then find its statement for a period.
+    """Find an account, then work toward its statement for a period.
+
+    Four tiers, tried in order, each one more speculative than the last:
+
+    1. a statement download that matches the account and period exactly;
+    2. a control naming the account;
+    3. a control naming the period or its year;
+    4. a control that sounds like it leads to filed documents.
 
     Accounts are matched exactly (Constitution V). A portal listing both
     `1234-5678` and `1234-56789` offers the agent no way to pick the wrong one,
@@ -99,18 +117,39 @@ class StatementRetrievalPolicy(Policy):
         if downloads:
             return Action(DOWNLOAD_ACTION, downloads[0].element_id)
 
-        links = [
+        followed = self._followed(steps)
+
+        named = [
             element for element in observation.elements
             if element.kind != DOWNLOAD and contains_account(element.label, goal.account)
         ]
-        if len(links) > 1:
+        if len(named) > 1:
             return Violation(
                 stops.AMBIGUOUS_MATCH,
-                f"{len(links)} controls on this page name account {goal.account}",
+                f"{len(named)} controls on this page name account {goal.account}",
             )
-        if links and links[0].element_id not in {step.action and step.action.split()[-1]
-                                                 for step in steps}:
-            return Action(CLICK, links[0].element_id)
+        action = self._first_unfollowed(named, followed)
+        if action:
+            return action
+
+        year = goal.period[:4]
+        by_period = [
+            element for element in observation.elements
+            if element.kind != DOWNLOAD
+            and (goal.period in element.label or year in element.label)
+        ]
+        action = self._first_unfollowed(by_period, followed)
+        if action:
+            return action
+
+        toward_documents = [
+            element for element in observation.elements
+            if element.kind != DOWNLOAD
+            and any(hint in element.label.lower() for hint in DOCUMENT_HINTS)
+        ]
+        action = self._first_unfollowed(toward_documents, followed)
+        if action:
+            return action
 
         if any(element.kind == DOWNLOAD for element in observation.elements):
             return Violation(
@@ -120,11 +159,26 @@ class StatementRetrievalPolicy(Policy):
         return None
 
     @staticmethod
+    def _followed(steps: list[Step]) -> set[str]:
+        return {
+            step.action.split(" ", 1)[1]
+            for step in steps
+            if step.action and " " in step.action
+        }
+
+    @staticmethod
+    def _first_unfollowed(elements, followed: set[str]) -> Action | None:
+        for element in elements:
+            if element.element_id not in followed:
+                return Action(CLICK, element.element_id)
+        return None
+
+    @staticmethod
     def _is_wanted_statement(element, goal: RetrievalGoal) -> bool:
         if goal.period not in element.label and goal.period not in element.href:
             return False
-        # The href carries "account|period" in this portal; when it does, the
-        # account must agree exactly as well.
+        # Where the href carries "account|period", the account must agree
+        # exactly as well -- a period alone is not identity.
         if "|" in element.href:
             return contains_account(element.href.split("|")[0], goal.account)
         return True

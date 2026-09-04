@@ -18,7 +18,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from . import session, stops
-from .browser import BrowserDriver
+from .browser import BrowserDriver, MfaChallenge, SessionLost
 from .guardrails import DEFAULT_CLICK_BUDGET, Guardrails
 from .log_store import LogStore
 from .navigator import Navigator, NavigationResult, RetrievalGoal, StatementRetrievalPolicy
@@ -86,6 +86,16 @@ class StatementRetrieval:
         if not state.live:
             return self._stopped(crm_task_id, goal, started,
                                  state.stop_reason, state.detail, state.next_step)
+
+        # Start from a known page. Without this, a workflow chaining several
+        # retrievals looks for the second account on the first account's page.
+        try:
+            self.driver.home()
+        except (SessionLost, MfaChallenge) as failure:
+            reason = (stops.MFA_CHALLENGE if isinstance(failure, MfaChallenge)
+                      else stops.SESSION_EXPIRED)
+            return self._stopped(crm_task_id, goal, started, reason, str(failure),
+                                 stops.next_step_for(reason))
 
         guardrails = Guardrails(self.allowed_domains, click_budget=self.click_budget)
         navigator = Navigator(

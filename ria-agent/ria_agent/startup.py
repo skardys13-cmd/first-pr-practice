@@ -76,6 +76,14 @@ class Application:
         self.storage_dir = Path(storage_dir) if storage_dir else default_storage_dir()
         self.storage_dir.mkdir(parents=True, exist_ok=True)
 
+        # F-40: an install behind the version the firm agreed to refuses to run
+        # rather than behaving in a way nobody can reproduce.
+        from .install import check_version
+        required = os.environ.get("RIA_AGENT_MINIMUM_VERSION")
+        version = check_version(required)
+        if not version.ok:
+            raise RuntimeError(version.detail)
+
         # Step 6. Nothing else happens until this passes.
         assert_clean(self.storage_dir)
 

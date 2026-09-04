@@ -23,6 +23,7 @@ fixture-backed fakes.
 | 3 | 18–24 | Session detection, goal-directed navigation, guardrails, verification |
 | 4 | 25–30 | Naming rules, filing proposals, the executor, reversal, promotion |
 | 5 | 31–38 | Tolerance and as-of rules, the comparison engine, linkage, the gate |
+| 6 | 39–45 | One navigator across seven custodians, the packet, health, install |
 
 [RECONCILIATION.md](RECONCILIATION.md) defines what "agree" means — tolerance,
 as-of alignment, and the causes that legitimately differ. It is the
@@ -50,6 +51,10 @@ The intended order for a new install:
     ria-agent retrieve --account ... --period ...   # one retrieval, receipted
     ria-agent attend --runs 50                      # the supervised gate
     ria-agent promotion statement_retrieval         # may it run unattended yet?
+    ria-agent scaling                               # per-custodian tuning cost
+    ria-agent health --days 7                       # the weekly summary
+    ria-agent doctor                                # is this install fit to run?
+    ria-agent bundle /tmp/bundle.json               # diagnostics, no client data
 
 `retrieve`, `attend` and `canary` drive a fake custodian portal, and say so.
 The real driver attaches to the operator's already-authenticated browser and
@@ -100,3 +105,8 @@ Tests need `pytest`:
       reconcile.py       balance comparison; verdicts and evidence, never a number
       linkage.py         is every account linked correctly in every system?
       recon_scoring.py   the false-agreement gate, with a denominator
+      custodians.py      seven custodian profiles and the scaling cost
+      client_service.py  e-sign follow-up and document requests; drafts, never sends
+      packet.py          the compound meeting-prep workflow
+      health.py          the weekly summary, and what it refuses to claim
+      install.py         version gate, doctor, and a diagnostic bundle with no client data
