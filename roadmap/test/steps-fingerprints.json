@@ -1,0 +1,426 @@
+{
+ "1-0": {
+  "t": "Set the rule for what leaves the building",
+  "h": "10a8e739039fd951"
+ },
+ "1-1": {
+  "t": "Set up the Mac data stack",
+  "h": "dff4c1d73fb00bf1"
+ },
+ "1-2": {
+  "t": "Build your AI workbench and its paste rule",
+  "h": "bce081f93f021689"
+ },
+ "1-3": {
+  "t": "Build your Form ADV Part 2A reading key",
+  "h": "d2e77a480a8bdd74"
+ },
+ "1-4": {
+  "t": "Start the career evidence log",
+  "h": "773e8d228b6711db"
+ },
+ "1-5": {
+  "t": "Build the workspace and audit your evenings",
+  "h": "38e2aa6caf88a0dd"
+ },
+ "1-6": {
+  "t": "Set targets at the new capacity",
+  "h": "1d9a482fd0780bc1"
+ },
+ "2-0": {
+  "t": "Adopt one SOP standard, not two",
+  "h": "ed164d76b8f7c94b"
+ },
+ "2-1": {
+  "t": "Clean a messy file, and keep the recipe",
+  "h": "c284d3da6b069783"
+ },
+ "2-2": {
+  "t": "Generate your synthetic dataset",
+  "h": "8b1c19ab34a45768"
+ },
+ "3-1": {
+  "t": "Load your synthetic book into Tableau",
+  "h": "e852a0b255dfdb66"
+ },
+ "3-2": {
+  "t": "Build the SOP formatter prompt",
+  "h": "d3f2c2ef7ed1f9b9"
+ },
+ "4-1": {
+  "t": "Calculated fields and the level of detail",
+  "h": "4ee70a3ec6969844"
+ },
+ "4-2": {
+  "t": "Meeting Prep Generator, version 1",
+  "h": "5e0c91ed2c21a4ac"
+ },
+ "4-4": {
+  "t": "Portfolio site skeleton and its source label",
+  "h": "0a7c42e5052ef29e"
+ },
+ "4-5": {
+  "t": "Harden the Meeting Prep Generator",
+  "h": "6bc53086a9e5c899"
+ },
+ "5-1": {
+  "t": "Model it properly, not flat",
+  "h": "c80f3ecee179e7d8"
+ },
+ "5-2": {
+  "t": "Install DuckDB and write your first SELECT",
+  "h": "e080b7fd82921009"
+ },
+ "5-3": {
+  "t": "Your own registration position",
+  "h": "bcf18b72ca4978c2"
+ },
+ "5-5": {
+  "t": "Answer ten questions with SQL",
+  "h": "8870c4ffe68ad39d"
+ },
+ "6-1": {
+  "t": "KPI tiles, filters, and a deliberate layout",
+  "h": "519c99f8f58f8c91"
+ },
+ "6-2": {
+  "t": "Prompt-to-checklist generator",
+  "h": "4e8d93f8fca23c55"
+ },
+ "7-1": {
+  "t": "Date logic that actually works",
+  "h": "50d8ef4e8e5486b0"
+ },
+ "7-2": {
+  "t": "Break the checklist tool on purpose",
+  "h": "6155fa39bbf574f9"
+ },
+ "7-5": {
+  "t": "AUM dashboard page 2: growth",
+  "h": "9ec1887415c4c080"
+ },
+ "8-1": {
+  "t": "Colour rules and dashboard actions",
+  "h": "3b0f002f80654432"
+ },
+ "8-2": {
+  "t": "Automate your own repeating task",
+  "h": "c5aadc235ce766ae"
+ },
+ "9-1": {
+  "t": "Client demographics page",
+  "h": "88b20116e0ac2223"
+ },
+ "9-2": {
+  "t": "Write the tool documentation",
+  "h": "73cbeb81740f7528"
+ },
+ "9-5": {
+  "t": "Ship the assets dashboard",
+  "h": "ad33b98161d05216"
+ },
+ "10-1": {
+  "t": "Combine a folder of files at once",
+  "h": "68f21420b2ce9481"
+ },
+ "10-2": {
+  "t": "Build the cycle time calculator",
+  "h": "b74c35e2dabe92e1"
+ },
+ "10-3": {
+  "t": "Stage the credential announcement",
+  "h": "d5a3ffd9275f5ac9"
+ },
+ "11-1": {
+  "t": "Publish it, and make it refresh",
+  "h": "d59989a05b9e951c"
+ },
+ "11-2": {
+  "t": "Zapier or Make: the first scenario",
+  "h": "152fe13684596ed6"
+ },
+ "11-3": {
+  "t": "When it lands: hold the send",
+  "h": "1b6dbd8d92b80c30"
+ },
+ "11-5": {
+  "t": "Distribution Checklist Tool, version 2",
+  "h": "f3d6465f883eaf3f"
+ },
+ "13-1": {
+  "t": "Point everything at the portfolio",
+  "h": "d4916703c60e5d16"
+ },
+ "13-2": {
+  "t": "Read the whole site, then go live",
+  "h": "7ea6e5b61b322867"
+ },
+ "14-1": {
+  "t": "Cash drag analysis",
+  "h": "b3ed87cc8cfee733"
+ },
+ "14-2": {
+  "t": "Annual review brief generator",
+  "h": "f5817d6bf83e71a9"
+ },
+ "14-5": {
+  "t": "Revenue Leak Dashboard: scope and model",
+  "h": "6e2ce328bc00e820"
+ },
+ "15-0": {
+  "t": "Dashboard actions and parameters",
+  "h": "4b519f79e556964e"
+ },
+ "15-1": {
+  "t": "Automation two: the meeting-prep pipeline",
+  "h": "692df9de13cbe778"
+ },
+ "15-5": {
+  "t": "Revenue Leak Dashboard: build the cash page",
+  "h": "bd9c51f5094e3adf"
+ },
+ "16-1": {
+  "t": "Stale review detection",
+  "h": "80744cb06870b64d"
+ },
+ "16-2": {
+  "t": "Automation three: the escalation ladder",
+  "h": "bb177af1bfc2811c"
+ },
+ "17-0": {
+  "t": "CTEs and subqueries",
+  "h": "7dee6e7219343a65"
+ },
+ "17-1": {
+  "t": "Automation four: the intake router",
+  "h": "a66ab0fc17b1c737"
+ },
+ "17-5": {
+  "t": "Revenue Leak Dashboard: pages two and three",
+  "h": "b50af547067a3cbb"
+ },
+ "18-1": {
+  "t": "Data quality checks",
+  "h": "a584cbc64d52fc79"
+ },
+ "18-2": {
+  "t": "Grade the AI against the real backlog",
+  "h": "5b68b5a7b24c8cc0"
+ },
+ "19-0": {
+  "t": "User filters and row-level access",
+  "h": "3e24bd54ddc5bc1c"
+ },
+ "19-1": {
+  "t": "Version and document your automations",
+  "h": "38fc4b7a21f5a012"
+ },
+ "19-5": {
+  "t": "Revenue Leak Dashboard: finish and film",
+  "h": "ae6fba515307e161"
+ },
+ "20-0": {
+  "t": "Design the assistant properly",
+  "h": "2feb558ad4a99763"
+ },
+ "20-1": {
+  "t": "Build the pipeline",
+  "h": "ab9ccc64d172def9"
+ },
+ "20-2": {
+  "t": "SQL: window functions",
+  "h": "ac3d1ad253cda73c"
+ },
+ "20-5": {
+  "t": "Test the assistant and measure it",
+  "h": "8ed1908c82223a48"
+ },
+ "21-3": {
+  "t": "What feeds the ADV amendment",
+  "h": "f2ad07d39ecf903a"
+ },
+ "22-1": {
+  "t": "Scenario controls",
+  "h": "c185e1b41f6a150f"
+ },
+ "22-2": {
+  "t": "Prompt library, formalised",
+  "h": "bd193589717a93ab"
+ },
+ "23-0": {
+  "t": "Automation five: onboarding tracker",
+  "h": "96e3f679196f0cce"
+ },
+ "23-1": {
+  "t": "Extracts, live connections and speed",
+  "h": "7b550b420e01c819"
+ },
+ "23-5": {
+  "t": "Publish the automation portfolio and its method",
+  "h": "79d702db722b612f"
+ },
+ "24-0": {
+  "t": "The Power BI conversion",
+  "h": "8ecbc93c7cd934fe"
+ },
+ "24-2": {
+  "t": "Failure-mode review",
+  "h": "35d2acd17991870d"
+ },
+ "24-5": {
+  "t": "Rebuild the walkthrough around the takeover",
+  "h": "113c7fffb3aa9cfe"
+ },
+ "25-0": {
+  "t": "Resume rebuild: scope of ownership first",
+  "h": "2c24fb073c2dbd66"
+ },
+ "25-1": {
+  "t": "LinkedIn to match, without the broadcast",
+  "h": "d15ec09160a9aa24"
+ },
+ "25-3": {
+  "t": "Portfolio data refresh",
+  "h": "28fe78911a93dd8f"
+ },
+ "25-5": {
+  "t": "Source the mid-size RIA bucket",
+  "h": "1e2d888dc854b224"
+ },
+ "26-4": {
+  "t": "Portfolio v2, published column only",
+  "h": "ab4ae095d1ae4aec"
+ },
+ "27-1": {
+  "t": "Read the market in data",
+  "h": "04d5ff49a2ae860b"
+ },
+ "28-3": {
+  "t": "Close the gaps the postings named",
+  "h": "136bb5c8d4edd604"
+ },
+ "29-3": {
+  "t": "Build the interview drill tool",
+  "h": "c5949b9e0eae21a3"
+ },
+ "30-3": {
+  "t": "Build the artifact they asked for",
+  "h": "7d03a18a5c68544e"
+ },
+ "30-5": {
+  "t": "Rehearse the walkthrough on video",
+  "h": "c2a9add7892101ad"
+ },
+ "31-0": {
+  "t": "Forecasting and trend visuals",
+  "h": "484cd273acf64694"
+ },
+ "31-3": {
+  "t": "Automation six: the search assistant",
+  "h": "b89bd524e59717c1"
+ },
+ "33-3": {
+  "t": "Form CRS and the delivery evidence trail",
+  "h": "4b230374b7b51223"
+ },
+ "34-2": {
+  "t": "Publish the regulatory reference",
+  "h": "3da46168fba2e265"
+ },
+ "36-3": {
+  "t": "Ship something new",
+  "h": "55ded1a03c5f41f2"
+ },
+ "37-2": {
+  "t": "Prepare for a technical screen",
+  "h": "8212c681a8fd07e4"
+ },
+ "40-2": {
+  "t": "Take-home readiness",
+  "h": "a22fa7da0eb5ef21"
+ },
+ "41-0": {
+  "t": "Ship a small tool",
+  "h": "5f73bd283af302ec"
+ },
+ "41-2": {
+  "t": "Reference preparation",
+  "h": "693e9c7fc09f5f5e"
+ },
+ "41-3": {
+  "t": "Salary data refresh",
+  "h": "f3824fd24c7d5b44"
+ },
+ "46-2": {
+  "t": "Trace their numbers to a source",
+  "h": "4ff1ec3f9c2f79eb"
+ },
+ "46-3": {
+  "t": "Note the automation candidates",
+  "h": "949a23fdde3de84b"
+ },
+ "47-1": {
+  "t": "Build one small report",
+  "h": "171e11509a374ffa"
+ },
+ "47-3": {
+  "t": "Learn their AI position",
+  "h": "16cb42d6f6e6c0bd"
+ },
+ "48-0": {
+  "t": "Propose the first automation",
+  "h": "3154fda44baa78ca"
+ },
+ "48-1": {
+  "t": "Extend the reporting",
+  "h": "b5ae0cc4c284925a"
+ },
+ "49-1": {
+  "t": "Pick the next data skill",
+  "h": "9f8241f7819a9a80"
+ },
+ "49-2": {
+  "t": "Pick the next AI capability",
+  "h": "7f9f3bcaff526946"
+ },
+ "50-2": {
+  "t": "Rebuild the ops scorecard in Tableau",
+  "h": "7bf0397e4b0bf2eb"
+ },
+ "50-3": {
+  "t": "Scope a firm-level AI project",
+  "h": "252a5489ea956a01"
+ },
+ "51-1": {
+  "t": "Publish the technique they keep asking you for",
+  "h": "b56d2ad50c064829"
+ },
+ "51-2": {
+  "t": "Run one automation retrospective",
+  "h": "fbbee6e8b2d57332"
+ },
+ "53-0": {
+  "t": "Build the revenue model",
+  "h": "b44155b409f2816b"
+ },
+ "53-1": {
+  "t": "Comp ratio and operating margin",
+  "h": "5c09c63aeaa911f3"
+ },
+ "53-2": {
+  "t": "The three productivity ratios",
+  "h": "98f672b32f1bb69b"
+ },
+ "53-3": {
+  "t": "Cost to serve, by segment",
+  "h": "565c61844383bb95"
+ },
+ "53-5": {
+  "t": "The hiring break-even",
+  "h": "9307e97bf334ec13"
+ },
+ "55-3": {
+  "t": "Learn the platform layer properly",
+  "h": "4794e77b361cd0a4"
+ }
+}

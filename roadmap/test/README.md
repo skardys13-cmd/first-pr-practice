@@ -1,11 +1,12 @@
 # Tests
 
-Four Playwright suites against `../index.html`. No build step, no server.
+Five Playwright suites against `../index.html`. No build step, no server.
 
     node test/test.js     # 33 behavioural tests
     node test/test2.js    # 19 regression tests for the September audit fixes
     node test/test3.js    # 15 tests for the per-task workspace
     node test/test4.js    # 42 tests for destinations, ledgers and the detail panel
+    node test/test5.js    # 13 tests that every walkthrough still matches its task
 
 `test.js` covers fresh load, tick and partial-credit maths, persistence across
 reload, wipe-and-restore, the all-tasks-done edge case, every tab rendering,
@@ -30,3 +31,18 @@ upgrades without losing anything.
 
 Requires Playwright and a Chromium binary; adjust the two paths at the top of
 each file if yours differ.
+
+`test5.js` exists because of a real bug. Tasks get retargeted; `STEPS` is
+keyed by position (`"1-3"`), so a rewritten task silently inherited the
+previous task's walkthrough — task 1-3 became the Form ADV reading key while
+still showing steps for setting a Series 65 exam date. Each entry is now
+`{t: "<the exact task title it was written for>", s: [...]}`, `stepList()`
+returns the steps only when that title still matches, and the workspace says
+"Withheld" rather than showing steps for a task that no longer exists.
+
+`steps-fingerprints.json` holds a hash of title + Do + Output for all 106.
+`test5.js` fails if any task with a walkthrough has been reworded at all, so a
+change to the plan forces a re-read of the steps rather than silently
+invalidating them. After re-reading and updating them, regenerate with:
+
+    python3 test/fingerprint.py
