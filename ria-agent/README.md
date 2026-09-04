@@ -10,10 +10,11 @@ and each rule names the module that enforces it.
 
 ## State
 
-Steps 1–24 of the build plan: the proof layer, the queue, reading the CRM, and
-the first read-only hands. Nothing writes to a real system yet, and the pieces
-that would talk to Redtail or a custodian sit behind interfaces with
-fixture-backed fakes.
+All 52 steps of the build plan are implemented, against fixture-backed fakes.
+Nothing has touched a real custodian, a real CRM, or a real client, and three
+things gate that — the custodian terms of service, a manual time baseline, and
+an ownership agreement. They are documents and conversations, not code, and
+they are listed in [PILOT.md](PILOT.md).
 
 | Phase | Steps | What it is |
 |---|---|---|
@@ -24,6 +25,7 @@ fixture-backed fakes.
 | 4 | 25–30 | Naming rules, filing proposals, the executor, reversal, promotion |
 | 5 | 31–38 | Tolerance and as-of rules, the comparison engine, linkage, the gate |
 | 6 | 39–45 | One navigator across seven custodians, the packet, health, install |
+| 7 | 46–52 | Compliance memo, ToS checklist, pilot scope and its scoring |
 
 [RECONCILIATION.md](RECONCILIATION.md) defines what "agree" means — tolerance,
 as-of alignment, and the causes that legitimately differ. It is the
@@ -32,6 +34,11 @@ defaults for a firm to set, not decisions already made.
 
 Findings from the plan review, including the ones deliberately not acted on,
 are in [OPEN_FINDINGS.md](OPEN_FINDINGS.md).
+
+Before anything runs for real: [COMPLIANCE_MEMO.md](COMPLIANCE_MEMO.md) for the
+principal and whoever owns compliance, [CUSTODIAN_TOS.md](CUSTODIAN_TOS.md) to
+be filled in per custodian, and [PILOT.md](PILOT.md) for the scope and the
+sign-off.
 
 ## Running it
 
@@ -55,6 +62,7 @@ The intended order for a new install:
     ria-agent health --days 7                       # the weekly summary
     ria-agent doctor                                # is this install fit to run?
     ria-agent bundle /tmp/bundle.json               # diagnostics, no client data
+    ria-agent pilot statement_retrieval             # judge it against the four criteria
 
 `retrieve`, `attend` and `canary` drive a fake custodian portal, and say so.
 The real driver attaches to the operator's already-authenticated browser and
@@ -110,3 +118,4 @@ Tests need `pytest`:
       packet.py          the compound meeting-prep workflow
       health.py          the weekly summary, and what it refuses to claim
       install.py         version gate, doctor, and a diagnostic bundle with no client data
+      pilot.py           the four criteria, and the two it refuses to infer

@@ -292,6 +292,25 @@ def cmd_scaling(args) -> int:
     return 0
 
 
+def cmd_pilot(args) -> int:
+    """Steps 49-50: judge the pilot against the four criteria."""
+    from .health import Baselines
+    from .pilot import load_answers, score
+
+    app = _app(args)
+    answers = load_answers(Path(app.storage_dir) / "pilot_answers.json")
+    result = score(
+        app.log, workflow_id=args.workflow, person=args.person or app.operator,
+        baselines=Baselines.load(Path(app.storage_dir) / "baselines.json"),
+        log_is_readable=answers["log_is_readable"],
+        person_prefers_it=answers["person_prefers_it"],
+        since=args.since,
+    )
+    print(result.summary())
+    app.close()
+    return 0 if result.passed else 1
+
+
 def cmd_verify(args) -> int:
     """Check the log's two copies still agree, and report the catch rate."""
     app = _app(args)
@@ -402,6 +421,12 @@ def build_parser() -> argparse.ArgumentParser:
     scaling = subparsers.add_parser(
         "scaling", help="per-custodian tuning cost")
     scaling.set_defaults(func=cmd_scaling)
+
+    pilot = subparsers.add_parser("pilot", help="judge the pilot against the four criteria")
+    pilot.add_argument("workflow", help="e.g. statement_retrieval")
+    pilot.add_argument("--person", default=None)
+    pilot.add_argument("--since", default=None)
+    pilot.set_defaults(func=cmd_pilot)
 
     verify = subparsers.add_parser("verify", help="check the log verifies")
     verify.set_defaults(func=cmd_verify)

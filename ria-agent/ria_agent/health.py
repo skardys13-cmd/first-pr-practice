@@ -27,25 +27,51 @@ from .receipts import (
 
 
 class Baselines:
-    """Minutes a person takes to do each workflow by hand. Measured, not guessed."""
+    """Minutes each workflow takes, measured rather than guessed.
 
-    def __init__(self, minutes: dict[str, float] | None = None):
+    Two numbers per workflow, and the second one matters as much as the first:
+
+    - `manual` — how long a person takes doing the whole thing by hand.
+    - `review` — how long a person takes reviewing what the agent prepared.
+
+    F-38: measure end-to-end task completion, not agent step time. The agent's
+    own step time always looks excellent and says nothing, because the human
+    half is where the time actually goes. A workflow is only faster if
+    agent time *plus* review time beats the manual baseline.
+    """
+
+    def __init__(
+        self,
+        minutes: dict[str, float] | None = None,
+        review_minutes: dict[str, float] | None = None,
+    ):
         self.minutes = dict(minutes or {})
+        self.review_minutes = dict(review_minutes or {})
 
     def get(self, workflow_id: str) -> float | None:
         return self.minutes.get(workflow_id)
+
+    def review(self, workflow_id: str) -> float | None:
+        return self.review_minutes.get(workflow_id)
 
     @classmethod
     def load(cls, path: str | Path) -> "Baselines":
         path = Path(path)
         if not path.exists():
             return cls()
-        return cls(json.loads(path.read_text(encoding="utf-8")))
+        data = json.loads(path.read_text(encoding="utf-8"))
+        if "manual" in data or "review" in data:
+            return cls(data.get("manual"), data.get("review"))
+        # An older file is a flat mapping of manual minutes only.
+        return cls(data)
 
     def save(self, path: str | Path) -> Path:
         path = Path(path)
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(json.dumps(self.minutes, indent=2) + "\n", encoding="utf-8")
+        path.write_text(
+            json.dumps({"manual": self.minutes, "review": self.review_minutes},
+                       indent=2) + "\n",
+            encoding="utf-8")
         return path
 
 
