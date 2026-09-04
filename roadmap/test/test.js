@@ -58,7 +58,7 @@ const t=(n,c,d='')=>c?pass.push(n):fail.push(n+(d?' :: '+d:''));
  await p.reload({waitUntil:'load'}); await p.waitForTimeout(400);
  t('all-done: counter',(await p.textContent('#tDay')).includes('385 / 385'));
  t('all-done: empty-state card shows',(await p.textContent('#todayCard')).includes('All 385 done'));
- await p.evaluate(()=>document.querySelectorAll('.nav button')[2].click()); await p.waitForTimeout(400);
+ await p.evaluate(()=>document.querySelector('.nav button[data-v="dash"]').click()); await p.waitForTimeout(400);
  t('all-done: dashboard renders',(await p.$$('#chartBurn svg')).length>0);
  t('all-done: no JS errors',errs.length===0,errs[0]);
 

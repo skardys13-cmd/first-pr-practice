@@ -212,6 +212,33 @@ pre{background:var(--surface-2);border:1px solid var(--rule);border-radius:7px;p
 .workbtn.ghost{background:var(--surface);color:var(--ink-2);border:1px solid var(--rule)}
 .workbtn.ghost:hover{border-color:var(--rule-strong);color:var(--ink)}
 .wsnote{font-size:12px;color:var(--muted)}
+.goes{display:flex;flex-wrap:wrap;gap:6px}
+.goes a,.goes button{display:inline-flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:6px 11px;font-size:12.5px;font-weight:500;color:var(--ink-2);text-decoration:none;cursor:pointer;font-family:inherit}
+.goes a:hover,.goes button:hover{border-color:var(--accent);color:var(--accent-ink)}
+.goes .ico{font-size:11px;color:var(--muted)}
+.goes .unset{opacity:.6;border-style:dashed}
+.detail{background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:13px 14px;margin-top:10px}
+.detail .dh{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.detail .dh b{font-family:var(--mono);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.detail .dh .sp{margin-left:auto;display:flex;gap:6px}
+.detail .dh .sp button{background:none;border:0;color:var(--muted);font-size:11.5px;cursor:pointer;font-family:inherit;text-decoration:underline}
+.detail .dh .sp button:hover{color:var(--ink)}
+.ledtable input,.ledtable select,.ledtable textarea{width:100%;background:var(--surface);border:1px solid var(--rule);border-radius:5px;padding:5px 7px;font-size:12.5px;font-family:inherit;color:var(--ink)}
+.ledtable td{padding:5px 6px}
+.ledtable .del{background:none;border:0;color:var(--muted);cursor:pointer;font-size:15px;line-height:1;padding:4px 6px}
+.ledtable .del:hover{color:var(--crit)}
+.focusnote{background:var(--accent-wash);color:var(--accent-ink);border-radius:8px;padding:9px 12px;font-size:12.5px;margin-bottom:9px}
+.lnk{background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;text-align:left;text-decoration:underline;text-decoration-color:var(--rule-strong);text-underline-offset:2px}
+.lnk:hover{text-decoration-color:currentColor}
+.empty{padding:22px 14px;text-align:center;color:var(--muted);font-size:13px}
+.cov{display:flex;align-items:center;gap:8px}
+.cov .bar{flex:1;height:6px;background:var(--surface-2);border-radius:3px;overflow:hidden;min-width:60px}
+.cov .bar i{display:block;height:100%;background:var(--accent);border-radius:3px}
+.statrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:9px;overflow:hidden}
+.statrow>div{background:var(--surface);padding:14px 15px}
+.statrow .l{font-family:var(--mono);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.statrow .v{font-size:24px;font-weight:600;letter-spacing:-.02em;line-height:1.1}
+.statrow .s{font-size:11.5px;color:var(--muted);margin-top:5px;line-height:1.45}
 .storage{display:flex;gap:7px;align-items:flex-start;font-size:10.5px;line-height:1.45;padding:7px 8px;border-radius:5px;background:var(--surface-2);border:1px solid var(--rule)}
 .storage .dot{width:7px;height:7px;border-radius:99px;flex:none;margin-top:4px}
 .legend{display:flex;gap:13px;flex-wrap:wrap;align-items:center;font-family:var(--mono);font-size:10.5px;color:var(--ink-2)}
@@ -362,10 +389,79 @@ svg text{font-family:var(--mono);font-variant-numeric:tabular-nums}
     <div class="callout crit" style="margin-bottom:20px"><strong>Compliance guardrail, read once and never forget it:</strong> nothing in this portfolio contains real client data. No names, no account numbers, no balances, no statements, no screenshots of Schwab Advisor Center or Redtail with live records. You build every artifact on synthetic data you generate yourself, and you clear anything public with your firm's compliance contact first. A single PII leak ends this plan and your career in the industry &mdash; and reviewers are more impressed by a clean synthetic dataset than by a redacted real one.</div>
     <div class="grid g4" id="portKpis" style="margin-bottom:22px"></div>
     <div class="sec"><h2>The 40 SOPs</h2><p id="sopCount"></p></div>
-    <div class="panel" style="margin-bottom:10px"><div class="eyebrow" style="margin-bottom:8px">The template every one of them uses</div><pre id="sopTemplate"></pre></div>
-    <div class="panel flush"><div class="scroller"><table id="sopTable"></table></div></div>
+    <div class="panel" style="margin-bottom:22px"><p style="margin:0 0 12px;color:var(--ink-2);font-size:14px">The process library has its own page now, with a status and a link on every row and the firm version tracked separately from the public one. It is not duplicated here.</p><button class="workbtn" data-goto="sops">Open the SOP library</button></div>
     <div class="sec"><h2>Dashboards, automations, flagship projects</h2><p>Fewer items, higher weight. Each one is a talking point you will use in every interview.</p></div>
     <div id="buildList" class="stack"></div>
+  </section>
+
+  <!-- ============ STATE OF PLAY ============ -->
+  <section class="view" id="v-state">
+    <div class="vhead">
+      <div class="eyebrow">Everything, on one page</div>
+      <h1>State of play</h1>
+      <p>The clocks, the queue, and every section you record into. Nothing here is typed twice &mdash; each number is counted from the rows you have actually logged, so a quiet fortnight shows up as a flat number rather than a guilty feeling.</p>
+    </div>
+    <div class="sec"><h2>The clocks</h2><p>Two dates now drive more than anything else in this plan.</p></div>
+    <div class="statrow" id="stClocks" style="margin-bottom:22px"></div>
+    <div class="sec"><h2>What you have recorded</h2><p>Every one of these fills from a task. Open a task, do the work, and send it here &mdash; you never have to remember to come to this page.</p></div>
+    <div class="statrow" id="stCounts" style="margin-bottom:22px"></div>
+    <div class="sec"><h2>Evidence coverage</h2><p>Nine areas an RIA COO owns. The plan column is what this tracker is designed to build. The evidence column counts what <em>you</em> have logged against it &mdash; wins, metrics and builds tagged to that area. An area with a strong plan and no evidence is the one to worry about.</p></div>
+    <div class="panel flush"><div class="scroller"><table id="stCov"></table></div></div>
+    <div class="sec"><h2>The last ten things you logged</h2><p>Across every section, newest first.</p></div>
+    <div class="panel flush"><div class="scroller"><table id="stRecent"></table></div></div>
+  </section>
+
+  <!-- ============ SOP LIBRARY ============ -->
+  <section class="view" id="v-sops">
+    <div class="vhead">
+      <div class="eyebrow">One library, two versions of every document</div>
+      <h1>SOP library</h1>
+      <p>Forty processes. Each one exists twice: the firm version, which lives in the firm&rsquo;s approved location and never leaves it, and the public version, which is generalised, carries no firm names or systems, and is the thing a hiring manager reads. Set the status as it moves, and paste the link so you can find it in ten months when someone asks.</p>
+    </div>
+    <div class="callout crit" style="margin-bottom:20px"><strong>Before you tick &ldquo;public version done&rdquo;:</strong> run it against the publication standard from task 1 of block 1. Names are the obvious risk. Custodian, headcount and metro area together identify a six-person RIA to anyone in the industry, and a find-and-replace does not remove them.</div>
+    <div class="statrow" id="sopKpis" style="margin-bottom:22px"></div>
+    <div class="panel" style="margin-bottom:12px"><div class="eyebrow" style="margin-bottom:8px">The template every one of them uses</div><pre id="sopTemplate2"></pre></div>
+    <div class="panel flush"><div class="scroller"><table id="sopLib"></table></div></div>
+  </section>
+
+  <!-- ============ BUILD REGISTRY ============ -->
+  <section class="view" id="v-builds">
+    <div class="vhead">
+      <div class="eyebrow">Every dashboard, script, template and automation</div>
+      <h1>Build registry</h1>
+      <p>One row per thing you made. What it is, which version exists, roughly what it saves, where it lives, and which part of the COO seat it counts toward. This is the list you read from when you rewrite the resume, and the one that stops good work disappearing because you built it in April and forgot by October.</p>
+    </div>
+    <div class="statrow" id="bldKpis" style="margin-bottom:22px"></div>
+    <div class="panel flush" id="ledBuilds"></div>
+    <div class="wsbtn" style="margin-top:12px"><button class="workbtn ghost" data-ledadd="builds">Add a build</button></div>
+  </section>
+
+  <!-- ============ WINS AND METRICS ============ -->
+  <section class="view" id="v-wins">
+    <div class="vhead">
+      <div class="eyebrow">The ticked boxes that actually count</div>
+      <h1>Wins, learning &amp; metrics</h1>
+      <p>Anything you did, wrote, learned, improved or fixed goes in the first table &mdash; including the small ones, and including things that were not tasks in this plan. The second table is for numbers: what a process took before, what it takes now. Interviews for operations leadership are won on the second table, so log a before figure the day you first touch a process, while it is still slow.</p>
+    </div>
+    <div class="statrow" id="winKpis" style="margin-bottom:22px"></div>
+    <div class="sec"><h2>Wins &amp; learning</h2><p>Low bar on purpose. If it moved you forward, it is a row.</p></div>
+    <div class="panel flush" id="ledWins"></div>
+    <div class="wsbtn" style="margin-top:12px;margin-bottom:26px"><button class="workbtn ghost" data-ledadd="wins">Add a win</button></div>
+    <div class="sec"><h2>Metrics ledger</h2><p>Before and after, with the unit and how often it happens. Two numbers and a frequency is a resume bullet; an adjective is not.</p></div>
+    <div class="panel flush" id="ledMetrics"></div>
+    <div class="wsbtn" style="margin-top:12px"><button class="workbtn ghost" data-ledadd="metrics">Add a metric</button></div>
+  </section>
+
+  <!-- ============ CONSULTANT QUESTIONS ============ -->
+  <section class="view" id="v-qlog">
+    <div class="vhead">
+      <div class="eyebrow">Against the clock</div>
+      <h1>Consultant questions</h1>
+      <p>Everything you need to ask her before she leaves. Write the question the moment it occurs to you, even half-formed &mdash; the cost of a question you never asked is a process you rebuild from scratch in March. Record the answer in her words, not your summary of it.</p>
+    </div>
+    <div class="statrow" id="qKpis" style="margin-bottom:22px"></div>
+    <div class="panel flush" id="ledQlog"></div>
+    <div class="wsbtn" style="margin-top:12px"><button class="workbtn ghost" data-ledadd="qlog">Add a question</button></div>
   </section>
 
   <!-- ============ SKILLS ============ -->
@@ -480,6 +576,8 @@ svg text{font-family:var(--mono);font-variant-numeric:tabular-nums}
       <p>Read this once now, then again at each phase gate. It is the part of the plan that decides whether you are still doing this in March.</p>
     </div>
     <div class="panel" style="margin-bottom:20px"><div class="grid g3" id="settings"></div></div>
+    <div class="sec"><h2>Your tools</h2><p>Paste each link once. Every task that needs one grows a button straight to yours &mdash; so &ldquo;open Tableau&rdquo; becomes one click from the task rather than a hunt through bookmarks. Links are stored with the rest of your data and go into your backup. Nothing is fetched from them.</p></div>
+    <div class="panel" style="margin-bottom:20px"><div class="grid g3" id="toolBox"></div></div>
     <div id="systemsDocs" class="stack"></div>
     <div class="sec"><h2>Risk register</h2><p>Every one of these has ended someone else's version of this plan.</p></div>
     <div class="panel flush"><div class="scroller"><table id="riskTable"></table></div></div>
@@ -1278,6 +1376,8 @@ const RECIPES=[
 {t:"Portfolio link checker",tool:"Make or a simple scheduled script",trigger:"Monthly",steps:["Check every URL on your portfolio returns 200","Notify you of anything broken"],note:"A dead link in a portfolio costs credibility out of all proportion to its size."}
 ];
 const SYSTEMS=[
+{t:"Where each thing gets recorded",b:"Six places, and each one collects one kind of thing so nothing is typed twice. <b>Tonight</b> is the queue — open a task, and its workspace holds the steps, the links, your notes and the buttons that send a row anywhere else. <b>SOP library</b> holds all forty processes with a status and a link, firm version and public version tracked separately. <b>Build registry</b> is one row per dashboard, automation, script, template or model. <b>Wins &amp; metrics</b> takes anything you did, wrote, learned, improved or fixed, plus the before-and-after numbers. <b>Consultant questions</b> is everything you need to ask her before she leaves. <b>State of play</b> counts all of it back at you and shows which parts of the COO seat you now have evidence for. You never have to remember to visit these pages — every task workspace has buttons that create the row for you and take you there."},
+{t:"Your tools, set once",b:"Paste your workspace, Tableau profile, file store, portfolio site, LinkedIn, spreadsheet, automation store and the firm’s shared location into the boxes on this page. Every task that needs one then shows a button straight to yours, so a task never ends with you hunting through bookmarks. The links are stored with the rest of your data and are included in your backup. Nothing is fetched from them and nothing is sent anywhere."},
 {t:"The evening protocol",b:"The plan assumes you are tired. Open this page, read the one card, set a timer for the stated minutes, and start. Do not review the whole plan, do not reorganise anything, do not read ahead. Starting is the only decision you make; the card handles the rest. If you genuinely cannot start, run a Fast Lane item instead and keep the streak — a 10-minute day beats a zero, and zeros are what end plans."},
 {t:"Two plans now, and which one to open",b:"Your firm\u2019s operations consultant leaves in about 100 days, and you are going to learn, document and take over her work in stages. That runs in its own tracker \u2014 Handoff \u2014 during your 2 to 4 protected hours in the work week. It owns everything that happens at the firm: the responsibility register, the handoff tracker, the SOPs of her processes, the KPI scorecard, the manager conversations and the Month 5 pilot pitch. Ops Ladder keeps everything that happens at home on your own time: the Series 65, Tableau and SQL, automation practice, the public sanitised portfolio, the Tampa target board, comp modelling and interview prep. The rule for telling them apart: if it involves real firm data, the consultant, or your manager, it is Handoff. If it involves synthetic data, a public artifact, or the outside market, it is here. Where the same underlying work appears in both, the version here is the portfolio act \u2014 sanitising and publishing what you built at work \u2014 not a second run at it."},{t:"How the queue works",b:"There are 385 tasks in a fixed order and none of them has a date. The Tonight tab pulls the next few off the top and fills whatever session length you pick. Finish one and the list regenerates. Skip a week, a month, a season \u2014 the same work is still sitting there, in the same order, waiting. Nothing goes red, nothing goes overdue, and there is no pace to fall behind. The only thing your gaps change is the finishing date the dashboard projects, which is calculated from what you have actually been doing rather than from what you once intended."},{t:"Three buttons, and what each one means",b:"The quarter buttons log how far you got: a task at 50% keeps half its minutes in your banked hours and stays pinned to the top of the queue under Half finished until you close it out. Done closes it. Not this one drops it a few places down the queue for when it is genuinely the wrong task tonight \u2014 the wrong tool, the wrong mood, waiting on someone else. If a task keeps getting skipped, that is information: it is either too big, in which case cut it in half, or it is not actually relevant to your firm, in which case mark it done and move on. This is your plan, not an exam syllabus."},{t:"The minimum viable day",b:"On the worst days, the requirement is 10 minutes and one tick. This is not a loophole, it is the design. The habit is what carries this, not any particular week\u2019s output. The top bar shows when you last sat down rather than a streak, because a streak you have already broken is a reason to stop opening the page."},
 {t:"The weekly review, in full",b:"Sunday, 45 minutes, same time every week. Tick the week's completed days. Update the evidence log with anything from work, with a number attached. Check hours banked against plan on the dashboard. Update portfolio counts. Read next week's seven cards so nothing is a surprise on Monday. Name the one thing that must not slip. That is the entire agenda and it does not change."},
@@ -1382,13 +1482,20 @@ function addDays(s,n){const d=parseISO(s);d.setDate(d.getDate()+n);return d;}
 function fmt(d){return d.toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"});}
 
 function plusDays(n){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()+n);return iso(d);}
-const DEFAULTS=()=>({v:3,updatedAt:0,start:lastMonday(),budget:60,move:plusDays(365),exam:"",exit:plusDays(100),decision:plusDays(150),salary:52000,target:80000,
+const DEFAULTS=()=>({v:4,updatedAt:0,start:lastMonday(),budget:60,move:plusDays(365),exam:"",exit:plusDays(100),decision:plusDays(150),salary:52000,target:80000,
   done:{},prog:{},defer:{},log:{},work:{},sops:{},port:{},moveck:{},targets:{},ratings:{ops:2,bi:0,sql:0,ai:1,client:2,lead:1},
-  counts:{apps:0,convos:0,interviews:0,offers:0},theme:"auto",lastExport:0,nudgeSeen:0});
+  counts:{apps:0,convos:0,interviews:0,offers:0},theme:"auto",lastExport:0,nudgeSeen:0,
+  tools:{},wins:[],metrics:[],builds:[],qlog:[],soplib:{}});
+const ARR=(o,k)=>Array.isArray(o&&o[k])?o[k]:[];
 const MERGE=o=>Object.assign(DEFAULTS(),o,{
+  v:4,
   counts:Object.assign({apps:0,convos:0,interviews:0,offers:0},o.counts||{}),
   ratings:Object.assign({ops:2,bi:0,sql:0,ai:1,client:2,lead:1},o.ratings||{}),
-  prog:o.prog||{},defer:o.defer||{},log:o.log||{},work:o.work||{},done:o.done||{}});
+  prog:o.prog||{},defer:o.defer||{},log:o.log||{},work:o.work||{},done:o.done||{},
+  tools:o.tools||{},soplib:o.soplib||{},
+  wins:ARR(o,"wins"),metrics:ARR(o,"metrics"),builds:ARR(o,"builds"),qlog:ARR(o,"qlog")});
+function uid(){return Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-4);}
+function todayISO(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
 let S=DEFAULTS();
 let DB=null,saveTimer=null,booted=false;
 const LSKEY="opsladder.v1";
@@ -1498,11 +1605,13 @@ function phaseOf(i){return PLAN[Math.floor(i/7)]?PLAN[Math.floor(i/7)].ph:1;}
 
 /* ============================ shell ============================ */
 const VIEWS=[
- ["today","Tonight",1],["plan","The plan",1],["dash","Dashboard",1],
- ["portfolio","Portfolio",2],["skills","Skills",2],["coo","COO track",3],["certs","Milestones",3],
- ["targets","Target board",3],["money","Money",3],["move","Florida move",3],
+ ["today","Tonight",1],["plan","The plan",1],["state","State of play",1],["dash","Dashboard",1],
+ ["sops","SOP library",2],["builds","Build registry",2],["wins","Wins & metrics",2],["qlog","Consultant questions",2],
+ ["portfolio","Portfolio",2],["skills","Skills",2],
+ ["coo","COO track",3],["certs","Milestones",3],["targets","Target board",3],["money","Money",3],["move","Florida move",3],
  ["delegate","Claude playbook",4],["systems","Operating manual",4]
 ];
+const LEDVIEW={wins:"wins",metrics:"wins",builds:"builds",qlog:"qlog"};
 let cur="today";
 function buildNav(){
   [1,2,3,4].forEach(g=>{
@@ -1557,6 +1666,141 @@ function progControls(id,pct,push){
     '</div></div>';
 }
 function taskNo(d){return d.idx+1;}
+/* ---------- your saved tools ---------- */
+const TOOLS=[
+ ["notion","Your workspace","Notion, Obsidian or a Drive folder — wherever the five databases live"],
+ ["tableau","Tableau Public profile","https://public.tableau.com/app/profile/yourname"],
+ ["drive","File store","Google Drive or Dropbox folder holding datasets and exports"],
+ ["site","Portfolio site","https://yourname.com — the public one"],
+ ["linkedin","Your LinkedIn","https://www.linkedin.com/in/yourname"],
+ ["sheets","Working spreadsheet","The Google Sheet or Excel file you actually open"],
+ ["repo","Automation store","GitHub repo, Zapier dashboard or the folder your scripts live in"],
+ ["firm","Firm shared location","Where the firm’s approved SOP library lives — firm work only, never published"]
+];
+const TOOLMAP={};TOOLS.forEach(t=>TOOLMAP[t[0]]=t);
+function toolUrl(k){const v=(S.tools&&S.tools[k])||"";return v.trim();}
+
+/* ---------- external references ---------- */
+const REFS={
+ tableau_dl:["Tableau Public download","https://www.tableau.com/products/public/download"],
+ tableau_pub:["Your Tableau Public profile","https://public.tableau.com"],
+ duckdb:["DuckDB installation","https://duckdb.org/docs/installation/"],
+ duckdb_win:["DuckDB window functions","https://duckdb.org/docs/sql/window_functions"],
+ duckdb_sql:["DuckDB SQL introduction","https://duckdb.org/docs/sql/introduction"],
+ iapd:["SEC adviser search (IAPD)","https://adviserinfo.sec.gov/"],
+ adv:["SEC Form ADV and filings","https://www.sec.gov/about/forms/formadv.pdf"],
+ iard:["SEC Investment Adviser Registration info","https://www.sec.gov/investment/investment-advisers"],
+ crs:["Form CRS instructions","https://www.sec.gov/files/formcrs.pdf"],
+ marketing:["SEC Marketing Rule (206(4)-1)","https://www.sec.gov/investment/marketing-faq"],
+ custody:["SEC custody rule guidance","https://www.sec.gov/investment/custody-rule"],
+ regsp:["Reg S-P","https://www.sec.gov/rules-regulations/2024/05/s7-05-23"],
+ finra65:["Series 65 exam outline (FINRA)","https://www.finra.org/registration-exams-ce/qualification-exams/series65"],
+ nasaa:["NASAA exam information","https://www.nasaa.org/exams/"],
+ li_broadcast:["LinkedIn: share profile updates setting","https://www.linkedin.com/mypreferences/d/share-profile-updates"],
+ li_privacy:["LinkedIn settings and privacy","https://www.linkedin.com/mypreferences/d/categories/account"],
+ loom:["Loom (free screen recording)","https://www.loom.com/"],
+ zapier:["Zapier","https://zapier.com/"],
+ make:["Make.com","https://www.make.com/"],
+ looker:["Looker Studio","https://lookerstudio.google.com/"],
+ carrd:["Carrd","https://carrd.co/"],
+ ghpages:["GitHub Pages","https://pages.github.com/"],
+ notion:["Notion","https://www.notion.so/"],
+ claude:["Claude","https://claude.ai/"],
+ bls:["BLS Occupational Employment statistics","https://www.bls.gov/oes/"],
+ fincen:["FinCEN AML resources","https://www.fincen.gov/resources"],
+ sec_exam:["SEC Division of Examinations priorities","https://www.sec.gov/exams"],
+ powerbi:["Power BI Desktop (Windows only)","https://www.microsoft.com/en-us/power-platform/products/power-bi/desktop"],
+ dbeaver:["DBeaver Community","https://dbeaver.io/download/"],
+ excalidraw:["Excalidraw","https://excalidraw.com/"],
+ tabpub_help:["Tableau Public help","https://help.tableau.com/current/pro/desktop/en-us/publish_workbooks_tableaupublic.htm"],
+ li_featured:["LinkedIn help centre","https://www.linkedin.com/help/linkedin"],
+ sheets:["Google Sheets","https://sheets.google.com"],
+ lijobs:["LinkedIn Jobs","https://www.linkedin.com/jobs/"],
+ indeed:["Indeed","https://www.indeed.com/"]
+};
+function refBtn(k){const r=REFS[k];if(!r)return"";return '<a href="'+r[1]+'" target="_blank" rel="noopener noreferrer"><span class="ico">↗</span>'+esc(r[0])+'</a>';}
+
+/* ---------- what a task needs from earlier tasks ---------- */
+const SPINE=[
+ {id:"1-0",label:"the publication standard",re:/publish|public version|sanitis|redact|generalis|firm-neutral/i},
+ {id:"1-1",label:"the Mac data stack",re:/tableau|duckdb|dashboard/i},
+ {id:"1-2",label:"the AI workbench and paste rule",re:/prompt|claude|automat|generat/i},
+ {id:"1-4",label:"the career evidence log",re:/evidence log/i},
+ {id:"1-5",label:"the five-database workspace",re:/portfolio|case stud|log\b|registry|library/i},
+ {id:"2-0",label:"the one SOP standard",re:/\bSOP\b|process librar|documentation standard/i},
+ {id:"2-2",label:"synthetic_book_v1.csv",re:/synthetic|dashboard|tableau|duckdb|\bSQL\b|dataset/i},
+ {id:"4-4",label:"the portfolio site skeleton",re:/portfolio site|homepage|case stud|publish/i}
+];
+function xref(d){
+  const hay=d.t+" "+d.d+" "+d.o, mine=ALLDAYS.find(x=>x.id===d.id);
+  if(!mine)return[];
+  return SPINE.filter(p=>{
+    if(p.id===d.id)return false;
+    const src=ALLDAYS.find(x=>x.id===p.id);
+    return src&&src.idx<mine.idx&&p.re.test(hay);
+  }).slice(0,3);
+}
+
+/* ---------- the ledgers ---------- */
+const COMPS=COO_OWNS.map(r=>r[0]);
+const KINDS=["Did","Wrote","Learned","Improved","Fixed","Shipped"];
+const SOPSTATUS=["Not started","Drafted","In review","Firm-approved","Public version done"];
+const BUILDKIND=["Dashboard","Automation","Script","Template","Model","Checklist","Recording"];
+const QAREAS=["Custodian & money movement","Onboarding & account opening","Trading & rebalancing","Billing & fees","Reporting","CRM & workflow","Compliance & books","Vendors & systems","People & scheduling","Other"];
+const LED={
+ wins:{key:"wins",title:"Wins & learning",
+   cols:[["date","Date","date",118],["kind","What","sel",108],["text","What happened","text",0],
+         ["comp","Counts toward","comp",190],["link","Evidence","text",150]],
+   opts:{kind:KINDS},
+   blank:()=>({id:uid(),date:todayISO(),kind:"Did",text:"",comp:"",link:""})},
+ metrics:{key:"metrics",title:"Metrics ledger",
+   cols:[["date","Date","date",118],["proc","Process","text",0],["before","Before","text",92],["after","After","text",92],
+         ["unit","Unit","text",92],["freq","How often","text",100],["comp","Counts toward","comp",180]],
+   blank:()=>({id:uid(),date:todayISO(),proc:"",before:"",after:"",unit:"minutes",freq:"per month",comp:""})},
+ builds:{key:"builds",title:"Build registry",
+   cols:[["date","Date","date",118],["name","Build","text",0],["kind","Type","sel",120],
+         ["pub","Version","sel",148],["saves","Saves","text",100],["link","Where it lives","text",150],["comp","Counts toward","comp",180]],
+   opts:{kind:BUILDKIND,pub:["Firm only","Sanitised, unpublished","Published"]},
+   blank:()=>({id:uid(),date:todayISO(),name:"",kind:"Dashboard",pub:"Firm only",saves:"",link:"",comp:""})},
+ qlog:{key:"qlog",title:"Consultant questions",
+   cols:[["area","Area","sel",190],["q","Question","text",0],["a","Answer","text",0],
+         ["answered","Answered","sel",108],["date","Asked","date",118]],
+   opts:{area:QAREAS,answered:["No","Partly","Yes"]},
+   blank:()=>({id:uid(),date:todayISO(),area:QAREAS[0],q:"",a:"",answered:"No"})}
+};
+function ledRows(k){if(!Array.isArray(S[k]))S[k]=[];return S[k];}
+function ledCell(k,row,c){
+  const [f,,ty,w]=c, v=row[f]==null?"":row[f], base='data-led="'+k+'|'+row.id+'|'+f+'"';
+  if(ty==="date")return '<input type="date" '+base+' value="'+esc(v)+'">';
+  if(ty==="comp")return '<select '+base+'><option value="">—</option>'+COMPS.map(o=>'<option'+(v===o?" selected":"")+'>'+esc(o)+'</option>').join("")+'</select>';
+  if(ty==="sel"){const opts=(LED[k].opts||{})[f]||[];return '<select '+base+'>'+opts.map(o=>'<option'+(v===o?" selected":"")+'>'+esc(o)+'</option>').join("")+'</select>';}
+  return '<input type="text" '+base+' value="'+esc(v)+'">';
+}
+function ledHtml(k){
+  const L=LED[k],rows=ledRows(k);
+  if(!rows.length)return '<div class="empty">Nothing logged yet. Add the first row below — or send one straight here from a task.</div>';
+  return '<div class="scroller"><table class="ledtable"><thead><tr>'+
+    L.cols.map(c=>'<th'+(c[3]?' style="width:'+c[3]+'px"':'')+'>'+c[1]+'</th>').join("")+'<th style="width:32px"></th></tr></thead><tbody>'+
+    rows.map(r=>'<tr>'+L.cols.map(c=>'<td>'+ledCell(k,r,c)+'</td>').join("")+
+      '<td><button class="del" data-leddel="'+k+'|'+r.id+'" aria-label="Delete row">×</button></td></tr>').join("")+
+    '</tbody></table></div>';
+}
+function ledAdd(k,seed){
+  const r=LED[k].blank();
+  if(seed)Object.assign(r,seed);
+  ledRows(k).push(r);persist();
+  return r;
+}
+/* how much evidence each COO area has behind it */
+function evidenceFor(comp){
+  let n=0;
+  ["wins","metrics","builds"].forEach(k=>ledRows(k).forEach(r=>{if(r.comp===comp)n++;}));
+  return n;
+}
+const SOPBLANK=no=>({status:S.sops[no]?"Firm-approved":"Not started",link:"",pub:false});
+function sopRow(no){const r=S.soplib[no];return r&&typeof r==="object"?r:SOPBLANK(no);}
+function sopEdit(no){let r=S.soplib[no];if(!r||typeof r!=="object"){r=SOPBLANK(no);S.soplib[no]=r;}return r;}
+
 /* ---------- per-task workspace ---------- */
 const STEPS={
 "1-0":["Find your employment agreement and your firm\u2019s confidentiality and social media policy. Read the sections on firm information and outside activities.","Write one page: what always gets stripped, what never leaves under any circumstance, and who you ask when you are unsure.","Be specific about re-identification. Names are the obvious risk; custodian plus headcount plus metro area identifies a six-person RIA to anyone in the industry.","Decide the grey areas now while nothing is at stake: process structure, screenshots with the interface visible, anything naming a vendor.","If anything is genuinely unclear, write the question down and ask your manager or the CCO before you publish a single thing."],
@@ -1567,6 +1811,104 @@ const STEPS={
 "1-5":["Set up five containers wherever you keep notes: Portfolio, Builds, Evidence Log, Target Firms, Study Log.","Portfolio holds sanitised public versions only. Firm SOPs live in the firm\u2019s approved shared location and stay there.","Now reconstruct the last two weeks of evenings, hour by hour. Actual hours, not intended ones.","Write the honest weekly number down. If it is three, the plan runs at three \u2014 the dashboard projects from what you do, not what you meant to do.","Do not spend the block choosing tools. Any of them works and switching later costs nothing."],
 "1-6":["Open the Operating manual tab. Set your start date, current salary and target.","Set your evening hours to the number you just measured, not the number you hoped for.","Enter the consultant\u2019s last day and the Month 5 decision date. Those two now drive more than anything else here.","Read the Operating manual entry about which tracker to open for what. The split matters more now that there are two.","Look at what is next in the queue. That is all the planning this needs."],
 "2-0":["Open the SOP template you are using at work for the handoff. That one is the standard.","Do not write a second template here. Two standards means two libraries and they diverge inside a month.","Under each field write one line saying what belongs there, so it works when you are tired or someone else picks it up.","Add one field the work template does not need: what has to be stripped before this SOP could be shown outside the firm.","Save it where your Portfolio container lives, and point the firm library at the same field list."],
+"2-1":["Make the mess first so the fix is real: open synthetic_book_v1.csv (or any CSV) in a text editor, add a junk row above the header, put a few blanks in a numeric column, and change two dates to a different format. Save it as messy_book.csv.", "Open Terminal and run: duckdb ~/ops/lab.duckdb — if DuckDB is not installed yet, do task 5-2 first and come back.", "Read it with the header skipped and types forced, not guessed: CREATE TABLE raw AS SELECT * FROM read_csv('messy_book.csv', skip=1, header=true, sample_size=-1);", "Now write the cleaning as one SELECT you can re-run: trim(name) AS name, upper(trim(registration)) AS registration, try_cast(market_value AS DOUBLE), split_part(full_name,' ',1) AS first_name, split_part(full_name,' ',2) AS last_name.", "Filter the junk in the same statement: WHERE market_value IS NOT NULL AND lower(name) NOT LIKE '%test%'. Wrap it as CREATE TABLE clean AS SELECT ... so the whole thing is one repeatable command.", "Save the SQL to ~/ops/sql/clean_book.sql. That file is the recipe — it is the deliverable, not the cleaned CSV.", "Run SELECT count(*) FROM raw; and SELECT count(*) FROM clean; and write both numbers plus what accounts for the gap into Your work below. The gap is the part you explain in an interview."],
+"2-2":["Open Claude and start a new chat inside the project you made in task 1-2 so your context note is attached.", "Paste this: “Generate a synthetic advisory book as CSV. 750 rows. Columns: household_id, account_id, advisor, account_type, registration, market_value, cash_balance, inception_date, last_review_date, birth_year, fee_schedule, custodian. No real people, no real firms — invent custodian names.”", "Add the shape, because the default will be too uniform: “Skew market_value hard — roughly 5% of accounts hold 40% of the assets, median around $180k. Give 8% of accounts a last_review_date more than 12 months old, and leave 3% of cash_balance blank.”", "Ask for it as a downloadable file, or have it print CSV and paste that into a plain text file. Save as ~/ops/data/synthetic_book_v1.csv.", "Open it once in Numbers or Excel and eyeball twenty rows. If every account is roughly the same size, say “more skew” and regenerate — a flat distribution makes every later dashboard boring and wrong.", "Write a two-line README beside it: generated on this date, by this prompt, entirely synthetic. That note is what you point at when someone asks whether the portfolio contains client data.", "Paste the file path or Drive link into Where it lives below. Every dashboard and SQL task for the rest of the year reads this one file."],
+"3-1":["Open Tableau Public. On the Connect pane at the left, under To a File, click Text file and choose synthetic_book_v1.csv.", "You land on the Data Source tab. Check the type icon above each column name — market_value and cash_balance must be #, the three date columns must be the calendar icon. Click any wrong icon and pick the right type.", "Set the geographic role only if you added a state column: right-click the field, Geographic Role, State/Province. Skip this if you have no location field — do not invent one.", "Click Sheet 1 at the bottom. Analysis menu, Create Calculated Field. Name it Age, formula: YEAR(TODAY()) - [Birth Year]. Click OK.", "View one: drag Market Value to Rows. That is total assets. Right-click the sheet tab, Rename, call it Total assets.", "View two: new sheet, drag Account Id to Rows, and on the Marks card change the measure to Count (Distinct). Call it Account count.", "View three: new sheet, drag Market Value to Rows, then on the Rows pill click the arrow, Measure, Average. Call it Average account size.", "File, Save to Tableau Public As, sign in, name it Ops Lab. Paste the resulting URL into Where it lives below."],
+"3-2":["Open the SOP standard you settled in task 2-0 and copy the field list — that is the output shape the prompt has to hit every time.", "In Claude, start a new chat in your project. Write the instruction block: role, the exact field list, the tone, and the hard rules (no firm names, no system nicknames, no approver names, flag anything you had to assume).", "Pick a generic process you can describe from public knowledge — a Roth conversion request, say — and write eight lines of rough notes as your test input.", "Run it. Then correct the output line by line in a copy: wrong field order, invented steps, missing control points, a step written as narrative rather than an instruction.", "This is the part people skip: fold every correction back into the instruction block as a rule, then re-run on the same notes and compare. Repeat until two runs come back clean.", "Save the prompt as SOP formatter v1 and keep the correction list beneath it — that list is the evidence you improved it, not just used it.", "Paste the prompt into Your work below so it is in your backup even if the chat is lost."],
+"4-1":["Open your Ops Lab workbook in Tableau Public and go to any sheet.", "Analysis, Create Calculated Field. Name: Assets per advisor. Formula: { FIXED [Advisor] : SUM([Market Value]) }. The braces are a level-of-detail expression — it fixes the total at advisor grain no matter what else is on the sheet.", "Second field. Name: Assets excluding cash. Formula: SUM([Market Value]) - SUM([Cash Balance]).", "Third field. Name: Share of firm. Formula: SUM([Market Value]) / TOTAL(SUM([Market Value])). Right-click the field, Default Properties, Number Format, Percentage, 1 decimal.", "Prove each one: drag Advisor to Rows and all three fields to Text on the Marks card. Share of firm must sum to 100%; if it does not, the sheet has a filter you forgot.", "Understand the difference before you move on — FIXED ignores the filters on the sheet, TOTAL respects them. That distinction is the single most common Tableau interview question.", "Write in Your work below, in one sentence each, what the three fields do. If you cannot, you copied them rather than learned them."],
+"4-2":["In Claude, new chat in your project. The prompt has two inputs — say so explicitly: PASTED NOTES and HOLDINGS SUMMARY, both synthetic.", "Write the output spec as a fixed skeleton so every run looks the same: Household snapshot / Since last meeting / Three talking points / Two risks / Follow-up tasks. Tell it to output nothing else, no preamble.", "Add the rules that stop it inventing: “If a number is not in the input, write UNKNOWN. Never estimate a balance. Never name a product you were not given.”", "Build three synthetic households by hand from your CSV — pull three household_ids and write six lines of fake meeting notes for each.", "Run all three. Look for the failure that matters: a talking point that assumes a fact nobody supplied.", "Save the prompt and the three outputs together. Paste the prompt into Your work below.", "Do not test this on a real household, even with the name removed. Holdings plus a date range identifies a client at a six-person firm."],
+"4-4":["Pick in five minutes and move on: Notion is fastest, Carrd is prettiest, GitHub Pages is the one that signals technical. Any of the three is fine.", "Notion route: create a page, click Share top-right, toggle Publish to web, and copy the URL. Set a custom domain later if you want one.", "Carrd route: sign up, pick a one-page template, and use the free carrd.co subdomain. GitHub Pages route: new repo named yourname.github.io, add index.html, enable Pages in Settings.", "Create the six sections as empty headings: Who I am / Process library / Dashboards / Automations / Case studies / Contact.", "Now the label, which is the actual point of tonight. Write the two source tags you will attach to every item forever: “Built from public sources” and “Generalised from firm work”.", "Write the one-line definition of each underneath, on the site, where a reader can see it. A visible sourcing rule is what makes the generalised items credible rather than suspicious.", "Publish nothing else tonight. Six empty headings and a stated rule is the whole deliverable.", "Paste the live URL into Where it lives below, and into your saved tools in the Operating manual so every later task links straight to it."],
+"4-5":["Build the eval set first: five synthetic households, and for each one write down by hand what the correct brief should contain — the two risks you would expect, the numbers that must appear.", "Number them 1-5 and save them in one file. An eval set you cannot re-run is not an eval set.", "Run the version 1 prompt against all five without editing anything. Save each output.", "Score them against your hand-written answers. Count errors by type: invented facts, missed risk, wrong number, wrong format. Write the total — that is your before figure.", "Fix the prompt for the most common error type only. Changing five things at once means you learn nothing about which change worked.", "Re-run all five, re-score, write the after figure. Repeat once more if the count is still high.", "Log the before and after error counts in the Metrics ledger — use Add a metric below. “Cut error rate from 9 to 2 across a five-case eval set” is the sentence that gets read."],
+"5-1":["In DuckDB, open your lab: duckdb ~/ops/lab.duckdb", "Build the fact table first — one row per account, keys only plus the measures: CREATE VIEW f_account AS SELECT account_id, household_id, advisor, account_type, registration, custodian, market_value, cash_balance, inception_date, last_review_date FROM book;", "Now the dimensions, one at a time: CREATE VIEW d_advisor AS SELECT DISTINCT advisor FROM book; and the same shape for d_account_type, d_registration, d_custodian.", "Build a date dimension properly rather than reusing a date column: CREATE VIEW d_date AS SELECT DISTINCT inception_date AS date_key, year(inception_date) AS yr, month(inception_date) AS mth FROM book;", "In Tableau, go to the Data Source tab and use Connect, then DuckDB if the driver is installed; if it is not, export each view to CSV with COPY (SELECT * FROM d_advisor) TO 'd_advisor.csv' (HEADER) and connect to the folder.", "Drag the fact table onto the canvas first, then each dimension onto it. Tableau asks how they relate — pick the shared key and set cardinality to Many to One from fact to dimension.", "Check it worked: put Advisor on Rows and SUM(Market Value) on Text. If the total inflated, the cardinality is wrong — that is a fan-out, and it is the bug this whole task exists to teach you."],
+"5-2":["Install it: open Terminal and run brew install duckdb. No Homebrew? Download the macOS CLI binary from the DuckDB installation page linked above and move it to /usr/local/bin.", "Confirm it runs: duckdb --version.", "Start a database that persists: duckdb ~/ops/lab.duckdb", "Load your file: CREATE TABLE book AS SELECT * FROM read_csv_auto('~/ops/data/synthetic_book_v1.csv'); then DESCRIBE book; to see what types it guessed.", "First real query: SELECT account_id, advisor, market_value FROM book ORDER BY market_value DESC LIMIT 20;", "Add a WHERE to it: ... WHERE account_type = 'IRA' ORDER BY market_value DESC LIMIT 20; — four keywords is genuinely most of day-to-day operational SQL.", "Install DBeaver Community if you want a grid rather than a terminal, and point a new DuckDB connection at ~/ops/lab.duckdb.", "Save every query you write into ~/ops/sql/queries.sql with a comment line above each saying what question it answers. Ten of those is this task's output."],
+"5-3":["Find out first whether you are currently registered at all. Ask your manager or the CCO directly — a paraplanner may or may not be an IAR depending on the role and the state.", "Look yourself up on the SEC adviser search linked above. Search the firm, open its record, and find the individuals list. If you are there, you have a CRD number.", "Learn what Form U4 is and what it asks: employment history, disclosures, and the fact that it is amended when things change. You will sign one if you register.", "Write down what an IAR registration lets you do — give advice for compensation as a representative of the firm — and what it does not: it is not a licence to hold out independently, and it is state-registered, not federal.", "Note the state dimension explicitly, because this matters for Florida: registration follows where the clients are and where you have a place of business, and moving states has a filing consequence.", "Write one page: what you hold now, what you would need for an operations role versus an advisory one, and what the Florida move changes.", "Anything you could not answer goes to the Consultant questions log or to the CCO. Do not guess at your own registration status."],
+"5-5":["Open ~/ops/sql/queries.sql and write the question as a comment before each query. The comment is what makes this a portfolio piece rather than a scratchpad.", "Cash drag: SELECT account_id, advisor, cash_balance/market_value AS cash_pct FROM book WHERE market_value > 0 AND cash_balance/market_value > 0.08 ORDER BY cash_pct DESC;", "Stale reviews: SELECT household_id, max(last_review_date) AS last_review FROM book GROUP BY 1 HAVING max(last_review_date) < current_date - INTERVAL 12 MONTH;", "Opened but never funded: SELECT account_id, inception_date FROM book WHERE market_value = 0 OR market_value IS NULL;", "Advisor ranking: SELECT advisor, sum(market_value) AS aum, count(*) AS accounts FROM book GROUP BY 1 ORDER BY aum DESC;", "Average size by registration: SELECT registration, round(avg(market_value)) AS avg_size, count(*) AS n FROM book GROUP BY 1 ORDER BY avg_size DESC;", "Write five more of your own from questions you have actually heard someone ask at work — those are the ones worth having.", "Sanity-check two of them by hand against the CSV. A query that runs is not a query that is right."],
+"6-1":["In Tableau, build the four tiles as four separate sheets first: total AUM, account count, average account size, households. Each is one measure on Text with nothing else.", "On each tile sheet, click the Text card on Marks, then the ... button, and size the number to about 28pt. Delete the automatic title: right-click the sheet title, Hide Title.", "Fifth sheet, the bar chart: Advisor to Rows, SUM(Market Value) to Columns, then click the Sort descending button in the toolbar.", "Dashboard menu, New Dashboard. Set Size to Automatic in the left panel. Drag a Horizontal container across the top and drop the four tiles into it.", "Drop the bar chart below. Drag Account Type from the Data pane onto the dashboard, then on that filter's menu choose Apply to Worksheets, All Using This Data Source.", "Now fix the defaults, which is most of the visual difference: Format menu, Workbook, set a single font. On the bar chart, Format, Lines, set Grid Lines to None.", "Give it a real title: double-click the dashboard title area and write what the page answers, not “Dashboard 1”.", "File, Save to Tableau Public As. Paste the URL into Where it lives below."],
+"6-2":["Gather the inputs first: pull the three or four SOPs you have written that cover distributions and transfers. Use your public versions — the ones with no firm names — as the reference material.", "In Claude, new chat in your project. Paste those SOPs and label them clearly as REFERENCE, then write: “Answer only from the reference below. If it does not cover the case, say NOT COVERED.”", "Define the two inputs: ACCOUNT TYPE and REQUEST TYPE. Define the output as four fixed headings: Forms required / Signature requirements / Withholding elections / Likely NIGO causes.", "Test the easy path: IRA plus one-time distribution. Check every form name against your reference rather than against your memory.", "Test a case the reference does not cover on purpose — an inherited IRA, say. If it answers confidently instead of saying NOT COVERED, tighten the rule and re-run.", "Where it exposes a genuine gap in a firm SOP, do not patch the tool. Send it to the Consultant questions log with the button below — the gap is worth more than the fix.", "Save the prompt as Distribution checklist v1 and paste it into Your work."],
+"7-1":["In DuckDB, build a proper date spine rather than relying on the dates in the fact table: CREATE VIEW d_date AS SELECT unnest(generate_series(DATE '2020-01-01', current_date, INTERVAL 1 DAY)) AS date_key;", "Add the columns you actually filter on: year, month, month_start. In Tableau, relate d_date to your fact table on the relevant date field.", "In Tableau, Analysis, Create Calculated Field. Prior month assets: LOOKUP(SUM([Market Value]), -1). It only works with a date on the view — that is the point.", "Month over month: (ZN(SUM([Market Value])) - LOOKUP(ZN(SUM([Market Value])), -1)) / ABS(LOOKUP(ZN(SUM([Market Value])), -1)). ZN turns nulls into zero so the first month does not break it.", "Year to date net new money: use RUNNING_SUM(SUM([Net Flow])) and then right-click the pill, Compute Using, Table Across.", "Now the distinction this task exists for: put the date filter on the Filters shelf and watch the prior-month value disappear, because a filter removes rows before the calculation runs. Move it to a context filter or use a FIXED expression instead.", "Write those two sentences in Your work below in your own words. This is the thing that separates people who use Tableau from people who understand it."],
+"7-2":["Write the ten scenarios before you run any of them, so you are testing rather than fishing. Cover: inherited IRA, 72(t), Roth five-year, trust registration, minor account, deceased owner, partial transfer, in-kind transfer, name change, address change under 30 days.", "Every scenario is invented. No real household, no real numbers, no dates that match a real case you handled this week.", "Run all ten through the checklist tool without editing it between runs.", "Score each one: correct, wrong form, missing signature requirement, missed NIGO cause, or confidently answered something the reference does not cover. That last category is the dangerous one.", "Compute the fix rate — correct out of ten — and write it down. Re-run after your prompt fix and write the second number.", "For each case where the tool was right but your firm's SOP is silent, add a row to the Consultant questions log with the button below. Do not edit a firm SOP yourself.", "Log the before and after fix rate in the Metrics ledger."],
+"7-5":["New sheet in your Ops Lab workbook. Net new money by month: month(inception_date) to Columns, SUM(Net Flow) to Rows, then change the Marks type to Bar.", "Second sheet, AUM trend: date to Columns as continuous month (right-click the pill, pick the second Month, the one with a date icon), SUM(Market Value) to Rows, Marks type Line.", "Third sheet, new accounts: date to Columns, CNTD(Account Id) to Rows, filtered to accounts whose inception_date falls in that month.", "Fourth sheet, closed accounts: same shape against your closed-date field, or skip it and say so in the notes view rather than faking the data.", "Dashboard, New Dashboard. Lay the four out two by two. Name it AUM growth.", "Add the Advisor slicer once, then — this is the step people miss — open its menu and choose Apply to Worksheets, Selected Worksheets, and tick all four.", "Test it properly: pick one advisor and check that all four visuals change together, then check one number by hand in DuckDB. Cross-filtering that looks right and is wrong is worse than no filter."],
+"8-1":["Build the table sheet first: Advisor and Account Type to Rows, your measures to Text.", "Click the measure pill on the Marks card, then the Color card, and choose a diverging palette. Set the midpoint deliberately — Edit Colors, tick Advanced, and set Center to the firm median rather than to zero.", "Add a second signal for anyone who cannot separate red from green: Analysis, Create Calculated Field, IF [Cash Pct] > 0.08 THEN '▲' ELSE '' END, and drop it on Text. Colour alone is not an accessible rule.", "Now the action. Dashboard menu, Actions, Add Action, Filter. Source: the advisor bar chart. Target: the detail sheet. Run action on: Select.", "Set Clearing the selection to Show all values — this is the way back out, and leaving it on Exclude all values is what makes drill-downs feel broken.", "Add a visible reset: drag a Text object onto the dashboard reading “Click a bar to filter · click it again to clear”.", "Test it as a stranger would: click, click again, and check you are back where you started."],
+"8-2":["Pick something of yours, outside firm systems. Good candidates: assembling the weekly review, renaming and filing downloads, logging study hours, building the Friday impact note.", "Time three runs of the manual version with a stopwatch before you touch anything. Write all three numbers down — an average of three beats one heroic timing.", "Build the automation with whatever is shortest: a macOS Shortcut, a Zapier zap, or a ten-line script. The tool does not matter and choosing one is not the task.", "Run it three times and time those too. Include the time you spend fixing it, honestly.", "Write the four-line note: what it does, what it replaced, minutes before, minutes after.", "Anything annoying you noticed in a firm system goes to the handoff improvement backlog unfixed — use Ask the consultant below. You are 30 days in; noticing is the contribution, changing is not yet.", "Log it with Log this build, and put the before and after minutes in the Metrics ledger."],
+"9-1":["Build the age bands as a calculated field rather than a filter: Analysis, Create Calculated Field, name Age band, IF [Age] < 50 THEN 'Under 50' ELSEIF [Age] < 65 THEN '50-64' ELSEIF [Age] < 75 THEN '65-74' ELSE '75+' END.", "Sheet one: Age band to Rows, SUM(Market Value) to Columns. Sort by the band, not by the value — an age axis out of order reads as an error.", "Sheet two: Registration to Rows, CNTD(Account Id) to Columns.", "Sheet three: Advisor to Rows, AVG(Market Value) to Columns.", "Sheet four, the number that matters: Analysis, Create Calculated Field, SUM(IF [Age] >= 70 THEN [Market Value] END) / SUM([Market Value]), formatted as a percentage.", "That last figure is the one an owner reacts to — it is the firm's decumulation exposure. Put it top-left on the dashboard, not buried bottom-right.", "Assemble as page three, keep the same fonts and colours as pages one and two, and publish."],
+"9-2":["One page each, and use the same six headings both times: Problem / Input / Output / How it was tested / Error rate / Limitations.", "Write Problem as the thing that took time before, with the minutes, not as a description of the tool.", "Under How it was tested, name the eval set: five synthetic households, ten synthetic scenarios. Vague testing claims are worse than admitting you did not test.", "Put the real error rate in, including the before figure. A documented 2-in-5 error rate reads as competence; a claim of perfection reads as inexperience.", "Limitations is the section hiring managers read hardest. Write the three real ones, including that it runs on synthetic data and has never seen a live record.", "Save both as PDFs in your Portfolio container, and log each with Log this build below.", "These two pages are what you attach to an application. The prompts themselves are not."],
+"9-5":["Open the workbook and check the four views agree with each other. If total AUM on page one differs from page two, fix that before anything cosmetic.", "Add a title bar: drag a Text object across the top of each dashboard page, same height, same font. Consistency across pages is most of what “finished” looks like.", "Set one colour palette for the whole workbook: Format menu, Workbook, and pick a single font and colour. Delete every leftover default palette.", "Add a last-updated stamp: Analysis, Create Calculated Field, \"Data as of \" + STR(TODAY()), and drop it on a Text object bottom-right.", "Add a Notes view as its own dashboard page: the data model, the grain of the fact table, and one line in bold saying the data is entirely synthetic and generated for this project.", "File, Save to Tableau Public As. Open the public URL in a private window to see what a stranger sees.", "Record three minutes with Loom: what question it answers, one thing you clicked, one thing you would change. Talk about the decision, not the software.", "Log it with Log this build, mark the version Published, and paste both URLs."],
+"10-1":["Make the folder first: ~/ops/data/monthly/ and put six copies of your CSV in it, renamed 2025-01.csv through 2025-06.csv. Edit a couple of values so the union is visibly doing something.", "One command reads all six: SELECT * FROM read_csv_auto('~/ops/data/monthly/*.csv', filename=true);", "That filename=true is the whole point — it adds a column holding the source file for every row, so any number traces back to the export it came from.", "Materialise it: CREATE TABLE monthly AS SELECT *, regexp_extract(filename, '(\\d{4}-\\d{2})') AS period FROM read_csv_auto('~/ops/data/monthly/*.csv', filename=true);", "Prove the union: SELECT period, count(*) FROM monthly GROUP BY 1 ORDER BY 1; — six rows, and the counts should match the files.", "Add the seventh file to the folder and re-run the same command without editing it. Nothing changes but the answer. That is the pattern.", "Save it as ~/ops/sql/union_folder.sql. This one query is the single most reusable thing in this whole block."],
+"10-2":["Write down the five outputs before you build: median cycle time, 90th percentile cycle time, touches per item, wait time as a share of elapsed, NIGO rate. Building first and deciding after is how calculators end up measuring nothing.", "Build twenty synthetic timing rows: item_id, received_at, first_touch_at, completed_at, touches, nigo_flag. Vary them deliberately — include two that sat for a week.", "In DuckDB: SELECT median(date_diff('hour', received_at, completed_at)) AS median_hours, quantile_cont(date_diff('hour', received_at, completed_at), 0.9) AS p90_hours FROM timings;", "Touches: SELECT avg(touches) FROM timings; Wait share: SELECT sum(date_diff('hour', received_at, first_touch_at)) * 1.0 / sum(date_diff('hour', received_at, completed_at)) FROM timings;", "NIGO rate: SELECT sum(nigo_flag) * 1.0 / count(*) FROM timings;", "Test the edges on purpose: one row completed the same hour it arrived, one row still open. If a divide-by-zero or a null breaks it now, it will break on real data in front of someone.", "Median and p90 rather than mean is the choice worth being able to defend — one stuck item drags a mean and tells you nothing about the typical case.", "Log it with Log this build."],
+"10-3":["Before anything else: open LinkedIn settings, Visibility, Share profile updates with your network, and turn it off. Do this while you are reading this line.", "Confirm it is off by opening your own profile in a private window after making a small edit. Trust the check, not the toggle.", "Now write announcement one, for your manager and the consultant. Two sentences, internal register, framed around what it lets you take on rather than around you.", "Write announcement two, for the target board and your network. Different job entirely — it leads with the work, with the credential as evidence.", "Date the second one after the December decision and write that date on it. Sending it now, while you are asking for an internal operations role, reads as a leaving signal at a six-person firm.", "Save both drafts where you will find them. The internal one is used within a day of the result; the external one waits.", "Add the send date to the Milestones tab so the held one does not get forgotten."],
+"11-1":["In Tableau Public, File, Save to Tableau Public As. Sign in and give it the real name you want a stranger to see.", "Open your profile page, click the workbook, and copy the URL. Then open it in a private window — signed out, no cookies. If it does not load there, it is not published, it is saved.", "Check the two settings that catch people out: on your Tableau Public profile, make sure the workbook is not hidden, and that Allow download is set the way you want it.", "Now the refreshing version. Put a copy of your data in a Google Sheet — File, Import, upload the CSV.", "Open Looker Studio, Create, Report, and choose Google Sheets as the connector. Pick that sheet.", "Rebuild one page only — the KPI tiles and one chart. The point is to have used a connected source, not to duplicate the work.", "Edit a value in the Google Sheet and hit refresh in Looker Studio. Watch the number change without you touching the report.", "Write two lines in Your work on when each tool is right: Tableau for the portfolio piece, Looker Studio for anything that has to stay current on its own."],
+"11-2":["Create a free account at Zapier or Make. Either is fine — Make's free tier is more generous, Zapier's is easier the first time.", "Build the trigger: a Google Form (or Zapier's own form) with four fields — request type, account type, requester, due date.", "Add the second step: create a task. Use whatever you already run — Todoist, Google Tasks, a row appended to a Google Sheet. A sheet row is a perfectly good task store.", "Add the third step: send an email. Write the body with the form fields mapped in, and give it a subject line that would make sense arriving in a real inbox.", "Turn it on and submit the form three times with different values. Check all three landed in both places.", "Now the part that makes it an automation rather than a demo: in Zapier open the Zap's settings and turn on error notifications; in Make, right-click the module, Add error handler, and route failures to an email to yourself.", "Break it deliberately — remove a required field — and confirm you get told. An automation that fails silently is worse than no automation.", "Log it with Log this build below, and note in Your work what it costs to run at volume."],
+"11-3":["One paragraph first, and rewrite it three times. Current function, the two capabilities you build, the credential as evidence, and the direction. No adjectives you cannot evidence.", "Build the credential-forward resume variant as a separate file — not an edit of the main one. You want both versions available.", "On that variant, the credential goes in the header line, not buried in a certifications section at the bottom.", "Write the cover paragraph once, properly, with one blank for the firm-specific sentence. Rewriting the whole thing per application is why people stop applying.", "Log five named target roles on the board with the URL, the date seen, and one line on why you fit.", "Send nothing. Every piece is ready, and it stays ready — this is a loaded position, not a launch.", "Write the trigger beside it: what has to be true before these go out. Usually the December answer.", "Add a win row with Log a win recording that the package exists and is held."],
+"11-5":["Version 1 took free text. Version 2 takes four named inputs — account type, distribution type, amount, timing — so state that at the top of the prompt and tell it to refuse to proceed if any is missing.", "Fix the output as five headings in this order: Forms / Withholding / Signatures / Deadline / NIGO risks. Same order every run, so a user can scan it.", "Paste your public-version distribution SOPs as REFERENCE and repeat the rule: answer only from the reference, otherwise say NOT COVERED.", "Build a test matrix rather than ad-hoc prompts: every account type you have an SOP for, crossed with every distribution type. Write out the grid before you run it.", "Run the whole grid. Mark each cell correct, wrong, or over-confident.", "Fix the single most common failure, re-run the whole grid, and write both scores.", "Save v1 and v2 side by side with the two scores. The improvement is the portfolio piece — a tool that was always good is an unverifiable claim.", "Log the before and after in the Metrics ledger with Add a metric."],
+"13-1":["LinkedIn first: go to your profile, click Add profile section, Recommended, Add featured, then Add a link and paste the portfolio URL. Give it a title that says what it is, not “Portfolio”.", "Resume header: put the URL on the same line as your email, not in a footer. Make it a live hyperlink in the PDF.", "Email signature: personal email at minimum. Whether it goes in the firm signature is a question for your manager, not a decision to make quietly.", "Now the outreach. Open the target board and message every contact — leading with the work sample, not the credential.", "The opening line is the whole message: “I built a dashboard on synthetic advisory data that surfaces uninvested cash — here it is” beats any sentence containing the words “reaching out”.", "One paragraph, one link, one question they can answer in a sentence. No attachment.", "Log every send on the target board with the date, and set the follow-up for ten days out.", "Do not send the same text to all of them. Change the first line for each so it is visibly written to that person."],
+"13-2":["Read the whole site top to bottom as one document, in a private window, as a stranger would. Not page by page — the risk is in the combination.", "Ask the re-identification question directly: does the site now say custodian, plus firm size, plus metro area, plus role? Any three of those together identifies a six-person RIA.", "Check the details people forget: screenshot window titles, file names in URLs, a system nickname in an alt tag, a date that matches a known event.", "Fix whatever you find, then log the check itself — date, what you checked, what you changed. That log is your evidence you did this deliberately.", "Now publish: the dashboard video, the two AI one-pagers, and the homepage.", "Send the link to exactly two people and ask a specific question — “does the case study make sense without me explaining it?” — rather than “what do you think?”", "Log the whole-site check as a win with Log a win below, and note what you removed."],
+"14-1":["In DuckDB: WITH c AS (SELECT account_id, household_id, advisor, market_value, cash_balance, cash_balance/nullif(market_value,0) AS cash_pct FROM book) SELECT * FROM c WHERE cash_pct > 0.08 ORDER BY cash_balance DESC;", "That nullif is not optional — without it a zero-value account divides by zero and takes the query down.", "Add duration if your data has a cash-as-of date; if it does not, say so in the write-up rather than inventing a holding period.", "Rank households, not accounts: SELECT household_id, sum(cash_balance) AS idle FROM book GROUP BY 1 ORDER BY idle DESC LIMIT 25;", "The revenue line: SELECT sum(cash_balance) * 0.01 AS annual_fee_on_idle_cash FROM book WHERE cash_balance/nullif(market_value,0) > 0.08;", "Say the assumption out loud in the query comment: a 1% rate applied to idle cash, on synthetic data, ignoring billing exclusions. An unlabelled assumption in a revenue number is how analysts lose credibility.", "Save as ~/ops/sql/cash_drag.sql and put the headline dollar figure in the Metrics ledger."],
+"14-2":["Two inputs, both synthetic: HOUSEHOLD SUMMARY and LAST YEAR'S NOTES. Label them in caps in the prompt so the model cannot confuse them.", "Four fixed output sections: Agenda / Portfolio changes to discuss / Service items due / Three questions the advisor should ask.", "The fourth section is the one with value. Tell it explicitly: the questions must be answerable only by the client, not by looking at the account.", "Add the guardrails: no recommendations, no product names, no performance claims, and UNKNOWN wherever the input is silent.", "Build two synthetic households with genuinely different shapes — one accumulating, one drawing down — and run both.", "Read the outputs as the advisor would. If a talking point could have been written without reading the notes, the prompt is producing filler; tighten it and re-run.", "Save the prompt plus both samples, and log it with Log this build."],
+"14-5":["Write the four leak definitions as sentences with thresholds before opening Tableau: cash above 8% held over 90 days, no review meeting in 12 months, paperwork pending beyond the SLA, accounts with no activity in 24 months.", "Every threshold is a decision. Note beside each why you chose that number — that is the first thing a reviewer asks.", "Now the model. Each leak needs a flag at account or household grain: build them as DuckDB views, one per leak, each returning the key plus a boolean plus the dollar exposure.", "Union them into one leak table with a leak_type column. One long table beats four wide ones — one page can then filter across all four.", "Check the grain: if a household can appear under two leaks, decide now whether the dollar figure double-counts, and write the answer down.", "Sketch the page on paper before building: headline dollar figure, four leak tiles, one ranked table. Ten minutes here saves two hours of rearranging.", "Save the scope note and the model diagram in Your work below — the scope note is what makes this a project rather than a chart."],
+"15-0":["Build the navigation first: on the dashboard, drag a Navigation object from the Objects panel at the bottom left onto the page.", "Click it, then in the left panel set Navigate to, and pick the target dashboard. Set the button title and give it a border so it reads as a control.", "Repeat on each page so a reader can always move both ways. A dashboard you can enter and not leave is the most common self-taught mistake.", "Now the toggle. Analysis, Create Parameter. Name it View mode, data type String, list of values: Chart and Table.", "Right-click the parameter in the Data pane and choose Show Parameter so the control appears.", "Create a calculated field: IF [View mode] = 'Chart' THEN ... — or more simply, build both sheets, put them in a Vertical container, and use two sheet-swap calculated fields on the Filters shelf of each.", "Make it obvious without instructions: label the control, and put it top-right where controls live everywhere else.", "Hand it to someone who has never seen it and watch them use it without narrating. Whatever they hesitate over is the thing to fix."],
+"15-1":["Draw the six boxes before touching a tool: trigger, collect details, AI drafting step, format, save to a document, create a review task.", "Trigger: a Google Form or a scheduled run. Keep it simple — the trigger is never the interesting part.", "AI step: in Zapier use the AI or Claude action; in Make use the HTTP module or the Anthropic module. Paste your meeting-prep prompt in and map the form fields into it.", "Format step: wrap the output in your brief skeleton so every document comes out identical.", "Output: create a Google Doc, or append to a Doc. Name it with the household ID and the date so it is findable.", "Final step: create a task with a due date and an owner. A brief nobody is assigned to read is not a pipeline.", "Run it three times end to end with three different synthetic households. Check the document, the task, and the due date each time.", "Synthetic data only, every run. Do not point this at a real household even once to “check it works properly”.", "Log it with Log this build and record the minutes it replaces in the Metrics ledger."],
+"15-5":["Headline first: one Text tile, one number — estimated annual fee impact of idle cash. Big, top-left, formatted as currency with no decimals.", "Sheet: total uninvested cash. Sheet: cash by advisor, sorted descending. Sheet: accounts over the threshold, ranked, with account id, advisor, cash percentage and dollars.", "Trend sheet: cash percentage over time, continuous month on Columns. If your synthetic data has no history, generate six periods rather than drawing a line from one point.", "Add a threshold reference line: right-click the axis, Add Reference Line, Value 8%, and label it. A rule the reader can see beats a rule in your head.", "Assemble the page: headline across the top, advisor chart left, ranked table right, trend along the bottom.", "Put the assumption on the page, not in your notes: a small text object reading “Fee impact estimated at 1.0% on cash above 8% · synthetic data”.", "Publish and check the headline number against your DuckDB query by hand. A dashboard that disagrees with the query is the failure mode that ends the conversation."],
+"16-1":["Write it as one query with three bands rather than three queries: SELECT household_id, advisor, max(last_review_date) AS last_review, sum(market_value) AS aum, CASE WHEN max(last_review_date) < current_date - INTERVAL 24 MONTH THEN '24m+' WHEN max(last_review_date) < current_date - INTERVAL 18 MONTH THEN '18-24m' WHEN max(last_review_date) < current_date - INTERVAL 12 MONTH THEN '12-18m' END AS band FROM book GROUP BY 1,2 HAVING band IS NOT NULL ORDER BY aum DESC;", "Rank by AUM, not by how stale it is. The oldest miss is rarely the most expensive one, and that ordering is the insight.", "In Tableau, build it as a table: household, advisor, last review, AUM, band.", "Add the threshold band visually: right-click the date axis, Add Reference Band, from 12 months ago to today, and colour it lightly.", "Colour the rows by band, and add a text marker as well as colour so the signal survives a colourblind reader and a black-and-white print.", "Sanity-check five rows by hand against the source. Every stale-review report ever built has had an off-by-one on the date boundary at least once.", "Save the query and log the count of stale households in the Metrics ledger."],
+"16-2":["Build the synthetic pending-items table first: item_id, requested_at, type, owner, status, resolved_at. Twenty rows, some resolved, some not.", "In Make or Zapier, set a daily scheduled trigger reading that table.", "Add the resolved check before anything else runs: a filter that drops any row whose status is resolved. This step goes first, always — a chase email about a completed item is the single fastest way to lose the firm's trust in automation.", "Branch on age: day 3 a neutral reminder, day 7 a firmer one naming what is blocking, day 14 an escalation copying the owner.", "Write the three message bodies to escalate in specificity, not in volume. Day 14 says what happens next; it does not shout.", "Final branch: past day 14, create a phone-call task with a due date rather than sending a fourth email.", "Test all three stages by backdating rows. Then test the resolved check by marking one resolved mid-run and confirming nothing sends.", "Synthetic table, synthetic addresses, your own inbox. This never points at firm systems.", "Log it with Log this build."],
+"17-0":["Open your two worst queries — the ones with a subquery inside a subquery. Those are the ones this technique is for.", "Rewrite the innermost part as a named block at the top: WITH accounts_with_pct AS ( SELECT ... ) SELECT * FROM accounts_with_pct WHERE ...", "Name the CTE after what it contains, not after what it does. accounts_with_pct, not step1.", "Do the second query the same way, then read both versions side by side. The readability difference is the entire lesson.", "Now stack three: WITH a AS (...), b AS (SELECT ... FROM a ...), c AS (SELECT ... FROM b ...) SELECT * FROM c; — each one reads from the one above.", "A good three-stage example: a = clean rows, b = per-household aggregate, c = rank households and take the top 20.", "Save all three into ~/ops/sql/ with the comment above each. When someone asks in an interview whether you write SQL, this file is the answer."],
+"17-1":["Design the routing table before you build: four request types, and for each one the checklist to attach, the owner, and the turnaround. Put it in a Google Sheet.", "Build the form with request type as a dropdown of exactly those four values. Free text here breaks every branch downstream.", "In Make, add a Router after the trigger; in Zapier, use Paths. Create four branches.", "Give each branch a filter on the request type, then the same two actions: create the tasks from that checklist, and set the due date from the turnaround.", "Add the confirmation back to the requester, and include what happens next and by when — not just “received”.", "Add a fifth, default branch for anything that matches nothing, routing to you. Every router needs a fall-through, and the ones without it lose requests silently.", "Test all four branches plus the fall-through. Five tests, not four.", "Log it with Log this build."],
+"17-5":["Same three components on each page so a reader learns the layout once: headline count top-left, ranked table on the right, ageing distribution along the bottom.", "Stale-review page: the count of households past 12 months, the ranked table from task 16-1, and a histogram of months since last review.", "Build the histogram properly — Analysis, Create Calculated Field for months since review, then right-click it in the Data pane, Create, Bins, and set the bin size to 3 months.", "Paperwork page: count past SLA, ranked table by days over, ageing distribution in the same bin sizes.", "Reuse the colour and font settings from page one exactly. Three pages that look like three different projects undo the work.", "Add the same navigation buttons from task 15-0 to both new pages.", "Check each headline count against DuckDB before publishing."],
+"18-1":["Write the checks as a single query returning one row per check: SELECT 'null market_value' AS check_name, count(*) AS failures FROM book WHERE market_value IS NULL UNION ALL SELECT 'duplicate account_id', count(*) - count(DISTINCT account_id) FROM book UNION ALL SELECT 'cash exceeds value', count(*) FROM book WHERE cash_balance > market_value;", "Add two business-rule checks of your own — an inception date in the future, a registration value not in your allowed list.", "Add freshness: SELECT max(last_review_date) AS newest_row FROM book; and surface it as a date on the page.", "In Tableau, build it as a table: check name, failures, and a status column that reads PASS or FAIL.", "Make failures loud. Colour the FAIL rows and put the total failure count as a tile at the top. A quality page that has to be read carefully will not be read.", "Never quietly exclude the failures from the other pages. If you filter them out somewhere, say so on the page — silent exclusion is how a dashboard becomes confidently wrong.", "Add this page to every dashboard you have built so far. It takes fifteen minutes each and it is the thing that makes the rest trustworthy."],
+"18-2":["Use only your sanitised process maps — no firm names, no system nicknames, no people. This runs through an outside model.", "Write the critique prompt: “For each process below, list handoffs, wait states, single points of failure, and steps that could be eliminated. One line each. No recommendations.”", "Run it and save the output as a numbered list, so each line can be scored individually.", "Now score against the bottleneck list the consultant already validated — she is the ground truth here, not the model. Mark each line: matches a known bottleneck, plausible but unverified, or wrong.", "Hit rate is matches divided by total lines. Write it down.", "Change one thing in the prompt — usually adding “rank by time lost, not by order in the document” — and re-run. Score again.", "Keep the higher-scoring prompt and save both versions with their scores. A prompt with a measured hit rate is worth ten prompts that felt good.", "The lines it got right that the consultant had not flagged are worth raising with her — send them via Ask the consultant below."],
+"19-0":["Understand the limit before you build: Tableau Public cannot enforce row-level security, because everything published there is public. You are building this to have done it and to be able to explain it.", "Build it locally. In Tableau, Server menu, Create User Filter — or if that is unavailable, do it with a parameter and a calculated field, which is the portable version.", "Parameter approach: Analysis, Create Parameter, name Viewer, String, list of your advisor names.", "Calculated field: [Advisor] = [Viewer]. Drag it to the Filters shelf and set it to True.", "Show the parameter, switch between advisors, and confirm the totals change and the other advisors' accounts disappear.", "Screenshot two states side by side, and document the role definitions: who sees their own book, who sees the firm, and who decides.", "Write the honest limitation in the write-up in one line: this is a demonstration of the pattern; enforcement requires Tableau Server or Cloud. Claiming otherwise is the sort of thing that gets caught in a technical interview."],
+"19-1":["Same five headings for all four, so they read as a set: Trigger / What it does / Cost to run / What happens when it fails / Limitations.", "Export each scenario: in Make use the blueprint export; in Zapier take a full screenshot of the Zap editor. Put the image on the page.", "Cost to run means the real number — tasks or operations consumed per month at your actual volume, and what tier that lands in. This is the question an owner asks first.", "What happens when it fails is the section that shows judgement. Name the failure mode, who gets told, and what the manual fallback is.", "Under Limitations, say that each runs on synthetic data and has never touched a firm system.", "Save the four as PDFs in your Portfolio container, and log each with Log this build.", "Read the four together. If they do not look like one person's work, fix the formatting now rather than the week you need them."],
+"19-5":["Summary page first: the four leak numbers as tiles across the top, and one combined dollar estimate as the headline.", "Be careful with the combined figure. If a household appears under two leaks, decide whether you are summing exposure or counting households, and state which on the page.", "Add the method notes page: the four definitions with their thresholds, the data model, the assumptions, and the line saying the data is synthetic.", "Polish pass: one font, one palette, aligned containers, no default titles anywhere, navigation buttons on every page.", "Publish and open the public URL signed out.", "Record four minutes with Loom: the question, the headline number, one page in detail, and one thing you would do differently. Do not narrate every click.", "Say the assumptions out loud in the recording. A reviewer who hears you name your own weak point trusts the rest of it.", "Log it with Log this build, mark it Published, and paste both URLs."],
+"20-0":["Draw it on paper first, then redraw it cleanly. Six to eight boxes: inputs, each processing step, outputs, storage, the trigger, and the human review gate.", "Be explicit about who triggers it and when — scheduled, on demand, or on an event. Systems without a named trigger do not get built.", "Mark the human review gate clearly and say what the reviewer is checking for. Anything that could reach a client passes through it.", "Name what is out of scope. A design that appears to promise everything reads as inexperience.", "Add the failure paths: what happens if the AI step times out, if the input is malformed, if the document store is unreachable.", "Draw it in whatever is fastest — Excalidraw, Google Drawings, or paper photographed. The clarity matters, the tool does not.", "One paragraph beneath the diagram: what problem this solves and roughly what it is worth in time per month. Put that figure in the Metrics ledger.", "Save the diagram in your Portfolio container and paste the link in Where it lives."],
+"20-1":["Build it in the order of the diagram, testing each step before adding the next. Building all six and then debugging is a long evening.", "Trigger and input collection first. Run it and confirm the data arrives in the shape you expect.", "Add the AI drafting step with the hardened prompt from task 4-5, not the first draft.", "Add the formatting step so every output is identical, then the document creation. Name documents predictably: household ID, date, type.", "Add the review task last: assigned to a named person, with a deadline, and with the document linked in the task.", "Run the whole thing three times with three different synthetic inputs.", "Now break it on purpose: submit an empty input and confirm it fails loudly rather than creating an empty brief nobody notices.", "Log it with Log this build."],
+"20-2":["Open DuckDB and take these one at a time — window functions are the highest-leverage SQL you will learn this year.", "Largest account per advisor: SELECT * FROM (SELECT account_id, advisor, market_value, ROW_NUMBER() OVER (PARTITION BY advisor ORDER BY market_value DESC) AS rn FROM book) WHERE rn = 1;", "Understand PARTITION BY before moving on: it restarts the numbering for each advisor. That is the whole idea.", "RANK versus ROW_NUMBER: swap one for the other on a tied value and look at the difference. Knowing which you want is a real interview question.", "Month-over-month with LAG: SELECT period, total, total - LAG(total) OVER (ORDER BY period) AS mom FROM monthly_totals;", "Running total: SELECT period, sum(total) OVER (ORDER BY period ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) FROM monthly_totals;", "Most recent contact per household: ROW_NUMBER() OVER (PARTITION BY household_id ORDER BY contact_date DESC) and take rn = 1.", "Write the sixth yourself from a question you have heard at work. Save all six with comments."],
+"20-5":["Ten cases, and write the expected output for each one before you run anything. This is the part that makes it a measurement rather than a demo.", "Vary them deliberately: two easy, five typical, three that should fail or return UNKNOWN. A test set of only easy cases measures nothing.", "Run all ten through the pipeline untouched. Save every output.", "Score each: correct, partially correct, wrong, or hallucinated. Count them. That is your before figure.", "Group the failures by cause. Two causes usually explain most of them.", "Fix the two worst causes only, then re-run all ten and score again.", "Write both numbers and what you changed. “Nine of ten, up from five, after two prompt changes” is a sentence you will use in interviews all year.", "Log both figures in the Metrics ledger with Add a metric."],
+"21-3":["Learn the deadline first: the annual updating amendment is due within 90 days of the adviser's fiscal year end. Most firms run a calendar year, so most file by 31 March.", "Then learn the other-than-annual trigger: certain items must be amended promptly when they become inaccurate — not at the next annual. Find which items those are in the Form ADV instructions linked above.", "Now the map, generically. For each reported item, three columns: what it reports, what system or record it comes from, and the event that makes it stale.", "Work through the ones operations actually touches: assets under management, number of clients, employee counts, custody arrangements, other business activities, disciplinary events.", "The staleness column is the useful one. Assets go stale on a date; a custody arrangement goes stale on an event; a disciplinary item goes stale the day it happens.", "Keep it entirely generic — item numbers and system types, no firm names, no client detail, no numbers from your firm.", "This map is a strong portfolio piece because it shows you understand where compliance data originates, which is an operations problem, not a legal one.", "Firm-specific questions about who owns each input go to the Consultant questions log."],
+"22-1":["In Tableau, Analysis, Create Parameter. Name Fee rate, data type Float, Current value 0.01, Range from 0.0025 to 0.02, step 0.0005. Display format Percentage.", "Right-click it in the Data pane and choose Show Parameter so the reader gets a slider.", "Create the calculated field that uses it: [Idle cash] * [Fee rate]. Only a calculation makes a parameter do anything — on its own it is an inert control.", "Put that field into your headline tile and drag the slider. If the number does not move, the tile is still bound to the old hard-coded field.", "Add the second parameter the same way for the cash threshold, and wire it into the leak flag: [Cash pct] > [Cash threshold].", "Label both controls with the unit, and set sensible bounds so a reader cannot set a 40% fee and produce a nonsense headline.", "Add one line of text beside the controls: “Move these to test the assumption.” Interactivity nobody notices is wasted work."],
+"22-2":["Make one page in your workspace called Prompt library, with a table rather than a pile of chats. A prompt you cannot find is a prompt you rewrite.", "Five columns for every entry: Name / Purpose / Input format / Output format / Known limitation.", "Go through your chat history and pull every prompt you have actually reused. You will find more than ten — the SOP formatter, meeting prep, checklist tool, review brief, critique prompt, interview drill, and the small ones.", "The Known limitation column is the one that matters. Write the real failure for each: invents forms when the reference is silent, drifts on long inputs, misses the second risk.", "Add a version number and a last-tested date. A prompt library nobody dates rots quietly.", "Keep the firm-specific ones out of the published version. The library you publish is generic; the one you use may reference firm processes and stays internal.", "Log it with Log this build."],
+"23-0":["Build the synthetic tracking table first: application_id, household, submitted_at, status, status_changed_at, custodian, funded_at. Statuses: Submitted, In review, NIGO, Approved, Funded.", "Scheduled trigger, daily. Read the table.", "Day counter: compute days in current status from status_changed_at. That single field drives everything else.", "Thresholds: alert at day 5 in review, day 3 in NIGO, day 10 approved but unfunded. Pick the numbers deliberately and write down why.", "Alert action: one digest email listing everything past threshold, not one email per item. Per-item alerts get filtered into a folder within a week.", "Summary view: append a daily snapshot row to a sheet — count by status, oldest item, total in flight. That history is what later becomes a cycle-time chart.", "Test by backdating rows so every threshold fires at least once.", "Synthetic only. This is a pattern you can show, not a system you run on the firm's pipeline.", "Log it with Log this build."],
+"23-1":["Time it first, honestly. Open the workbook, open the slow view, and use a stopwatch. Write the seconds down before changing anything.", "In Tableau, on the Data Source tab, switch the connection from Live to Extract, top right. Then Extract, Compute Calculations Now.", "Hide unused fields: in the Data pane, click the dropdown at the top and choose Hide All Unused Fields. This alone is often most of the win.", "Add an extract filter for anything you never show — closed accounts, test rows — via the Extract dialog's Add filter.", "Aggregate before you visualise: if the view only ever shows monthly totals, build a monthly view in DuckDB and connect to that instead of to 750k rows.", "Use Help, Settings and Performance, Start Performance Recording to see what is actually slow. Guessing at performance is how people optimise the wrong thing.", "Time it again, same stopwatch, same view. Write both numbers and what you changed.", "Log the before and after in the Metrics ledger — load time is one of the few technical numbers non-technical people immediately understand."],
+"23-5":["One page, five automations, same five headings each: Problem / Trigger / Steps / Failure mode / Screenshot.", "Now the arithmetic, shown openly. For each: measured seconds saved per run × assumed runs per month = minutes saved per month. Two numbers, one multiplication, both visible.", "Label which is which every time. Measured means you timed it. Assumed means you estimated the volume. Presenting an assumption as a measurement is the fastest way to lose a technical reader.", "Total the column, then write the total again with the volume assumption halved. Showing the sensitivity is what makes the headline believable.", "Add one line on what none of these do: they run on synthetic data and have never touched a firm system.", "Publish it as a page on your portfolio site and log it with Log this build.", "Put the labelled monthly figure in the Metrics ledger."],
+"24-0":["Decide the route tonight rather than researching it for an hour. Cheapest is a used Windows laptop; fastest is a Microsoft Fabric trial in the browser; most convenient long-term is Parallels on your Mac.", "Power BI Desktop is free and Windows-only. The browser service can build reports but not everything Desktop does — enough for this task.", "Get in and load synthetic_book_v1.csv: Home, Get data, Text/CSV.", "Rebuild page one of the assets dashboard only. Four cards and one bar chart. Do not rebuild the whole thing — the point is fluency with the concepts, not a second portfolio.", "Write the measures in DAX so you have touched it: Total AUM = SUM('book'[market_value]) and Avg account = AVERAGE('book'[market_value]).", "Note the differences as you hit them: DAX measures versus Tableau calculated fields, Power Query versus Tableau's data source tab, the modelling view versus Tableau's relationships.", "Write four or five of those differences down. In an interview, “I built in Tableau and rebuilt a page in Power BI, and here is what actually differs” is a far stronger answer than a claim of familiarity.", "Log it with Log this build."],
+"24-2":["One table, four columns: Tool / How it fails / How you would detect it / What the human control is.", "Go tool by tool and be specific about the failure. “Sometimes wrong” is not a failure mode. “Invents a form name when the reference does not cover the account type” is.", "Detection is the column people skip. For each, say what a person would see — a NOT COVERED that should have been an answer, a brief with no UNKNOWNs on a thin input.", "The human control column should never be “I check it”. Name the specific check: the reviewer confirms every form name against the SOP index before anything is sent.", "Add a row for the failure that applies to all of them: the model is confident when it is wrong, and confidence is not a signal.", "This table is the single most useful artifact in the AI track for an operations leadership interview. It shows you deploy tools rather than admire them.", "Save it in the Portfolio container and log it with Log this build."],
+"24-5":["New deck, do not edit the old one. The order is the change and editing preserves the old order.", "Slide one: what the consultant owned. Slide two: what transferred to you and when. Slide three: the numbers — on-time rate and advisor hours returned, with the method visible on the slide.", "Method visible means the arithmetic is on the slide: measured minutes, assumed volume, the multiplication. A number without its method invites the wrong question.", "No firm name, no vendor names, no custodian, no system nicknames. Describe by function: “the portfolio accounting system”, not the product.", "Portfolio builds move to slide four and after. They are supporting evidence now, not the story.", "Slide last: what you would do with the next six months.", "Time it twice with a stopwatch. Six minutes means six, and the first run will be nine.", "Cut to time by removing a section, not by talking faster. Log it with Log a win."],
+"25-0":["Start from a blank page, not from the old resume. Editing produces a study-led document; rebuilding produces an ownership-led one.", "Write the top three bullets first, all about what you run end to end: the processes owned, the on-time rate, the advisor hours returned.", "Every bullet: what you owned, the number, and the method in your head ready to defend. If you cannot explain how a number was calculated out loud, cut the number.", "Sanitise as you write. No custodian name, no vendor names, no client detail, no headcount plus location plus custodian in the same document.", "Data and automation come second, not first. You are applying for operations leadership; the technical work is evidence, not the headline.", "One page. If it runs over, cut the oldest role to one line rather than shrinking the font.", "Read it aloud. Any sentence you would not say in a room comes out.", "Save it as a PDF with a sensible file name — Firstname-Lastname-Operations.pdf, not resume-final-v4.pdf."],
+"25-1":["First action, before you type anything: Settings and Privacy, Visibility, Share profile updates with your network, off. Editing with this on notifies your six-person firm of every change.", "Headline: current function plus the two capabilities. No location, no aspirational title, no emoji.", "About: three short paragraphs matching the resume's framing — what you run, what you build, where it is going. Written in first person, and read as though your manager will read it, because they will.", "Experience bullets: use the resume's top three, adapted. They must not contradict the resume — a hiring manager reads both.", "Featured section: add the portfolio link, plus one dashboard, plus one case study. Three items, each with a title that says what it is.", "Skills: put the operations and data skills at the top three, since those are the ones shown on the profile.", "Confirm the firm is your listed current employer with correct dates. A gap or a wrong end date reads as already gone.", "Leave open-to-work off entirely — both the public banner and the recruiters-only setting. Revisit after the December decision, not before."],
+"25-3":["Open every published link cold, in a private window: portfolio site, each Tableau Public workbook, each recording, each PDF.", "Anything that does not load, note it and fix it now rather than adding it to a list.", "Refresh screenshots that show an older version of a dashboard. A screenshot of v1 beside a live v2 is the kind of small inconsistency reviewers notice.", "Play each video for ten seconds and check the audio. Silent recordings are common and always discovered by someone else.", "Re-read anything a reviewer flagged in task 20-4 and confirm you actually made the change.", "Run one publication check while you are here: does anything published now identify the firm — custodian plus headcount plus metro area, or a system nickname that slipped through?", "Update the date on the portfolio homepage so a visitor can see it is maintained."],
+"25-5":["Open the SEC adviser search linked above and use the firm search, not the individual search.", "Use the search filters for state Florida, then work county by county: Hillsborough, Pinellas, Manatee, Sarasota. The tool lets you filter by location and by assets under management.", "Set the assets filter to $1b-$5b. That band is deliberate: large enough to have a real operations function, small enough that the operations lead is not four layers down.", "For each result, open the Form ADV and record: name, regulatory assets under management (Item 5.F), employee count (Item 5.A and 5.B), custodian (Item 15 or the brochure), and principals (Schedule A).", "Then read the Part 2A brochure before you write anything in the fit column. The brochure tells you the service model, the fee structure and the client type — which is what actually determines whether you would want to work there.", "Write the fit reason as a sentence about them, not about you. “Fee-only, planning-led, two offices, no dedicated operations lead named in Schedule A” is a reason; “seems like a good culture” is not.", "Fifteen firms with that level of detail is a full evening and worth more than fifty names.", "Add each to the Target board with its status set to Researched."],
+"26-4":["Open the build registry and filter to Published only. That column is the only source for this — internal work does not enter the count.", "Assemble against the target list: three case studies, five automations, three dashboards with video, every live sanitised SOP, and the public audit report.", "Where the published count falls short, publish the honest number. A portfolio claiming twelve items and showing nine is worse than one showing nine.", "Re-read every item against the publication rule from task 1-0. Not a skim — the full check, item by item, because several were written months ago under looser habits.", "Then do the whole-site read again, as one document. New items change what the combination reveals.", "Update the homepage counts and the last-updated date.", "Log the check as a win, and update each item's row in the build registry so the Published column stays true."],
+"27-1":["Build the spreadsheet first, then fill it — otherwise you read 25 postings and remember four. Columns: firm, bucket, title, years required, tools named, certifications, stated band, source URL, date pulled.", "Pull from three sources so you are not reading one algorithm's idea of you: LinkedIn Jobs, Indeed, and the RIA-specific boards.", "Bucket one, mid-size RIA operations: search operations manager RIA, director of operations wealth management, in Tampa Bay and remote.", "Bucket two, platform and TAMP: search operations at the TAMPs and custodial platforms by name.", "Bucket three, integration and conversion: search conversion, integration, M&A operations wealth management.", "Copy the exact band when it is stated and leave it blank when it is not. Do not estimate into that column — the blanks are data too.", "Now tally: count how many of the 25 name each tool, each certification, each years-of-experience figure.", "The two numbers that change your plan are the most-named tool and the median stated band. Write both at the top, and put the band into the Money tab."],
+"28-3":["Read the tally from task 27-1 and take the top gap by count. Take it as counted, not as you would prefer it — this is why you tallied.", "Give yourself one evening and one artifact. A gap you read about is still a gap.", "If it is a tool, build the smallest real thing in it and publish that. If it is a concept, build a worked example on your synthetic data.", "Write half a page: what the gap was, how many of the 25 postings named it, what you built, and what you now know that you did not.", "Publish the artifact so it is linkable, and add it to the portfolio index.", "Add one line to your resume or LinkedIn only if the artifact backs it. A skill listed without an artifact is the claim that gets tested first.", "Log it with Log this build."],
+"29-3":["Write the rubric before the prompt, otherwise you will be scored on how well you talk. Four criteria: specific example given, number included, process reasoning shown, what you would do differently.", "The prompt: “You are a hiring manager for an operations manager role at a $2b RIA. Ask me one question at a time. Wait for my answer. Score it 1-5 on each of these four criteria, quote the weakest line back to me, then ask the next question.”", "One at a time matters. Add: “Do not ask the next question until I answer, and do not summarise the rubric before I answer.”", "Prepare ten questions from real posting language, and let it ask them in its order rather than yours.", "Answer out loud, then type what you actually said. Typing a better answer than you would speak defeats the exercise.", "Run all ten in one sitting. Fatigue at question eight is realistic.", "Save the transcript with the scores. Re-run the three lowest-scoring questions next week and compare.", "The pattern in the low scores is the finding — usually a missing number, or a story with no what-I-would-change ending."],
+"30-3":["Take the most-mentioned deliverable from the tally — usually a KPI dashboard, an operations scorecard, a process map or a capacity model.", "Build it small on synthetic data. One page, four numbers, one chart.", "Match their vocabulary rather than yours. If the postings say scorecard, call it a scorecard.", "Write three lines on the page: what it answers, who would read it, how often it would be refreshed.", "Publish it and put it in the portfolio index under the name the market uses.", "In your next application, name this artifact in the first paragraph. A thing built to their words gets read.", "Log it with Log this build."],
+"30-5":["Set up: Loom or QuickTime, screen plus camera, six minutes on a timer. Record in one take without stopping to fix things.", "Give the walkthrough as though to someone who has never seen any of it. Talk about the decisions, not the buttons.", "Watch it back once, all the way through, without pausing. It will be uncomfortable and that discomfort is the useful part.", "Write down the two worst habits only. Usually: filler words at the start of every sentence, apologising for the work, narrating clicks, or running long on the first section and rushing the ending.", "Fix those two things specifically. Not everything you noticed — two.", "Record again, same six minutes, same order.", "Compare the two on time-to-first-substantive-sentence. If the second version gets to the point faster, that alone is worth the evening.", "Keep the second recording. It is what you rehearse against before every interview from here."],
+"31-0":["Open your AUM trend sheet. It needs a continuous date on Columns for any of this to work.", "Open the Analytics pane, top-left beside Data. Drag Forecast onto the view.", "Right-click the forecast, Forecast Options, and look at the model it chose and the prediction interval. Set the interval to 95% deliberately.", "From the same pane, drag Reference Line onto the view and set it to a constant — your target.", "Now the part that matters: work out what the shaded band means well enough to say it in one sentence. It is the range within which the model expects the actual value to fall 95% of the time, given the pattern so far.", "Then work out why it is nearly meaningless here: a forecast built on synthetic data with no seasonality is a shape, not a prediction. Write that down.", "Being able to add a forecast is common. Being able to say when a forecast should not be shown to an owner is the thing worth having."],
+"31-3":["Set the criteria as a list first: the three buckets, the titles, the locations, and the two or three words that disqualify a posting instantly.", "Simplest build that works: an RSS or email alert from each job board into one inbox folder, then a Zapier or Make step that parses each into a Google Sheet row.", "Deduplicate on the job URL, not on the title. The same posting appears under three titles across boards.", "Add the status column with a short fixed list: New, Read, Applied, Rejected, Interviewing. Free text here makes the sheet useless within a month.", "Add first_seen and last_seen dates. A posting that has been live for nine weeks tells you something.", "Run it for three days and fix whatever it gets wrong before trusting it.", "Use it daily — that is the actual output. An automation you built and do not open is a portfolio piece, not a tool.", "Log it with Log this build."],
+"33-3":["Read the Form CRS instructions linked above for what it must contain: the relationship summary items, the required conversation starters, and the plain-language requirement.", "Learn the delivery triggers precisely — before or at the time of entering an advisory agreement, and again on certain later events such as a material change or a new account for an existing client.", "Learn the deadlines attached to each trigger. This is the part that is examined, because it is checkable.", "Now write the evidence pattern generically, four columns: trigger, recipient, date delivered, where the record is stored.", "The storage column is the one operations owns. Delivery that happened but cannot be evidenced is, for examination purposes, delivery that did not happen.", "Add the retention question: how long the delivery record must be kept, and in what form.", "Keep it firm-neutral. Every question about how your firm actually tracks this goes to the questions log for the CCO — that is their record to describe, not yours to document.", "Publish the generic version later; it belongs in the regulatory reference from task 34-2."],
+"34-2":["Gather every regulatory note from the year into one place first. There will be more than you remember.", "Now reorganise by the question, not by the rule. Nobody searches for “Rule 206(4)-1”; they search for “can we put a client quote on the website”.", "Write each entry as: the question, the short answer, the rule it comes from, and one line on where operations touches it.", "Build the index at the top as a list of questions. That index is what makes it usable and is most of the value.", "Strip it hard: no firm names, no client facts, nothing sourced from the consultant's files or the firm's compliance manual. Everything must trace to a public source.", "Add the disclaimer once, plainly: this is a personal study reference, not legal or compliance advice, and firm policy governs.", "Publish it to the portfolio site with the date.", "This is one of the highest-signal artifacts you will publish, because almost nobody in operations writes one. Log it with Log this build."],
+"36-3":["Open the automation backlog and take the smallest item, not the most interesting one. Tonight has a ship deadline.", "Give it a hard scope: one trigger, one action, one hour.", "Build it, test it three times, and stop. Resist the second feature.", "Write four lines: what it does, what it replaced, what it cost to build, what it saves.", "Publish it to the portfolio index tonight. An artifact you finish but do not publish counts for nothing outside your own head.", "Log it with Log this build.", "The point of this task is momentum during the interview stretch. Shipping something small keeps you a person who builds rather than a person who is being evaluated."],
+"37-2":["Set it up properly: a CSV you have never opened, a 30-minute timer, and a screen recording running so you can watch yourself afterwards.", "Good sources for a fresh file: a public dataset, or ask Claude to generate one with a different shape from your book.", "First five minutes: do not build. Open it, look at the columns, find the grain, and say out loud what one row represents.", "Next five: state the question you are answering and the two numbers you will show. Narrate the choice — that narration is what is actually being assessed.", "Twenty minutes: build. One chart, two numbers, a title that says what it shows.", "Say your assumptions as you go, and say when you notice something wrong in the data. Interviewers are watching for whether you spot the messy column, not whether you make it pretty.", "Stop at 30 minutes whether it is finished or not, and end with one sentence on what you would do next.", "Watch the recording back. The silences are the thing to fix, not the chart."],
+"40-2":["Build the folder structure and keep it: /data (raw, never edited), /sql, /output, README.md, assumptions.md.", "Write the README skeleton now: question, data, method, findings, assumptions, what I would do with more time. Six headings, ready to fill.", "The assumptions section is what separates a take-home that gets a callback from one that does not. Pre-write the prompts to yourself: what did I treat as authoritative, what did I exclude, what would change the answer.", "Save a Tableau workbook as your style template: fonts set, palette set, gridlines off, title block ready.", "Save two or three SQL snippets you always need — the folder union, the data-quality check, the date spine.", "Do a dry run: give yourself an unfamiliar CSV and see how far the kit gets you in ten minutes. Fix whatever slowed you down.", "Zip it or keep it as a template folder you copy. Take-homes arrive with a 48-hour clock and no warning."],
+"41-0":["One item from the backlog, one evening, shipped tonight. Same rule as before: smallest, not most interesting.", "Build, test three times, write the four lines, publish.", "Then add one sentence to your live application materials pointing at it, so it does work rather than just existing.", "Log it with Log this build.", "Doing this while interviews are live is deliberate. Candidates who are still building read differently from candidates who are waiting."],
+"41-2":["Pick three, and pick for what they can speak to rather than for seniority: one who has seen you own a process, one who has seen you build, one who has seen you handle something going wrong.", "Ask each one directly whether they can give a strong reference, and give them room to say no. A lukewarm reference is worse than one fewer.", "Tell each exactly what the role is — the title, the firm, and the two things it emphasises. A reference guessing at the role gives generic answers.", "Send each one your resume and one case study. Pick the case study that matches what that person actually saw you do.", "Give them the two or three points you hope they can speak to. This is not coaching; it is making sure the right true thing gets said.", "Tell them when to expect the call and from whom, then tell them again the day it is scheduled.", "Thank them afterwards with the outcome, whichever way it went. This is a small industry and you will need them again.", "Log the three names and what each covers in Your work below."],
+"41-3":["Pull fresh postings — 15 is enough for a refresh, you are updating rather than rebuilding the block 27 analysis.", "Same three buckets, same columns, so the two datasets are comparable.", "Record only stated bands. A band you inferred from a title is not data and will mislead you in a negotiation.", "Cross-check against one public source — the BLS occupational figures linked above give a floor, not a target, and knowing the difference matters.", "Update the Money tab with the new median and the new top of band. If it moved, say by how much.", "Note the date of the pull beside the numbers. In a negotiation, “as advertised in the last 30 days” is a much stronger sentence than a number with no date.", "If the band moved materially against your target, that is information for the December decision, not a reason to change the target tonight."],
+"46-2":["Do not build anything. This task is reconnaissance, and building in week one at a new firm is how people get labelled early.", "Open the systems and vendor inventory format you already built, and fill it in for this firm: system, what it holds, who owns access, how data leaves it. No passwords, ever, in any document.", "Now pick two reports that both state the same number — AUM, client count, revenue. There are always two.", "Trace each one back: which system produced it, on what date, with what filters, and who last touched it.", "Find the disagreement, and it will be one of three things: a different as-of date, a different inclusion rule, or a manual edit nobody documented.", "Write it up neutrally as a question, not a finding. “I traced these two and got different numbers — can you tell me which definition is the right one?” is a good first-month sentence. “This report is wrong” is not.", "Save it as the data landscape note. It is the most valuable thing you can produce in your first month, and it is not a build."],
+"46-3":["One running list, one place, added to as you notice things. Do not batch this into an evening — the value is in catching them as they happen.", "Four columns: what it is, how often it happens, roughly how long it takes, and who does it.", "Add a fifth column that stays empty for now: why it is done this way. Every entry needs that filled before it can become a proposal.", "Do not propose anything yet, and do not mention the list. A new person's efficiency suggestion in month one lands as criticism regardless of how it is phrased.", "Where you cannot work out why, that is a question for someone who has been there — use Ask the consultant below, or ask your manager.", "Revisit it at day 60 and cross off the ones that turned out to have a good reason. There will be several, and knowing which is the point of waiting."],
+"47-1":["Pick from a question someone actually asked you out loud this week. Not a question you think they should be asking.", "Smallest useful version: one number, or one list, that answers exactly that. No extra columns, no second page.", "Build it in whatever they already use. A Google Sheet they will open beats a Tableau workbook they will not.", "Send it to the person who asked with one line: “You asked about this on Tuesday — here it is, tell me if it is not what you meant.”", "Ask them a week later whether they used it. That answer is worth more than the report.", "If they did, ask what would make it better and do that. If they did not, ask why, and believe the answer.", "Log it with Log this build, and note in the Metrics ledger how often it now gets used."],
+"47-3":["Ask before you assume. Start with the written policy: is there one, where does it live, when was it last updated?", "Find out what compliance actually permits, which is often narrower or broader than the written policy suggests, and who owns the decision.", "Ask the three specific questions that matter in operations: may client data ever be entered, are approved tools named, and does anything need logging or approval before use.", "Write the note as what is permitted, what is prohibited, what is undecided, and who to ask. The undecided column is the one to keep short and revisit.", "Then work strictly inside it, including on your own time on firm-adjacent work. The gap between what is allowed and what would be convenient is where careers end.", "If there is no policy, do not write one uninvited. Ask whether it would be useful, and offer to draft it if asked.", "Save the note and add anything unresolved to the Consultant questions log."],
+"48-0":["Check the precondition before you write anything: can you say, in one sentence, why the current process is done that way? If not, this is not the evening for a proposal.", "One page, five sections: what happens now, what would change, time saved, the risk, and the human control point.", "Time saved needs two numbers and a multiplication shown: minutes per run and runs per month. Label which you measured and which you assumed.", "The risk section is what earns trust. Name the real one — a silent failure, a message sent to the wrong person, a step nobody notices has stopped running.", "The human control point is not optional and is not you checking. Name the specific gate: nothing reaches a client without a named person confirming X.", "Propose it as a pilot with an end date and a rollback, not as a change. Pilots get approved; changes get discussed.", "Deliver it to the person who owns the process, and ask them to find the hole in it. Being seen to invite the objection is most of the win here.", "Log it with Log this build, and record the proposed saving in the Metrics ledger as an estimate."],
+"48-1":["Do not guess at page two. Go back to whoever used page one and ask what they wanted next after seeing it.", "Write down their exact words. The gap between what they asked for and what you would have built is the whole lesson.", "Build only what they named. Adding the three things you think they also need is how reports get abandoned.", "Keep the layout, fonts and colours identical to page one so it reads as an extension rather than a second project.", "Send it back to the same person with one line asking whether that is what they meant.", "Note in Your work below what they asked for versus what you expected. That pattern, repeated, is what makes you good at this rather than fast at it.", "Log the extension with Log this build."],
+"49-1":["Write down three inputs before choosing: what your firm's stack is actually moving toward, what the block 27 and 41 posting tallies named most, and what you are missing rather than what you would enjoy.", "The three real candidates: full Power BI and Fabric, Python for analysis, or deeper SQL and modelling.", "Pick on evidence. If the postings named Power BI most and your firm runs Microsoft, that is the answer even if Python is more interesting.", "Name the first artifact, not the course. “Rebuild the leak dashboard in Power BI with DAX measures by 15 March” is a plan; “learn Power BI” is not.", "Set the start date in the calendar tonight and block the first three sessions.", "Write one line on what you are deliberately not learning this year and why. A named trade-off is the difference between a plan and a wish list.", "Log the decision as a win with Log a win below."],
+"49-2":["Three candidates: retrieval over document sets, agent workflows, or evaluation methods.", "Choose on deployability at your firm, not on what is being written about. Ask which one you could actually put in front of a compliance officer and defend.", "Retrieval over your own SOP library is usually the answer for a small RIA — it is useful, it is explicable, and it keeps data inside a boundary you control.", "Evaluation methods is the underrated one. You have already built eval sets by hand; formalising that is what makes you the person who can say whether a tool works.", "Name the first artifact and the date, same rule as the data skill.", "Write the one-line constraint you will build inside: whatever the firm's AI policy from task 47-3 actually permits.", "Log the decision with Log a win."],
+"50-2":["Use synthetic data throughout, even though you know the real numbers. The published version has to be defensible with no reference to firm figures at all.", "Build the six measures in DuckDB first: on-time rate, issue ageing, cycle time, rework rate, advisor hours returned, SOP and backup coverage.", "Each one needs a stated definition. On-time against what target? Rework counted how? Write those definitions down first — they are half the value of a scorecard.", "Layout: six tiles across the top with the current value and the direction of travel, then one trend line under each group.", "Add the target as a reference line on every trend, not as a number in a footnote.", "Method notes page: the six definitions, the thresholds, the grain, and a bold line saying the data is synthetic and the structure mirrors a scorecard used in practice.", "Publish to Tableau Public and check the public URL signed out.", "This is the strongest single artifact for an operations leadership interview, because it is the actual output of the job. Log it with Log this build and mark it Published."],
+"50-3":["Six sections, in this order: problem, approach, controls, cost, expected saving, pilot plan.", "Write the problem in the firm's language and with a number attached. A proposal that opens with a technology is read as enthusiasm; one that opens with a cost is read as a business case.", "Approach in five lines, no jargon. If a principal cannot repeat it back after one read, rewrite it.", "Controls is the section that decides the outcome at an RIA. Cover: what data may go in, who reviews output before it reaches a client, what is logged, and how it is turned off.", "Cost means the real total: subscription, build hours at your loaded rate, and ongoing maintenance. Understating it once costs you the next proposal.", "Expected saving with the arithmetic shown, and a sensitivity — the figure at half the assumed volume.", "Pilot plan: scope, duration, success criteria set in advance, and a rollback. Pre-agreed success criteria are what stop a pilot running forever.", "Have someone who will be sceptical read it before it goes anywhere. Log it with Log this build."],
+"51-1":["Identify it honestly: the thing colleagues keep asking you to do for them is rarely the thing you are proudest of. Look at the last month of requests.", "Teach it once first, live, in fifteen minutes, to one person. That session tells you where the explanation actually breaks.", "Rewrite the explanation around whatever they got stuck on. That is why teaching comes before writing.", "Rebuild the example on synthetic data. The technique is public; the file it was demonstrated on is not.", "One page: the problem, the technique in numbered steps, screenshots at each step, and the one gotcha.", "Take the screenshots from the synthetic version with no firm interface, no system nicknames, and no window title giving anything away.", "Publish it and log it with Log this build. A technique note is the cheapest credibility artifact there is, and almost nobody writes them."],
+"51-2":["List every automation you built this year, including the ones you have not opened since.", "Four columns: still running, broke and when, nobody used it, and why in each case.", "Be honest in the third column. A year of building always produces two or three nobody used, and the reasons are the most useful thing in this document.", "Group the failures: built for a problem nobody had, too fragile, needed maintenance nobody owned, or solved a problem that went away.", "Write the two rules you would give yourself for next year based on the pattern.", "Count the ones still running and the total hours they save now, not at build time.", "This retrospective is a strong interview answer to “tell me about something that did not work”. Log it with Log this build."],
+"53-0":["Get the fee schedule structure right before writing any SQL. Tiered means each band is charged at its own rate; a flat rate at the household's total is a different model, and mixing them is the classic error.", "Build the tier table explicitly: from_amount, to_amount, rate. Do not encode breakpoints in a CASE statement — you will need to change them.", "Household assets first: SELECT household_id, sum(market_value) AS hh_assets FROM book GROUP BY 1;", "Now the tiered calculation: join households to tiers and charge each band separately — sum over tiers of (least(hh_assets, to_amount) - from_amount) * rate, keeping only the bands where hh_assets > from_amount.", "Test it against a hand calculation on three households: one below the first breakpoint, one just above, one well above. If the one just above is wrong, you have built a flat-rate model by accident.", "Roll it up: revenue per household, per advisor, per segment.", "Write one line stating the schedule you modelled. A revenue number without its fee schedule is unreadable.", "Log it with Log this build."],
+"53-1":["Learn the shape first: at most advisory firms compensation is roughly 60-75% of revenue including owners, and it dwarfs every other line. Everything else is small by comparison.", "Build the P&L on your synthetic revenue: revenue, then compensation, technology, occupancy, custody and platform, marketing, professional fees, other.", "Use plausible percentages and label every one as an assumption. This is a structure exercise, not a benchmark claim.", "Operating margin = (revenue - total expenses) / revenue. Calculate it and note what a typical advisory firm reports so you know whether your model is in a sane range.", "Now do the thing that makes this useful: change compensation by five points and watch what happens to margin. That single sensitivity is the whole reason principals watch that line.", "Write two sentences on where operations sits in this P&L — largely inside the compensation line, with technology as the second lever.", "Log it with Log this build."],
+"53-2":["Revenue per advisor = total revenue / number of advisors. On your synthetic firm, compute it.", "Revenue per employee = total revenue / total headcount including operations. The gap between this and the first ratio is where operations lives.", "Revenue per household = total revenue / number of households.", "For each, write the two levers that move it — and be precise. Revenue per advisor moves by adding assets per advisor or by removing non-advisory work from advisors, and the second one is your job.", "Note which lever each of your builds this year actually pulls. The meeting-prep pipeline moves revenue per advisor by returning advisor hours; the leak dashboard moves revenue per household.", "Find one published benchmark range for each so you know roughly where a healthy firm sits, and cite the source and date.", "This is the vocabulary of the room you are trying to get into. Write the three numbers and their levers somewhere you will reread before an interview."],
+"53-3":["Use your own process timings from the cycle-time work, not invented ones. Minutes per task, and how many of each task a household generates per year.", "Build the tiers: under $250k, $250k-$1m, $1m-$3m, over $3m.", "Estimate annual operations minutes per household in each tier. A large household generates more service events, but not proportionally more — that non-linearity is the finding.", "Convert minutes to cost at a loaded hourly rate and say what rate you used.", "Put revenue per household beside cost to serve per household, tier by tier.", "The bottom tier will usually be unprofitable. Name it plainly and resist softening it.", "Then write the harder paragraph: the three options are raise the minimum, serve that tier differently, or accept it as a pipeline cost. Say which you would choose and why.", "That paragraph is a COO-level argument built entirely from your own timing data. Log it with Log this build."],
+"53-5":["Do not rebuild the workload register. Open the hours structure you already mapped in the handoff work and reuse it.", "Apply it to your synthetic book: total operations hours required per year at current household count.", "Add the growth assumption and label it — say, 15% household growth — and recompute the hours.", "Find the break: at what household count do required hours exceed available hours at current headcount? That is the capacity ceiling, and it is a date, not just a number.", "Now the break-even: an added operations seat costs salary plus benefits plus technology. What revenue must it protect or enable to pay for itself?", "Frame it as protection rather than generation. An operations hire protects advisor capacity and prevents service failure; claiming it generates revenue directly will be challenged.", "State the hours threshold, the date it arrives, and the revenue figure in three sentences.", "This is the single most COO-shaped artifact in the plan. Log it with Log this build."],
+"55-3":["Draw the stack top to bottom on one page: client, advisor, RIA, TAMP, portfolio accounting, CRM, planning software, custodian.", "Beside each layer write where the money is made: basis points on assets, per-seat software fees, transaction and cash spread, or platform fees.", "Cash spread at the custodian layer is the one most people in the industry cannot explain. Work it out until you can say it in two sentences.", "Now map your platform target list onto the layers. Which layer does each firm sit in, and does it charge basis points or per-seat?", "For each layer, write what an operations person there actually does all day. It differs enormously — conversions and onboarding at the TAMP layer, reconciliation and data at portfolio accounting, implementation at the software layer.", "Mark the two layers where your documentation-and-data record transfers best. Those are the roles to apply into first.", "One page, and reread it before any platform interview. Knowing where a firm makes its money is the question that separates candidates."],
 };
 function work(id){
   const w=S.work[id]||{};
@@ -1574,39 +1916,207 @@ function work(id){
   if(!Array.isArray(w.items))w.items=[];
   if(typeof w.link!=="string")w.link="";
   if(typeof w.steps!=="string")w.steps="";
+  if(typeof w.detail!=="string")w.detail=w.steps||"";
   if(!w.sdone||typeof w.sdone!=="object")w.sdone={};
+  if(!w.ddone||typeof w.ddone!=="object")w.ddone={};
   S.work[id]=w; return w;
 }
 function isListy(d){return /\b(list|inventory|names|stories|questions|entries|targets|bullets|log)\b/i.test(d.t+" "+d.o);}
-function wsHasContent(id){const w=S.work[id];if(!w)return false;return !!(w.notes||w.link||(w.items&&w.items.length)||w.steps);}
-function stepList(d){
+function wsHasContent(id){const w=S.work[id];if(!w)return false;return !!(w.notes||w.link||(w.items&&w.items.length)||w.detail);}
+function stepList(d){return STEPS[d.id]||null;}
+function detailList(d){
   const w=work(d.id);
-  const built=STEPS[d.id];
-  const gen=w.steps?w.steps.split("\n").map(x=>x.replace(/^\s*\d+[.)]\s*/,"").trim()).filter(Boolean):null;
-  return built||gen||null;
+  if(!w.detail)return null;
+  const out=w.detail.split("\n").map(x=>x.replace(/^\s*\d+[.)]\s*/,"").replace(/^\s*[-*•]\s*/,"").trim()).filter(Boolean);
+  return out.length?out:null;
+}
+/* ---------- where a task can send you ---------- */
+const LINKS={
+ "1-1":["tableau_dl","tabpub_help"],
+ "1-2":["claude"],
+ "1-3":["iapd","adv"],
+ "2-2":["claude"],
+ "3-1":["tableau_dl","tabpub_help"],
+ "4-4":["carrd","ghpages","notion"],
+ "5-2":["duckdb","dbeaver","duckdb_sql"],
+ "5-3":["iapd","iard","finra65"],
+ "10-1":["duckdb_sql"],
+ "10-3":["li_broadcast","li_privacy"],
+ "11-1":["tabpub_help","looker","sheets"],
+ "11-2":["zapier","make"],
+ "13-1":["li_featured","li_broadcast"],
+ "17-0":["duckdb_sql"],
+ "20-0":["excalidraw"],
+ "20-2":["duckdb_win"],
+ "21-3":["adv","iapd"],
+ "23-1":["tabpub_help"],
+ "24-0":["powerbi"],
+ "25-1":["li_broadcast","li_privacy","li_featured"],
+ "25-5":["iapd","adv"],
+ "27-1":["lijobs","indeed","bls"],
+ "30-5":["loom"],
+ "31-3":["lijobs","indeed","zapier"],
+ "33-3":["crs"],
+ "34-2":["marketing","custody","regsp"],
+ "41-3":["lijobs","indeed","bls"],
+ "47-3":["claude"],
+ "53-1":["bls"],
+ "1-4":["sheets"],
+ "1-5":["notion"],
+ "2-1":["duckdb_sql"],
+ "3-2":["claude"],
+ "4-1":["tableau_dl", "tabpub_help"],
+ "4-2":["claude"],
+ "4-5":["claude"],
+ "5-1":["duckdb_sql"],
+ "5-5":["duckdb_sql"],
+ "6-1":["tableau_dl", "tabpub_help"],
+ "6-2":["claude"],
+ "7-1":["tableau_dl"],
+ "7-2":["claude"],
+ "7-5":["tableau_dl"],
+ "8-1":["tableau_dl"],
+ "8-2":["zapier", "make"],
+ "9-2":["claude"],
+ "10-2":["duckdb_sql"],
+ "11-5":["claude"],
+ "14-1":["duckdb_sql"],
+ "14-2":["claude"],
+ "14-5":["duckdb_sql", "tableau_dl"],
+ "15-0":["tableau_dl"],
+ "15-1":["zapier", "make", "claude"],
+ "15-5":["tableau_dl"],
+ "16-1":["tableau_dl", "duckdb_sql"],
+ "16-2":["zapier", "make"],
+ "17-5":["tableau_dl"],
+ "18-1":["tableau_dl", "duckdb_sql"],
+ "18-2":["claude"],
+ "20-0":["excalidraw", "claude"],
+ "20-1":["zapier", "make", "claude"],
+ "23-5":["carrd", "ghpages"],
+ "24-2":["claude"],
+ "25-0":["sheets"],
+ "28-3":["lijobs"],
+ "30-3":["lijobs"],
+ "31-0":["tableau_dl"],
+ "36-3":["zapier", "make"],
+ "37-2":["loom", "tableau_dl"],
+ "40-2":["tableau_dl", "sheets"],
+ "41-0":["zapier", "make"],
+ "41-2":["li_featured"],
+ "46-2":["sheets"],
+ "46-3":["sheets"],
+ "47-1":["sheets"],
+ "48-0":["sheets"],
+ "48-1":["sheets"],
+ "49-1":["powerbi", "lijobs"],
+ "49-2":["claude"],
+ "50-3":["claude"],
+ "51-1":["loom"],
+ "51-2":["zapier", "make"],
+ "53-0":["duckdb_sql"],
+ "53-2":["bls"],
+ "53-3":["duckdb_sql"],
+ "53-5":["sheets"],
+ "55-3":["iapd"],
+};
+const LINKRULES=[
+ [/window function/i,["duckdb_win"]],
+ [/duckdb/i,["duckdb","duckdb_sql"]],
+ [/tableau/i,["tableau_dl","tableau_pub"]],
+ [/linkedin/i,["li_broadcast","li_privacy"]],
+ [/form crs/i,["crs"]],
+ [/form adv|adviser ?info|iapd|brochure|part 2a/i,["iapd","adv"]],
+ [/marketing rule|testimonial|performance advertis/i,["marketing"]],
+ [/custody/i,["custody"]],
+ [/reg s-p|non-public personal|privacy/i,["regsp"]],
+ [/series 65|licen[cs]e|credential/i,["finra65","nasaa"]],
+ [/record(ing|ed)?\b|film|walkthrough|screen ?record|video/i,["loom"]],
+ [/zapier|make\.com|scenario/i,["zapier","make"]],
+ [/looker|refresh on its own|auto-?refresh/i,["looker"]],
+ [/carrd|github pages|portfolio site|claim the site/i,["carrd","ghpages"]],
+ [/\baml\b|customer identification|suspicious/i,["fincen"]],
+ [/examination|deficiency|exam readiness/i,["sec_exam"]],
+ [/salary|compensation|pay band|market rate/i,["bls"]],
+ [/registration|\biar\b|investment advisers act/i,["iard"]],
+ [/prompt|claude/i,["claude"]]
+];
+function linksFor(d){
+  if(LINKS[d.id])return LINKS[d.id];
+  const hay=d.t+" "+d.d+" "+d.o,out=[];
+  LINKRULES.forEach(r=>{if(out.length<3&&r[0].test(hay))r[1].forEach(k=>{if(out.length<3&&out.indexOf(k)<0)out.push(k);});});
+  return out;
+}
+const TOOLRULES=[
+ [/tableau|dashboard/i,"tableau"],
+ [/linkedin/i,"linkedin"],
+ [/portfolio site|homepage|case stud|publish|go live/i,"site"],
+ [/duckdb|\bsql\b|dataset|\bcsv\b|synthetic/i,"drive"],
+ [/spreadsheet|excel|sheet|model|budget|ledger/i,"sheets"],
+ [/automation|script|zapier|make\.com|pipeline/i,"repo"],
+ [/firm sop|firm librar|approved shared|shared location/i,"firm"]
+];
+function toolsFor(d){
+  const hay=d.t+" "+d.o,out=["notion"];
+  TOOLRULES.forEach(r=>{if(out.length<4&&r[0].test(hay)&&out.indexOf(r[1])<0)out.push(r[1]);});
+  return out;
+}
+const TRACKCOMP={sop:"Operations and service delivery",bi:"Reporting and firm KPIs",ai:"Technology strategy and implementation",cert:"Regulatory and compliance oversight",career:"Principal-level communication",review:""};
+function sendsFor(d){
+  const out=[["wins","Log a win"]];
+  if(d.x==="bi"||d.x==="ai")out.push(["builds","Log this build"]);
+  if(d.x==="sop")out.push(["builds","Log this build"]);
+  if(/minute|hour|saved|reduce|error|rate|count|per month|per week|cycle time|nigo/i.test(d.t+" "+d.d+" "+d.o))out.push(["metrics","Add a metric"]);
+  out.push(["qlog","Ask the consultant"]);
+  return out.slice(0,4);
+}
+function goesHtml(d){
+  const refs=linksFor(d),tks=toolsFor(d),xs=xref(d),sends=sendsFor(d);
+  let h='<div><h4>Where to go</h4><div class="goes">';
+  refs.forEach(k=>{h+=refBtn(k);});
+  tks.forEach(k=>{
+    const t=TOOLMAP[k];if(!t)return;
+    const u=toolUrl(k);
+    h+=u?'<a href="'+esc(u)+'" target="_blank" rel="noopener noreferrer"><span class="ico">↗</span>'+esc(t[1])+'</a>'
+        :'<button class="unset" data-gotools="1"><span class="ico">+</span>Set '+esc(t[1])+'</button>';
+  });
+  h+='</div>';
+  if(xs.length){
+    h+='<div class="goes" style="margin-top:8px">'+xs.map(x=>
+      '<button data-jump="'+x.id+'"><span class="ico">←</span>Needs '+esc(x.label)+'</button>').join("")+'</div>';
+  }
+  h+='<div class="goes" style="margin-top:8px">'+sends.map(sx=>
+    '<button data-send="'+sx[0]+'|'+d.id+'"><span class="ico">→</span>'+esc(sx[1])+'</button>').join("")+'</div>';
+  return h+'</div>';
 }
 function wsHtml(d){
-  const w=work(d.id),listy=isListy(d),st=stepList(d);
+  const w=work(d.id),listy=isListy(d),st=stepList(d),dl=detailList(d);
   let h='<div class="ws" id="ws-'+d.id+'">';
   h+='<div><h4>How to do it</h4>';
   if(st){
     h+='<ul class="steps">'+st.map((x,i)=>'<li class="'+(w.sdone[i]?"on":"")+'"><span class="sx" data-step="'+d.id+'|'+i+'">'+esc(x)+'</span></li>').join("")+'</ul>';
-    h+='<div class="wsbtn" style="margin-top:9px"><button class="workbtn ghost" data-steps="'+d.id+'">'+(STEPS[d.id]?"Ask Claude for more detail":"Ask again")+'</button></div>';
   }else{
-    h+='<p class="wsnote" style="margin:0 0 9px">No walkthrough written for this one yet. Ask and you will get steps for exactly this task, in your situation.</p>'+
-       '<div class="wsbtn"><button class="workbtn ghost" data-steps="'+d.id+'">Walk me through it</button></div>';
+    h+='<p class="wsnote" style="margin:0 0 9px">No walkthrough written for this one yet. Ask and you will get steps for exactly this task, in your situation — they save here and stay.</p>';
+  }
+  if(dl){
+    h+='<div class="detail"><div class="dh"><b>'+(st?"Claude’s extra detail":"Claude’s walkthrough")+'</b>'+
+       '<span class="sp"><button data-steps="'+d.id+'">Ask again</button><button data-clrdet="'+d.id+'">Clear</button></span></div>'+
+       '<ul class="steps">'+dl.map((x,i)=>'<li class="'+(w.ddone[i]?"on":"")+'"><span class="sx" data-dstep="'+d.id+'|'+i+'">'+esc(x)+'</span></li>').join("")+'</ul></div>';
+  }else{
+    h+='<div class="wsbtn" style="margin-top:9px"><button class="workbtn ghost" data-steps="'+d.id+'">'+(st?"Ask Claude for more detail":"Walk me through it")+'</button></div>';
   }
   h+='<pre class="hide" id="sout-'+d.id+'" style="margin-top:10px"></pre></div>';
+  h+=goesHtml(d);
   h+='<div><h4>'+(listy?"Your list":"Your work")+'</h4>';
   if(listy){
-    h+='<div class="items">'+(w.items.length?w.items.map((x,i)=>'<div class="item"><span class="n">'+(i+1)+'</span><span>'+esc(x)+'</span><button class="rm" data-rm="'+d.id+'|'+i+'" aria-label="Remove">\u00d7</button></div>').join(""):'<p class="wsnote" style="margin:0">Nothing yet. Add the first one below.</p>')+'</div>';
+    h+='<div class="items">'+(w.items.length?w.items.map((x,i)=>'<div class="item"><span class="n">'+(i+1)+'</span><span>'+esc(x)+'</span><button class="rm" data-rm="'+d.id+'|'+i+'" aria-label="Remove">×</button></div>').join(""):'<p class="wsnote" style="margin:0">Nothing yet. Add the first one below.</p>')+'</div>';
     h+='<div class="addrow" style="margin-top:8px"><input type="text" id="add-'+d.id+'" placeholder="Type one and press return"><button class="workbtn ghost" data-add="'+d.id+'">Add</button></div>';
     h+='<p class="wsnote" style="margin:8px 0 0">'+w.items.length+' so far. Everything here saves with the task and goes into your backup.</p>';
   }else{
     h+='<textarea data-notes="'+d.id+'" placeholder="Draft it here. It saves as you type and it is included in your backup.">'+esc(w.notes)+'</textarea>';
   }
   h+='</div>';
-  h+='<div><h4>Where it lives</h4><input type="text" data-link="'+d.id+'" value="'+esc(w.link)+'" placeholder="Paste a link \u2014 Tableau workbook, Notion page, Drive file"></div>';
+  h+='<div><h4>Where it lives</h4><input type="text" data-link="'+d.id+'" value="'+esc(w.link)+'" placeholder="Paste a link — Tableau workbook, Notion page, Drive file"></div>';
   h+='<div class="wsbtn" style="border-top:1px solid var(--rule);padding-top:13px">'+
      '<button class="workbtn" data-prog="'+d.id+'|100">Mark this done</button>'+
      '<button class="workbtn ghost" data-prog="'+d.id+'|50">Half done, save it</button>'+
@@ -1671,8 +2181,10 @@ function renderToday(){
   const dn=doneDays().length;
   document.getElementById("todayEyebrow").textContent=dn?"Up next \u00b7 "+dn+" done, "+(NTASK-dn)+" to go":"Up next \u00b7 start here";
   document.getElementById("todayTitle").textContent=picked.length?(picked.length===1?"One thing":picked.length+" things"):"Nothing left";
-  document.getElementById("todayCard").innerHTML=picked.length
-    ? picked.map(dayCard).join('<div style="height:14px"></div>')
+  const fd=focusTask?ALLDAYS.find(x=>x.id===focusTask):null;
+  const list=fd?[fd].concat(picked.filter(x=>x.id!==fd.id)):picked;
+  document.getElementById("todayCard").innerHTML=list.length
+    ? list.map(d=>(fd&&d.id===fd.id?'<div class="focusnote">Opened from another task. It is not necessarily next in the queue \u2014 <button class="lnk" data-unfocus="1">clear this</button> to go back to the top of the list.</div>':"")+dayCard(d)).join('<div style="height:14px"></div>')
     : '<div class="panel"><h3 style="font-size:17px;margin-bottom:6px">All '+NTASK+' done</h3><p style="margin:0;color:var(--ink-2);font-size:14px">Every task in the plan is complete. Week 51 has the instructions for what a year two looks like.</p></div>';
   const spill=st.filter(d=>picked.indexOf(d)<0);
   document.getElementById("inProgressWrap").classList.toggle("hide",!spill.length);
@@ -1693,7 +2205,7 @@ function rowFor(x,showPush){
   return '<div class="drow wide'+(done?" done":"")+(pct>0&&pct<100?" carried":"")+'">'+
    '<button class="tick" aria-pressed="'+done+'" data-id="'+x.id+'" aria-label="Mark complete" style="width:22px;height:22px"><svg viewBox="0 0 20 20"><polyline points="4,10.5 8,14.5 16,5.5"></polyline></svg></button>'+
    '<div class="dd">#'+taskNo(x)+' \u00b7 '+x.m+'m</div>'+
-   '<div class="dt">'+x.t+(pct>0&&pct<100?'<div class="progbar mini"><i style="width:'+pct+'%"></i></div>':"")+'</div>'+
+   '<div class="dt"><button class="lnk" data-jump="'+x.id+'">'+x.t+'</button>'+(pct>0&&pct<100?'<div class="progbar mini"><i style="width:'+pct+'%"></i></div>':"")+'</div>'+
    '<div class="dx">'+(def?'<span class="pill">skip '+def+'\u00d7</span>':"")+trackPill(x.x)+
    (showPush?'<button class="qbtn" data-push="'+x.id+'">Later</button>':"")+'</div></div>';
 }
@@ -1910,12 +2422,7 @@ function renderPortfolio(){
     ["Automations",c.auto.d+" / "+c.auto.t,"each with a measured minutes-saved figure"],
     ["Flagship projects",c.proj.d+" / "+c.proj.t,"audit, meeting assistant, defect study"]
   ].map(k=>'<div class="kpi"><div class="l">'+k[0]+'</div><div class="v">'+k[1]+'</div><div class="s">'+k[2]+'</div></div>').join("");
-  document.getElementById("sopCount").textContent=c.sop.d+" of 40 written. Each one takes 20-40 minutes when written from a screen recording, and about two hours when written from memory. Always record first.";
-  document.getElementById("sopTemplate").textContent=SOP_TEMPLATE;
-  document.getElementById("sopTable").innerHTML='<thead><tr><th style="width:34px"></th><th style="width:44px">No.</th><th>Process</th><th>Category</th><th>Scheduled</th></tr></thead><tbody>'+
-    SOPS.map(s=>'<tr><td><input type="checkbox" data-sop="'+s[0]+'"'+(S.sops[s[0]]?" checked":"")+' style="accent-color:var(--accent);width:15px;height:15px"></td>'+
-      '<td class="num" style="color:var(--muted)">'+String(s[0]).padStart(3,"0")+'</td><td>'+s[1]+'</td><td style="color:var(--ink-2)">'+s[2]+'</td>'+
-      '<td class="num" style="color:var(--muted)">Week '+s[3]+'</td></tr>').join("")+'</tbody>';
+  document.getElementById("sopCount").textContent=c.sop.d+" of 40 firm-approved, "+SOPS.filter(x=>sopRow(x[0]).pub).length+" with a public version. Each takes 20-40 minutes when written from a screen recording, and about two hours when written from memory. Always record first.";
   document.getElementById("buildList").innerHTML=BUILDS.map(g=>
     '<details'+(g.g==="Dashboards"?" open":"")+'><summary>'+g.g+' <span class="pill">'+g.items.filter(i=>S.port[i.t]).length+"/"+g.items.length+'</span></summary><div class="dbody stack">'+
     g.items.map(i=>'<div class="ck"><input type="checkbox" data-port="'+esc(i.t)+'"'+(S.port[i.t]?" checked":"")+'>'+
@@ -2131,6 +2638,9 @@ function renderSystems(){
     '<label class="fld"><span>Month 5 decision meeting</span><input type="date" data-set="decision" value="'+(S.decision||"")+'"></label>'+
     '<label class="fld"><span>Target Florida move date</span><input type="date" data-set="move" value="'+(S.move||"")+'"></label>'+
     '<label class="fld"><span>Year-1 salary target</span><input type="number" data-set="target" value="'+(S.target||"")+'"></label>';
+  const tb=document.getElementById("toolBox");
+  if(tb)tb.innerHTML=TOOLS.map(t=>
+    '<label class="fld"><span>'+t[1]+'</span><input type="text" data-tool="'+t[0]+'" value="'+esc(toolUrl(t[0]))+'" placeholder="'+esc(t[2])+'"></label>').join("");
   document.getElementById("systemsDocs").innerHTML=SYSTEMS.map((s,i)=>
     '<details'+(i<2?" open":"")+'><summary>'+s.t+'</summary><div class="dbody" style="color:var(--ink-2);font-size:14px">'+s.b+'</div></details>').join("");
   document.getElementById("riskTable").innerHTML='<thead><tr><th>Risk</th><th>Odds</th><th>Impact</th><th>Early signal</th><th>What stops it</th></tr></thead><tbody>'+
@@ -2139,13 +2649,136 @@ function renderSystems(){
       '<td style="color:var(--ink-2)">'+r[3]+'</td><td style="color:var(--ink-2)">'+r[4]+'</td></tr>';}).join("")+'</tbody>';
 }
 /* ============================ render all ============================ */
+/* ============================ ledgers & state of play ============================ */
+function renderLedgers(){
+  const set=(id,k)=>{const el=document.getElementById(id);if(el)el.innerHTML=ledHtml(k);};
+  set("ledWins","wins");set("ledMetrics","metrics");set("ledBuilds","builds");set("ledQlog","qlog");
+  const w=ledRows("wins"),m=ledRows("metrics"),b=ledRows("builds"),q=ledRows("qlog");
+  const stat=(id,arr)=>{const el=document.getElementById(id);if(el)el.innerHTML=arr.map(x=>
+    '<div><div class="l">'+x[0]+'</div><div class="v">'+x[1]+'</div><div class="s">'+x[2]+'</div></div>').join("");};
+  const kinds={};w.forEach(r=>{kinds[r.kind]=(kinds[r.kind]||0)+1;});
+  const learned=(kinds.Learned||0),improved=(kinds.Improved||0)+(kinds.Fixed||0);
+  stat("winKpis",[
+    ["Logged",String(w.length),"anything you did, wrote, learned, improved or fixed"],
+    ["Learned",String(learned),"rows tagged Learned — the ones that are easiest not to record"],
+    ["Improved or fixed",String(improved),"the rows a hiring manager asks about first"],
+    ["Metrics with both numbers",String(m.filter(r=>r.before&&r.after).length)+" / "+m.length,"a before and an after is a resume bullet; one number is not"]
+  ]);
+  const pub=b.filter(r=>r.pub==="Published").length;
+  stat("bldKpis",[
+    ["Builds logged",String(b.length),"dashboards, automations, scripts, templates, models"],
+    ["Published",pub+" / "+b.length,"sanitised and public — the only ones an outsider can read"],
+    ["With a link",String(b.filter(r=>r.link).length),"a build you cannot open in ten months did not happen"],
+    ["Tagged to a COO area",String(b.filter(r=>r.comp).length),"untagged builds do not appear on the evidence map"]
+  ]);
+  const ans=q.filter(r=>r.answered==="Yes").length,open_=q.length-ans;
+  const de=daysToExit();
+  stat("qKpis",[
+    ["Questions logged",String(q.length),"write them half-formed; sharpen them later"],
+    ["Answered",ans+" / "+q.length,"in her words, not your summary"],
+    ["Still open",String(open_),"every one of these is a process you rebuild alone if it stays open"],
+    ["Days she is still here",de==null?"—":String(de),de==null?"set her last day in the Operating manual":"at "+(q.length?(open_/Math.max(de,1)).toFixed(2):"0")+" open questions per day"]
+  ]);
+}
+function renderSops(){
+  const t=document.getElementById("sopTemplate2");if(t)t.textContent=SOP_TEMPLATE;
+  const rows=SOPS.map(sp=>({no:sp[0],name:sp[1],cat:sp[2],wk:sp[3],r:sopRow(sp[0])}));
+  const firm=rows.filter(x=>x.r.status==="Firm-approved"||x.r.status==="Public version done").length;
+  const pubd=rows.filter(x=>x.r.pub).length;
+  const started=rows.filter(x=>x.r.status!=="Not started").length;
+  const el=document.getElementById("sopKpis");
+  if(el)el.innerHTML=[
+    ["Started",started+" / 40","anything past Not started"],
+    ["Firm-approved",firm+" / 40","signed off and in the firm’s library"],
+    ["Public version done",pubd+" / 40","generalised, checked against the publication standard"],
+    ["With a link",String(rows.filter(x=>x.r.link).length),"findable in ten months without asking anyone"]
+  ].map(k=>'<div><div class="l">'+k[0]+'</div><div class="v">'+k[1]+'</div><div class="s">'+k[2]+'</div></div>').join("");
+  const tb=document.getElementById("sopLib");if(!tb)return;
+  tb.innerHTML='<thead><tr><th style="width:46px">No.</th><th>Process</th><th style="width:130px">Category</th>'+
+    '<th style="width:170px">Status</th><th style="width:190px">Link</th><th style="width:104px">Public</th></tr></thead><tbody class="ledtable">'+
+    rows.map(x=>'<tr><td class="num" style="color:var(--muted)">'+String(x.no).padStart(3,"0")+'</td>'+
+      '<td><b>'+x.name+'</b></td><td style="color:var(--ink-2)">'+x.cat+'</td>'+
+      '<td><select data-sopf="'+x.no+'|status">'+SOPSTATUS.map(o=>'<option'+(x.r.status===o?" selected":"")+'>'+o+'</option>').join("")+'</select></td>'+
+      '<td><input type="text" data-sopf="'+x.no+'|link" value="'+esc(x.r.link||"")+'" placeholder="paste a link"></td>'+
+      '<td style="text-align:center"><input type="checkbox" data-sopf="'+x.no+'|pub"'+(x.r.pub?" checked":"")+' style="accent-color:var(--accent);width:15px;height:15px"></td></tr>').join("")+
+    '</tbody>';
+}
+function renderState(){
+  const de=daysToExit(),dd=daysToDecision(),dm=daysToMove(),r=recentRate(),proj=projection();
+  const cl=document.getElementById("stClocks");
+  if(cl)cl.innerHTML=[
+    ["Consultant leaves",de==null?"—":de+" days",de==null?"set her last day in the Operating manual":"everything she knows and has not written down goes with her"],
+    ["Role decision",dd==null?"—":dd+" days","by then you know whether the internal operations role is real"],
+    ["Tampa",dm==null?"—":dm+" days","provisional — it moves with the December answer"],
+    ["Queue",doneDays().length+" / "+NTASK,proj?"finishing around "+proj.date.toLocaleDateString(undefined,{month:"short",year:"numeric"})+" at your current pace":"do four or five more and this starts projecting a finish date"]
+  ].map(k=>'<div><div class="l">'+k[0]+'</div><div class="v">'+k[1]+'</div><div class="s">'+k[2]+'</div></div>').join("");
+  const sl=SOPS.filter(sp=>{const x=sopRow(sp[0]);return x.status!=="Not started";}).length;
+  const cn=document.getElementById("stCounts");
+  if(cn)cn.innerHTML=[
+    ["Wins & learning",String(ledRows("wins").length),"anything you did, wrote, learned, improved or fixed"],
+    ["Metrics",String(ledRows("metrics").length),"before-and-after numbers with a unit"],
+    ["Builds",String(ledRows("builds").length),String(ledRows("builds").filter(x=>x.pub==="Published").length)+" published"],
+    ["SOPs started",sl+" / 40",String(SOPS.filter(sp=>sopRow(sp[0]).pub).length)+" with a public version"],
+    ["Consultant questions",String(ledRows("qlog").length),String(ledRows("qlog").filter(x=>x.answered!=="Yes").length)+" still open"],
+    ["Hours banked",hrs(minutesDone()),"of "+hrs(TOTAL_MIN)+" in the whole plan"]
+  ].map(k=>'<div><div class="l">'+k[0]+'</div><div class="v">'+k[1]+'</div><div class="s">'+k[2]+'</div></div>').join("");
+  const cv=document.getElementById("stCov");
+  if(cv){
+    const counts=COMPS.map(evidenceFor),max=Math.max(3,...counts);
+    cv.innerHTML='<thead><tr><th style="width:250px">Area</th><th style="width:130px">Plan builds it</th><th style="width:180px">Your evidence</th><th>Where it comes from</th></tr></thead><tbody>'+
+      COO_OWNS.map((rw,i)=>{
+        const cls=rw[1]==="Covered"?"good":rw[1]==="Not covered"?"crit":rw[1]==="Partial"?"warn":"";
+        const n=counts[i],pct=Math.round(n/max*100);
+        return '<tr><td><b>'+rw[0]+'</b></td><td><span class="pill '+cls+'">'+rw[1]+'</span></td>'+
+          '<td><div class="cov"><div class="bar"><i style="width:'+pct+'%"></i></div><span class="num" style="color:'+(n?"var(--ink-2)":"var(--muted)")+'">'+n+'</span></div></td>'+
+          '<td style="color:var(--ink-2)">'+rw[2]+'</td></tr>';}).join("")+'</tbody>';
+  }
+  const rc=document.getElementById("stRecent");
+  if(rc){
+    const all=[];
+    ledRows("wins").forEach(x=>all.push([x.date,"Win",x.kind+" — "+(x.text||"(untitled)"),x.comp]));
+    ledRows("metrics").forEach(x=>all.push([x.date,"Metric",(x.proc||"(untitled)")+": "+(x.before||"?")+" → "+(x.after||"?")+" "+(x.unit||""),x.comp]));
+    ledRows("builds").forEach(x=>all.push([x.date,"Build",(x.name||"(untitled)")+" · "+(x.pub||""),x.comp]));
+    ledRows("qlog").forEach(x=>all.push([x.date,"Question",(x.q||"(untitled)")+(x.answered==="Yes"?" — answered":""),""]));
+    all.sort((a,b)=>String(b[0]).localeCompare(String(a[0])));
+    rc.innerHTML=all.length
+      ?'<thead><tr><th style="width:110px">Date</th><th style="width:96px">Kind</th><th>What</th><th style="width:210px">Counts toward</th></tr></thead><tbody>'+
+        all.slice(0,10).map(x=>'<tr><td class="num" style="color:var(--muted)">'+esc(x[0]||"")+'</td><td><span class="pill">'+x[1]+'</span></td>'+
+          '<td>'+esc(x[2])+'</td><td style="color:var(--ink-2)">'+esc(x[3]||"—")+'</td></tr>').join("")+'</tbody>'
+      :'<tbody><tr><td><div class="empty">Nothing logged yet. Open any task, do the work, and use the arrows at the bottom of its workspace to send a row here.</div></td></tr></tbody>';
+  }
+}
 function renderAll(){
   renderTop();renderToday();renderPlan();renderPortfolio();renderSkills();renderCerts();
   renderCoo();renderTargets();renderMoney();renderMove();renderDelegate();renderSystems();
+  renderLedgers();renderSops();renderState();
   if(cur==="dash")drawCharts();
 }
 /* ============================ events ============================ */
-function refreshCore(){renderTop();renderToday();renderPlan();if(cur==="coo")renderCoo();if(cur==="dash")drawCharts();}
+function refreshCore(){renderTop();renderToday();renderPlan();if(cur==="coo")renderCoo();if(cur==="dash")drawCharts();renderState();}
+let focusTask=null;
+function openTask(id){
+  const d=ALLDAYS.find(x=>x.id===id); if(!d)return;
+  openWs[id]=true; focusTask=id;
+  go("today"); renderToday();
+  setTimeout(()=>{
+    const el=document.getElementById("ws-"+id);
+    if(el&&el.scrollIntoView)el.scrollIntoView({block:"center",behavior:"smooth"});
+  },80);
+}
+function sendToSection(spec){
+  const [k,id]=spec.split("|"),d=ALLDAYS.find(x=>x.id===id);
+  if(!d||!LED[k])return;
+  const comp=TRACKCOMP[d.x]||"";
+  const seed={wins:{kind:"Did",text:d.o||d.t,comp:comp,link:(S.work[id]&&S.work[id].link)||""},
+              metrics:{proc:d.t,comp:comp},
+              builds:{name:d.o||d.t,kind:d.x==="bi"?"Dashboard":d.x==="ai"?"Automation":"Template",comp:comp,link:(S.work[id]&&S.work[id].link)||""},
+              qlog:{q:"About: "+d.t+" \u2014 "}}[k];
+  ledAdd(k,seed);
+  renderLedgers();renderState();
+  go(LEDVIEW[k]||k);
+  toast("Row started in "+LED[k].title+" \u00b7 finish the fields");
+}
 document.addEventListener("click",e=>{
   const tick=e.target.closest(".tick");
   if(tick){
@@ -2186,6 +2819,24 @@ document.addEventListener("click",e=>{
   if(ad){addItem(ad.dataset.add);return;}
   const sg=e.target.closest("[data-steps]");
   if(sg){genSteps(sg.dataset.steps);return;}
+  const ds=e.target.closest("[data-dstep]");
+  if(ds){const [id,i]=ds.dataset.dstep.split("|");const w=work(id);w.ddone[i]=!w.ddone[i];persist();renderToday();if(cur==="plan")renderPlan();return;}
+  const cd=e.target.closest("[data-clrdet]");
+  if(cd){const w=work(cd.dataset.clrdet);w.detail="";w.steps="";w.ddone={};persist();renderToday();if(cur==="plan")renderPlan();return;}
+  const gt=e.target.closest("[data-gotools]");
+  if(gt){go("systems");setTimeout(()=>{const el=document.getElementById("toolBox");if(el&&el.scrollIntoView)el.scrollIntoView({block:"start",behavior:"smooth"});},60);return;}
+  const gv=e.target.closest("[data-goto]");
+  if(gv){go(gv.dataset.goto);return;}
+  const uf=e.target.closest("[data-unfocus]");
+  if(uf){focusTask=null;renderToday();window.scrollTo({top:0,behavior:"smooth"});return;}
+  const jp=e.target.closest("[data-jump]");
+  if(jp){openTask(jp.dataset.jump);return;}
+  const sd=e.target.closest("[data-send]");
+  if(sd){sendToSection(sd.dataset.send);return;}
+  const la=e.target.closest("[data-ledadd]");
+  if(la){ledAdd(la.dataset.ledadd);renderLedgers();renderState();toast("Row added");return;}
+  const ld=e.target.closest("[data-leddel]");
+  if(ld){const [k,rid]=ld.dataset.leddel.split("|");S[k]=ledRows(k).filter(r=>r.id!==rid);persist();renderLedgers();renderState();return;}
   const nd=e.target.closest("[data-nudge]");
   if(nd){S.nudgeSeen=Date.now();persist();renderToday();return;}
   const bu=e.target.closest("[data-budget]");
@@ -2221,10 +2872,16 @@ async function genSteps(id){
   if(SAMPLE===null&&window.claude&&window.claude.use){ try{SAMPLE=await window.claude.use("sample");}catch(e){SAMPLE=false;} }
   if(!SAMPLE){ if(out)out.textContent="Claude is not available in this view. Copy the task into a chat and ask: how do I do this, step by step, on a Mac, working at a small RIA?"; return; }
   const prompt="I am one month into my first job in operations at a registered investment adviser. I work on a Mac. I use Tableau Public, DuckDB and Notion. I am working through a career plan and tonight's task is below. Write me the numbered steps to actually do it \u2014 concrete and specific, naming the exact tool, menu or document at each step. Between five and eight steps. No preamble, no encouragement, just the numbered steps, one per line. If the task needs something I have to get from someone else, say who to ask and what to ask them.\n\nTASK: "+d.t+"\nWHAT IT SAYS: "+d.d+"\nWHAT IT SHOULD PRODUCE: "+d.o;
+  let acc="";
   try{
-    const r=await SAMPLE(prompt,{onText:({text})=>{if(out)out.textContent=text;}});
-    const txt=(r&&r.text)||(out?out.textContent:"");
-    work(id).steps=txt; persist(); renderToday();
+    const r=await SAMPLE(prompt,{onText:({text})=>{acc=text;if(out)out.textContent=text;}});
+    const txt=((r&&r.text)||acc||"").trim();
+    if(!txt){ if(out)out.textContent="Claude returned nothing. Try Ask again."; return; }
+    const w=work(id); w.detail=txt; w.ddone={}; persist();
+    renderToday(); if(cur==="plan")renderPlan();
+    const el=document.getElementById("ws-"+id);
+    if(el&&el.scrollIntoView)el.scrollIntoView({block:"nearest",behavior:"smooth"});
+    toast("Saved \u00b7 it stays on this task");
   }catch(e){ if(out)out.textContent="Could not reach Claude ("+((e&&e.code)||"error")+"). Copy the task into a chat instead."; }
 }
 document.addEventListener("keydown",e=>{
@@ -2234,10 +2891,27 @@ document.addEventListener("input",e=>{
   const t=e.target;
   if(t.dataset&&t.dataset.notes!==undefined){work(t.dataset.notes).notes=t.value;persist();return;}
   if(t.dataset&&t.dataset.link!==undefined){work(t.dataset.link).link=t.value;persist();return;}
+  if(t.dataset&&t.dataset.tool!==undefined){S.tools[t.dataset.tool]=t.value;persist();return;}
+  if(t.dataset&&t.dataset.led!==undefined){
+    const [k,rid,f]=t.dataset.led.split("|"),row=ledRows(k).find(r=>r.id===rid);
+    if(row){row[f]=t.value;persist();}
+    return;}
+  if(t.dataset&&t.dataset.sopf!==undefined&&t.type!=="checkbox"){
+    const [no,f]=t.dataset.sopf.split("|");sopEdit(no)[f]=t.value;persist();return;}
 });
 document.addEventListener("change",e=>{
   const t=e.target;
-  if(t.dataset.sop!==undefined){S.sops[t.dataset.sop]=t.checked;persist();renderPortfolio();if(cur==="dash")drawCharts();return;}
+  if(t.dataset.sop!==undefined){S.sops[t.dataset.sop]=t.checked;persist();renderPortfolio();renderSops();renderState();if(cur==="dash")drawCharts();return;}
+  if(t.dataset.sopf!==undefined){
+    const [no,f]=t.dataset.sopf.split("|");
+    const r=sopEdit(no);
+    r[f]=(t.type==="checkbox")?t.checked:t.value;
+    if(f==="status")S.sops[no]=(t.value==="Firm-approved"||t.value==="Public version done");
+    persist();renderSops();renderState();renderPortfolio();if(cur==="dash")drawCharts();return;}
+  if(t.dataset.led!==undefined){
+    const [k,rid,f]=t.dataset.led.split("|"),row=ledRows(k).find(x=>x.id===rid);
+    if(row){row[f]=t.value;persist();renderLedgers();renderState();}
+    return;}
   if(t.dataset.port!==undefined){S.port[t.dataset.port]=t.checked;persist();renderPortfolio();if(cur==="dash")drawCharts();return;}
   if(t.dataset.moveck!==undefined){S.moveck[t.dataset.moveck]=t.checked;persist();renderMove();return;}
   if(t.dataset.rate!==undefined){S.ratings[t.dataset.rate]=+t.value;persist();if(cur==="dash")drawCharts();return;}
