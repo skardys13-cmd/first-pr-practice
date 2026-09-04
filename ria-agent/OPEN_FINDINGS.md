@@ -79,12 +79,16 @@ path.
 needs API access to answer. If it does not, the compensating action is still
 receipted and still visible, which is the part that matters.
 
-### 6. "Zero false agreements" has no denominator — status: open
+### 6. "Zero false agreements" has no denominator — status: folded in
 
 Step 38's gate is passable by an engine that detects nothing, if genuine breaks
-are rare enough that a month produces almost none. The gate needs a minimum
-count of real breaks the human found, and injected synthetic breaks if the
-natural rate is too low. Phase 5 work.
+are rare enough that a month produces almost none. Zero out of zero is not
+evidence.
+
+`ria_agent.recon_scoring` requires twenty real breaks observed *and* zero
+missed, and `plant_break` supplies known breaks where the natural rate is too
+low. An engine that cannot catch a break you planted will not catch one you did
+not.
 
 ### 7. Step 16's 2% is an aggregate that hides a broken task type — status: folded in
 

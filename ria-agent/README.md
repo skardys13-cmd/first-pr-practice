@@ -22,6 +22,12 @@ fixture-backed fakes.
 | 2 | 12–17 | Reading the CRM, classifying tasks, shadow mode, the whitelist |
 | 3 | 18–24 | Session detection, goal-directed navigation, guardrails, verification |
 | 4 | 25–30 | Naming rules, filing proposals, the executor, reversal, promotion |
+| 5 | 31–38 | Tolerance and as-of rules, the comparison engine, linkage, the gate |
+
+[RECONCILIATION.md](RECONCILIATION.md) defines what "agree" means — tolerance,
+as-of alignment, and the causes that legitimately differ. It is the
+specification `ria_agent.reconcile` implements, and the numbers in it are
+defaults for a firm to set, not decisions already made.
 
 Findings from the plan review, including the ones deliberately not acted on,
 are in [OPEN_FINDINGS.md](OPEN_FINDINGS.md).
@@ -91,3 +97,6 @@ Tests need `pytest`:
       naming.py          the firm's convention as rules, and a dry run over history
       filing.py          filing proposals and reversal proposals
       executor.py        the only path to a write, and it checks the log first
+      reconcile.py       balance comparison; verdicts and evidence, never a number
+      linkage.py         is every account linked correctly in every system?
+      recon_scoring.py   the false-agreement gate, with a denominator

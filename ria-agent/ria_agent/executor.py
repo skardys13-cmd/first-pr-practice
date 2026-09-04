@@ -29,6 +29,10 @@ class NotApproved(PermissionError):
     """Refused. This is the system's central safety property, not an error path."""
 
 
+class NothingToWrite(NotApproved):
+    """The proposal is a finding, not a change. Constitution III."""
+
+
 class AlreadyExecuted(RuntimeError):
     """A proposal is applied at most once (F-27)."""
 
@@ -123,6 +127,15 @@ class Executor:
             raise NotApproved(
                 f"{proposal_receipt_id} is not a proposal awaiting approval "
                 f"(it is a {proposal.action_type} that is {proposal.outcome})"
+            )
+        if not proposal.after_state:
+            # A reconciliation exception is a proposal with nothing to write:
+            # it carries two balances and a proposed cause, and a person decides
+            # what to do about it. Constitution III means there is no code path
+            # that turns one into a correction, and this is that absence.
+            raise NothingToWrite(
+                f"{proposal_receipt_id} proposes no change to any record. It is a "
+                "finding for a person, not something to apply. Nothing was written."
             )
 
         approval_id, auto = self.authorisation(proposal)
