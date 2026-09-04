@@ -1,12 +1,13 @@
 # Tests
 
-Five Playwright suites against `../index.html`. No build step, no server.
+Six Playwright suites against `../index.html`. No build step, no server.
 
     node test/test.js     # 33 behavioural tests
     node test/test2.js    # 19 regression tests for the September audit fixes
     node test/test3.js    # 15 tests for the per-task workspace
     node test/test4.js    # 42 tests for destinations, ledgers and the detail panel
     node test/test5.js    # 13 tests that every walkthrough still matches its task
+    node test/test6.js    # 33 tests that date-bound work lands before its date
 
 `test.js` covers fresh load, tick and partial-credit maths, persistence across
 reload, wipe-and-restore, the all-tasks-done edge case, every tab rendering,
@@ -46,3 +47,14 @@ change to the plan forces a re-read of the steps rather than silently
 invalidating them. After re-reading and updating them, regenerate with:
 
     python3 test/fingerprint.py
+
+`test6.js` guards the sequencing. The plan is 426 hours run at three to four
+evening hours a week, so it is a two-year plan, not a one-year one, and the
+tasks written for a specific date have to land before that date. It asserts
+the December kit (decision criteria, the call, licence clock, comp model,
+internal-as-outside-offer, negotiation scripts, Florida breakeven) all fall
+before ~week 23, that the credential pair straddles the exam, and that nine
+real dependency pairs still run in order. It also asserts the id migration:
+tasks were swapped between blocks, so `done`, `prog` and `work` keys had to be
+remapped, and a save written before the re-sequence must still show the same
+tasks ticked -- including when migrated twice.
