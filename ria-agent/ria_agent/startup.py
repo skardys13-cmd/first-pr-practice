@@ -7,6 +7,7 @@ failing stops the process.
 
 from __future__ import annotations
 
+import getpass
 import os
 from pathlib import Path
 
@@ -65,7 +66,13 @@ def system_prompt(path: Path | None = None) -> str:
 class Application:
     """Everything the agent needs, assembled only if startup checks pass."""
 
-    def __init__(self, storage_dir: str | Path | None = None, model_version: str | None = None):
+    def __init__(
+        self,
+        storage_dir: str | Path | None = None,
+        model_version: str | None = None,
+        operator: str | None = None,
+        role: str | None = None,
+    ):
         self.storage_dir = Path(storage_dir) if storage_dir else default_storage_dir()
         self.storage_dir.mkdir(parents=True, exist_ok=True)
 
@@ -84,6 +91,12 @@ class Application:
                 "model_version. F-34: behaviour shifts with the model, and the "
                 "receipt is the only record of which one ran."
             )
+
+        # F-8: supervision is a person, not a feature. Every approval this
+        # install records carries this name. One install, one person -- the
+        # agent has exactly their permissions and nobody else's.
+        self.operator = operator or os.environ.get("RIA_AGENT_OPERATOR") or getpass.getuser()
+        self.role = role or os.environ.get("RIA_AGENT_ROLE", "para_planner")
 
         self.agent_version = AGENT_VERSION
         self.log = LogStore(self.storage_dir / "log")

@@ -1,8 +1,10 @@
 """Startup refuses to run an install that violates the constitution (Steps 2, 6)."""
 
+import os
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 from ria_agent.secrets_posture import CredentialFound, assert_clean, scan
 from ria_agent.startup import Application, find_constitution, system_prompt
@@ -104,9 +106,24 @@ class StartupGate(StorageTestCase):
         self.assertIn("config.ini", str(caught.exception))
 
     def test_startup_refuses_without_a_pinned_model(self):
-        with self.assertRaises(RuntimeError) as caught:
-            Application(self.root, model_version="")
+        with mock.patch.dict(os.environ, {}, clear=False):
+            os.environ.pop("RIA_AGENT_MODEL", None)
+            with self.assertRaises(RuntimeError) as caught:
+                Application(self.root, model_version="")
         self.assertIn("F-34", str(caught.exception))
+
+    def test_a_pinned_model_may_come_from_the_environment(self):
+        with mock.patch.dict(os.environ, {"RIA_AGENT_MODEL": "claude-x-2"}):
+            app = Application(self.root)
+            self.addCleanup(app.close)
+        self.assertEqual(app.model_version, "claude-x-2")
+
+    def test_the_operator_may_come_from_the_environment(self):
+        with mock.patch.dict(os.environ, {"RIA_AGENT_OPERATOR": "Bea",
+                                          "RIA_AGENT_ROLE": "client_service"}):
+            app = Application(self.root, model_version="claude-x-1")
+            self.addCleanup(app.close)
+        self.assertEqual((app.operator, app.role), ("Bea", "client_service"))
 
 
 class ConstitutionLoading(unittest.TestCase):

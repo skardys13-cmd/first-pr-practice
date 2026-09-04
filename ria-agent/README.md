@@ -49,3 +49,8 @@ Tests need `pytest`:
       secrets_posture.py the startup credential check
       startup.py         constitution loading and the startup gate
       stops.py           the stop taxonomy
+      queue.py           the four-lane review queue, as a view over the log
+      web.py             that queue on localhost
+      seeded_errors.py   deliberate faults and the catch rate (off by default)
+      synthetic.py       fake data for using the queue before real data exists
+      cli.py             serve, seed, export, verify

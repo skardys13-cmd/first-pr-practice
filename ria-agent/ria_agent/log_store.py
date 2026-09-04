@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import json
 import sqlite3
+import threading
 from datetime import datetime
 from pathlib import Path
 from typing import Iterable, Iterator
@@ -69,7 +70,12 @@ class LogStore:
         self.directory.mkdir(parents=True, exist_ok=True)
         self.db_path = self.directory / "receipts.db"
         self.jsonl_path = self.directory / "receipts.jsonl"
-        self._conn = sqlite3.connect(self.db_path)
+        # The review queue is served by a threading HTTP server, so requests
+        # arrive on threads that did not open this connection. One connection,
+        # explicitly shared, with every use serialised behind a lock -- and the
+        # same lock keeps the database and the JSONL mirror from interleaving.
+        self._lock = threading.RLock()
+        self._conn = sqlite3.connect(self.db_path, check_same_thread=False)
         self._conn.row_factory = sqlite3.Row
         self._conn.executescript(SCHEMA)
         self._conn.commit()
@@ -81,6 +87,13 @@ class LogStore:
         receipt.validate()
         payload = json.dumps(receipt.to_dict(), sort_keys=True)
         appended_at = datetime.now().astimezone().isoformat(timespec="seconds")
+        with self._lock:
+            self._insert(receipt, payload, appended_at)
+            with self.jsonl_path.open("a", encoding="utf-8") as handle:
+                handle.write(payload + "\n")
+        return receipt
+
+    def _insert(self, receipt: Receipt, payload: str, appended_at: str) -> None:
         try:
             self._conn.execute(
                 "INSERT INTO receipts (receipt_id, timestamp_start, timestamp_end,"
@@ -97,11 +110,10 @@ class LogStore:
                 ),
             )
         except sqlite3.IntegrityError as exc:
+            if "UNIQUE" not in str(exc).upper():
+                raise
             raise DuplicateReceipt(receipt.receipt_id) from exc
         self._conn.commit()
-        with self.jsonl_path.open("a", encoding="utf-8") as handle:
-            handle.write(payload + "\n")
-        return receipt
 
     def append_all(self, receipts: Iterable[Receipt]) -> int:
         return sum(1 for r in receipts if self.append(r))
@@ -109,9 +121,10 @@ class LogStore:
     # -- reads --------------------------------------------------------------
 
     def get(self, receipt_id: str) -> Receipt | None:
-        row = self._conn.execute(
-            "SELECT payload FROM receipts WHERE receipt_id = ?", (receipt_id,)
-        ).fetchone()
+        with self._lock:
+            row = self._conn.execute(
+                "SELECT payload FROM receipts WHERE receipt_id = ?", (receipt_id,)
+            ).fetchone()
         return Receipt.from_dict(json.loads(row["payload"])) if row else None
 
     def query(
@@ -154,16 +167,16 @@ class LogStore:
         sql += " ORDER BY timestamp_start, appended_at, rowid"
         if limit is not None:
             sql += f" LIMIT {int(limit)}"
-        return [
-            Receipt.from_dict(json.loads(row["payload"]))
-            for row in self._conn.execute(sql, params)
-        ]
+        with self._lock:
+            rows = self._conn.execute(sql, params).fetchall()
+        return [Receipt.from_dict(json.loads(row["payload"])) for row in rows]
 
     def __iter__(self) -> Iterator[Receipt]:
         return iter(self.query())
 
     def count(self) -> int:
-        return self._conn.execute("SELECT COUNT(*) AS n FROM receipts").fetchone()["n"]
+        with self._lock:
+            return self._conn.execute("SELECT COUNT(*) AS n FROM receipts").fetchone()["n"]
 
     # -- integrity ----------------------------------------------------------
 
@@ -190,10 +203,9 @@ class LogStore:
                 continue
             mirror[record["receipt_id"]] = record
 
-        rows = {
-            row["receipt_id"]: json.loads(row["payload"])
-            for row in self._conn.execute("SELECT receipt_id, payload FROM receipts")
-        }
+        with self._lock:
+            stored = self._conn.execute("SELECT receipt_id, payload FROM receipts").fetchall()
+        rows = {row["receipt_id"]: json.loads(row["payload"]) for row in stored}
         for receipt_id in rows.keys() - mirror.keys():
             problems.append(f"{receipt_id} is in the database but not the mirror")
         for receipt_id in mirror.keys() - rows.keys():
@@ -204,7 +216,8 @@ class LogStore:
         return problems
 
     def close(self) -> None:
-        self._conn.close()
+        with self._lock:
+            self._conn.close()
 
     def __enter__(self) -> "LogStore":
         return self
