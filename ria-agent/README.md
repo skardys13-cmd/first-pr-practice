@@ -21,6 +21,7 @@ fixture-backed fakes.
 | 1 | 7–11 | The four-lane review queue |
 | 2 | 12–17 | Reading the CRM, classifying tasks, shadow mode, the whitelist |
 | 3 | 18–24 | Session detection, goal-directed navigation, guardrails, verification |
+| 4 | 25–30 | Naming rules, filing proposals, the executor, reversal, promotion |
 
 Findings from the plan review, including the ones deliberately not acted on,
 are in [OPEN_FINDINGS.md](OPEN_FINDINGS.md).
@@ -87,3 +88,6 @@ Tests need `pytest`:
       attended.py        the fifty supervised runs and the unattended gate
       promotion.py       may a workflow run without a person?
       canary.py          portal drift, measured on where it goes not how far
+      naming.py          the firm's convention as rules, and a dry run over history
+      filing.py          filing proposals and reversal proposals
+      executor.py        the only path to a write, and it checks the log first

@@ -105,3 +105,52 @@ class FixtureCrm(CrmReader):
     @classmethod
     def from_bundled_fixtures(cls) -> "FixtureCrm":
         return cls(path=Path(__file__).parent / "fixtures" / "redtail_tasks.json")
+
+
+# --- Writing, which is a separate interface on purpose ---------------------
+
+
+class CrmWriter(ABC):
+    """Applies a change to the CRM.
+
+    Kept apart from `CrmReader` so that reading requires no capability to write.
+    Nothing calls this directly: `ria_agent.executor` is the only caller, and it
+    refuses without a recorded approval (Constitution II).
+    """
+
+    name = "crm"
+
+    @abstractmethod
+    def document_state(self, document_id: str) -> dict:
+        """The current filing state, so a change can record what it replaced."""
+
+    @abstractmethod
+    def file_document(self, document_id: str, state: dict) -> dict:
+        """Apply a filing. Returns the state afterwards."""
+
+
+class FixtureCrmWriter(CrmWriter):
+    """An in-memory stand-in for Redtail's write side."""
+
+    name = "redtail"
+
+    def __init__(self, documents: dict[str, dict] | None = None):
+        self.documents = dict(documents or {})
+        self.calls: list[tuple[str, dict]] = []
+
+    def document_state(self, document_id: str) -> dict:
+        if document_id not in self.documents:
+            raise UnknownDocument(document_id)
+        return dict(self.documents[document_id])
+
+    def file_document(self, document_id: str, state: dict) -> dict:
+        if document_id not in self.documents:
+            raise UnknownDocument(document_id)
+        self.calls.append((document_id, dict(state)))
+        self.documents[document_id] = dict(state)
+        return dict(state)
+
+
+class UnknownDocument(LookupError):
+    def __init__(self, document_id: str):
+        super().__init__(f"no document {document_id!r} in the CRM")

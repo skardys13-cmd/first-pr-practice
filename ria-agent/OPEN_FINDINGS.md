@@ -69,9 +69,15 @@ write, so either it is approval-gated (and it is not one click) or it is not
 (and Constitution II has an exception). Worse, the plan assumes Redtail supports
 a clean undo without checking.
 
-Phase 4 work, so nothing is built here. Verify what Redtail actually permits
-before committing to the word "undo"; the honest fallback is a *receipted
-compensating action*.
+Built as a *reversal proposal*: one click prepares it, and a person approves it
+like any other write. `ria_agent.filing.propose_reversal` records what it
+restores and points at the write it reverses. The plan's "one click from the
+receipt" is not what shipped, because it cannot be without an unapproved write
+path.
+
+**Still open:** whether Redtail permits a clean undo at all. Unverified, and it
+needs API access to answer. If it does not, the compensating action is still
+receipted and still visible, which is the part that matters.
 
 ### 6. "Zero false agreements" has no denominator — status: open
 
