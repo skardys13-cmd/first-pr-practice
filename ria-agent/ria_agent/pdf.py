@@ -10,9 +10,54 @@ That is all a receipt log needs.
 
 from __future__ import annotations
 
+import re
+import zlib
 from pathlib import Path
 
 LETTER = (612.0, 792.0)
+
+_STREAM = re.compile(rb"stream\r?\n(.*?)\r?\nendstream", re.DOTALL)
+_SHOWN = re.compile(rb"\((?:[^()\\]|\\.)*\)\s*Tj")
+
+
+def extract_text(data: bytes) -> str:
+    """Pull the visible text out of a PDF.
+
+    Handles the plain and Flate-compressed content streams that ordinary
+    generators produce, which is enough to verify a retrieved statement in the
+    tests and against the fake portal.
+
+    It is NOT a general PDF text extractor. A scanned statement is an image and
+    yields nothing here, and a custodian using an unusual encoding may too --
+    which is the right failure: verification finds no account number, the check
+    fails, and the artifact is stopped rather than accepted. Production needs a
+    real extractor behind this name, and it must fail the same way.
+    """
+    pieces: list[str] = []
+    for raw in _STREAM.findall(data):
+        try:
+            body = zlib.decompress(raw)
+        except zlib.error:
+            body = raw
+        for token in _SHOWN.findall(body):
+            literal = token[token.index(b"(") + 1:token.rindex(b")")]
+            pieces.append(_unescape(literal))
+    return "\n".join(pieces)
+
+
+def _unescape(raw: bytes) -> str:
+    out = bytearray()
+    index = 0
+    while index < len(raw):
+        byte = raw[index]
+        if byte == 0x5C and index + 1 < len(raw):
+            index += 1
+            nxt = raw[index]
+            out.append({0x6E: 0x0A, 0x72: 0x0D, 0x74: 0x09}.get(nxt, nxt))
+        else:
+            out.append(byte)
+        index += 1
+    return bytes(out).decode("cp1252", errors="replace")
 
 # Helvetica advance widths (1/1000 em) for printable ASCII, from the base-14
 # metrics. Needed so wrapping breaks lines where they actually fit.

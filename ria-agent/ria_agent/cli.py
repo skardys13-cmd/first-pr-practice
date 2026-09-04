@@ -149,6 +149,103 @@ def cmd_shadow_report(args) -> int:
     return 0
 
 
+def _demo_portal():
+    """The fake custodian portal.
+
+    The real driver attaches to the operator's already-authenticated browser and
+    slots in behind BrowserDriver. Until it exists, these commands drive the
+    fake one, which is why they say so on every line of output.
+    """
+    from .browser import FakePortal, FakePortalConfig, Statement
+
+    periods = [f"2026-{month:02d}" for month in range(1, 9)]
+    statements = [Statement("1234-5678", period, "Helen Barrow") for period in periods]
+    statements += [Statement("9983-3570", period, "Rosalind Whitcombe") for period in periods]
+    return FakePortal(statements, FakePortalConfig())
+
+
+def _retrieval(app, driver=None):
+    from .promotion import PromotionRegistry
+    from .retrieval import StatementRetrieval
+
+    return StatementRetrieval(
+        driver or _demo_portal(), app.log,
+        operator=app.operator, role=app.role, model_version=app.model_version,
+        allowed_domains={"portal.schwab.example"},
+        evidence_dir=app.evidence_dir,
+        promotions=PromotionRegistry(Path(app.storage_dir) / "promotions.jsonl"),
+    )
+
+
+def cmd_retrieve(args) -> int:
+    """Steps 18-22: retrieve one statement and prove which one it was."""
+    from .navigator import RetrievalGoal
+    from .plain import as_text
+
+    app = _app(args)
+    goal = RetrievalGoal(args.account, args.period, args.holder or "")
+    outcome = _retrieval(app).run(args.task, goal)
+    print("Driving the FAKE custodian portal. No real custodian was contacted.\n")
+    print(as_text(outcome.receipt))
+    if outcome.verification and not outcome.verification.passed:
+        print("\nChecks that failed:")
+        for check in outcome.verification.failures:
+            print(f"  {check.name}: {check.detail}")
+    app.close()
+    return 0 if outcome.succeeded else 1
+
+
+def cmd_attend(args) -> int:
+    """Steps 23-24: attended runs, every deviation logged, then the gate."""
+    from .attended import AttendedHarness
+    from .navigator import RetrievalGoal
+
+    app = _app(args)
+    periods = [f"2026-{month:02d}" for month in range(1, 9)]
+    harness = AttendedHarness(_retrieval(app))
+    cases = [
+        (f"RT-A{index:03d}",
+         RetrievalGoal("1234-5678", periods[index % len(periods)], "Helen Barrow"))
+        for index in range(args.runs)
+    ]
+    print(f"Driving the FAKE custodian portal for {args.runs} runs.")
+    print("A real pilot watches every one of these by hand.\n")
+    report = harness.run_batch(cases)
+    print(report.summary())
+    app.close()
+    return 0
+
+
+def cmd_promotion(args) -> int:
+    """Whether a workflow may run without a person, and why not."""
+    from .promotion import PromotionRegistry, decide, gather
+    from .seeded_errors import SeedRegistry
+
+    app = _app(args)
+    seeds = SeedRegistry(Path(app.storage_dir) / "seeds.jsonl")
+    registry = PromotionRegistry(Path(app.storage_dir) / "promotions.jsonl")
+    workflow_id, role_id = args.workflow, args.role or app.role
+
+    evidence = gather(app.log, seeds, workflow_id, role_id)
+    decision = decide(workflow_id, evidence)
+    print(f"{workflow_id} for {role_id}")
+    print(f"  currently: {'auto-executing' if registry.is_promoted(workflow_id, role_id) else 'approval-gated'}")
+    print(f"  {decision.explain()}")
+
+    if args.promote:
+        if not decision.promote:
+            print("\nNot promoting. The criteria above are not met.")
+            app.close()
+            return 1
+        registry.promote(workflow_id, role_id, decision)
+        print("\nPromoted. This is reversible, and one incorrect execution reverses it.")
+    if args.demote:
+        registry.demote(workflow_id, role_id, args.demote)
+        print(f"\nDemoted: {args.demote}")
+    app.close()
+    return 0
+
+
 def cmd_verify(args) -> int:
     """Check the log's two copies still agree, and report the catch rate."""
     app = _app(args)
@@ -222,6 +319,27 @@ def build_parser() -> argparse.ArgumentParser:
     report.add_argument("--write-whitelist", action="store_true",
                         help="lock the clean templates in as the whitelist")
     report.set_defaults(func=cmd_shadow_report)
+
+    retrieve = subparsers.add_parser(
+        "retrieve", help="retrieve one statement (against the fake portal)")
+    retrieve.add_argument("--account", required=True)
+    retrieve.add_argument("--period", required=True, help="e.g. 2026-08")
+    retrieve.add_argument("--holder", default=None)
+    retrieve.add_argument("--task", default="RT-0000", help="the CRM task id")
+    retrieve.set_defaults(func=cmd_retrieve)
+
+    attend = subparsers.add_parser(
+        "attend", help="attended runs and the unattended gate")
+    attend.add_argument("--runs", type=int, default=50)
+    attend.set_defaults(func=cmd_attend)
+
+    promotion = subparsers.add_parser(
+        "promotion", help="may a workflow run without a person?")
+    promotion.add_argument("workflow", help="e.g. statement_retrieval")
+    promotion.add_argument("--role", default=None)
+    promotion.add_argument("--promote", action="store_true")
+    promotion.add_argument("--demote", metavar="REASON", default=None)
+    promotion.set_defaults(func=cmd_promotion)
 
     verify = subparsers.add_parser("verify", help="check the log verifies")
     verify.set_defaults(func=cmd_verify)

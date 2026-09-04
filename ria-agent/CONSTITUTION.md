@@ -33,7 +33,9 @@ writes without a recorded approval.
 Auto-execution is earned per workflow, per role, never granted by default, and
 revoked by a single incorrect execution.
 
-*Enforced by:* `ria_agent.promotion`, `ria_agent.executor`
+*Enforced by:* `ria_agent.queue`, `ria_agent.promotion`,
+`ria_agent.receipts` (a write receipt is invalid unless it names the
+approval that authorised it or is marked auto-executed under a promotion)
 
 ## III. No corrections — only proposals
 
@@ -44,7 +46,11 @@ resolution. A human decides.
 This is the most important safety property in the system. There is no
 exception for an "obvious" fix.
 
-*Enforced by:* `ria_agent.executor`
+*Enforced by:* nothing yet. No workflow built so far produces a correction, so
+this rule is not exercised by code. Reconciliation is where it first bites, and
+the comparison engine must be written so that an exception is its only possible
+output. Until then this is a promise, not a control, and it is listed here as
+one.
 
 ## IV. Every action produces a receipt
 

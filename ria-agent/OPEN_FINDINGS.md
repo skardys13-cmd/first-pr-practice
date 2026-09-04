@@ -97,7 +97,11 @@ period.
 
 ### 9. The promotion gate is the wrong shape for read-only work — status: folded in
 
-See #2. Read-only workflows are gated on verification-pass rate.
+`ria_agent.promotion` gates read-only workflows on the verification-pass rate
+and the count of consecutive clean runs, and write workflows on approval rate
+*and* catch rate together. A write workflow at 99% approval with no seeded
+errors decided is refused, in as many words: without them, that number is
+indistinguishable from nobody reading.
 
 ### 10. No baseline measurement step — status: open
 
@@ -123,8 +127,10 @@ primary evidence, and the screenshot is supporting.
 
 F-16 alerts on a change in path length, but a goal-directed navigator has
 naturally variable path length. The canary would be noisy, the threshold would
-be raised, and it would go blind. `ria_agent.canary` asserts on the artifact and
-on the set of pages visited instead.
+be raised, and it would go blind. `ria_agent.canary` asserts on the artifact and on the set of pages visited
+instead. A redesign that renames every control does not fire it; a redesign
+that routes the agent through a page it has never visited does, whether the
+path got longer or shorter.
 
 ### 14. Receipt schema gaps — status: partly folded in
 

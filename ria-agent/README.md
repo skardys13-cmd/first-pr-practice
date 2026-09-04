@@ -40,6 +40,13 @@ The intended order for a new install:
     ria-agent shadow                     # classify real tasks, act on none
     ria-agent shadow-report --labels ... # score it against a human review
     ria-agent shadow-report --labels ... --write-whitelist
+    ria-agent retrieve --account ... --period ...   # one retrieval, receipted
+    ria-agent attend --runs 50                      # the supervised gate
+    ria-agent promotion statement_retrieval         # may it run unattended yet?
+
+`retrieve`, `attend` and `canary` drive a fake custodian portal, and say so.
+The real driver attaches to the operator's already-authenticated browser and
+slots in behind `BrowserDriver` with nothing above it changing.
 
 Tests need `pytest`:
 
@@ -71,3 +78,12 @@ Tests need `pytest`:
       roles.py           what each role's agent may do
       shadow.py          shadow mode and its per-template report
       whitelist.py       the whitelist and the single entry point that enforces it
+      browser.py         the browser as an interface, plus a hostile fake portal
+      session.py         is there a live session to work in?
+      guardrails.py      refusals the executor makes above the model's decision
+      navigator.py       observe, decide, act, observe again
+      verification.py    is this the artifact that was asked for?
+      retrieval.py       statement retrieval end to end, and its receipt
+      attended.py        the fifty supervised runs and the unattended gate
+      promotion.py       may a workflow run without a person?
+      canary.py          portal drift, measured on where it goes not how far
