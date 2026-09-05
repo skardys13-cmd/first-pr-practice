@@ -1,0 +1,267 @@
+<div id="tip" role="status" aria-live="polite"></div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="mast-row">
+      <div class="mast-id">
+        <div class="mast-rule" aria-hidden="true"></div>
+        <div class="stack gap-8">
+          <div class="eyebrow">Working model &middot; built by the paraplanner &middot; not a firm document</div>
+          <h1>Operations capacity &amp; economics</h1>
+          <p class="lede">A model of how much operations work this firm carries, who carries it, what it
+            costs, and when it runs out of room. Every number carries a tag saying where it came from.
+            <b>Most of them are still guesses, and the model says so on its face.</b></p>
+          <div class="mast-meta">
+            <span>AS OF <b id="m-asof">&mdash;</b></span>
+            <span>SCHEMA <b id="m-schema">&mdash;</b></span>
+            <span>INPUTS <b id="m-inputcount">&mdash;</b></span>
+            <span>MEASURED <b id="m-measured">&mdash;</b></span>
+          </div>
+        </div>
+      </div>
+      <div class="utilbar noprint">
+        <button class="btn btn-sm" id="t-xray" aria-pressed="false" title="Highlight every figure that is not measured or observed">Show me the estimates</button>
+        <button class="btn btn-sm" id="t-anon" aria-pressed="true" title="Swap the labels table between anonymous role labels and real ones">Anonymised</button>
+        <button class="btn btn-sm" id="t-theme" title="Switch light and dark">Theme</button>
+        <button class="btn btn-sm" id="t-print" title="Print the one-page leave-behind">Leave-behind</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="stickytop noprint" id="stickytop">
+<div class="scenariobar" id="scenariobar">
+  <div class="wrap">
+    <div class="sb-row">
+      <div class="sb-group">
+        <span class="sb-label">Scenario</span>
+        <div class="segmented" role="group" aria-label="Preset scenario">
+          <button data-preset="today" aria-pressed="true">Today</button>
+          <button data-preset="gone" aria-pressed="false">She's gone, nothing changes</button>
+          <button data-preset="seat" aria-pressed="false">She's gone, I own operations</button>
+        </div>
+        <button class="btn btn-sm" id="sb-toggle" aria-expanded="true" aria-controls="sb-panel">Controls</button>
+        <button class="btn btn-sm btn-ghost" id="sb-reset" title="Return every control to its filed value">Reset</button>
+      </div>
+      <div class="sb-readout" id="sb-readout"></div>
+      <div class="sb-group">
+        <button class="btn btn-sm" id="cmp-toggle" aria-pressed="false" title="Pin this scenario and compare another against it">Compare</button>
+        <span id="cmp-state" class="sb-label"></span>
+      </div>
+    </div>
+  </div>
+  <div class="sb-panel" id="sb-panel">
+    <div class="wrap">
+      <div class="sliders" id="sliders"></div>
+    </div>
+  </div>
+</div>
+
+<nav class="casenav" aria-label="Model sections">
+  <div class="wrap">
+    <div class="casenav-inner" role="tablist" id="casenav">
+      <button role="tab" data-panel="start"  aria-selected="true"><span class="cn-num">00</span>Start here</button>
+      <button role="tab" data-panel="case1"  aria-selected="false"><span class="cn-num">01</span>What happens in 100 days</button>
+      <button role="tab" data-panel="case2"  aria-selected="false"><span class="cn-num">02</span>Where capacity breaks</button>
+      <button role="tab" data-panel="case3"  aria-selected="false"><span class="cn-num">03</span>What each tier costs to serve</button>
+      <button role="tab" data-panel="case4"  aria-selected="false"><span class="cn-num">04</span>The operations seat</button>
+      <button role="tab" data-panel="assump" aria-selected="false"><span class="cn-num">A</span>Assumptions</button>
+      <button role="tab" data-panel="build"  aria-selected="false"><span class="cn-num">B</span>How this was built</button>
+      <button role="tab" data-panel="present" aria-selected="false"><span class="cn-num">C</span>The conversation</button>
+    </div>
+  </div>
+</nav>
+</div>
+
+<main class="wrap">
+  <div id="failbanner" hidden></div>
+  <div id="cmp-strip" hidden></div>
+
+  <!-- ========== START ========== -->
+  <section class="panel" id="p-start" role="tabpanel">
+    <div class="case-head">
+      <span class="eyebrow">00 &middot; Start here</span>
+      <h2>What this is, and what it is not</h2>
+      <p class="lede">Four questions the firm is going to have to answer anyway. This model does not
+        answer them. It makes them arithmetic, so the answers can be argued about with numbers
+        instead of impressions.</p>
+    </div>
+    <div class="stack gap-24">
+      <div class="tiles" id="start-tiles"></div>
+      <div id="start-integrity"></div>
+      <div class="grid2">
+        <div class="card"><div class="card-head"><div><div class="card-title">The four cases</div>
+          <div class="card-sub">Each one ends on a single sentence with a number in it.</div></div></div>
+          <div class="card-body"><div id="start-cases" class="stack gap-12"></div></div></div>
+        <div class="card"><div class="card-head"><div><div class="card-title">What this model cannot see</div>
+          <div class="card-sub">Stated up front, because a model that hides its blind spots is worse than no model.</div></div></div>
+          <div class="card-body"><div id="start-blind" class="stack gap-12"></div></div></div>
+      </div>
+      <div class="card"><div class="card-head"><div><div class="card-title">Rules this model runs under</div></div></div>
+        <div class="card-body prose" style="max-width:none">
+          <p>No client data of any kind is in this file. The model works on <b>counts, tiers, ranges and
+          averages</b>; the smallest unit anywhere in it is a tier of at least eighteen households. There
+          are no names, no account numbers, no balances, no statements.</p>
+          <p>Nothing here is a compliance opinion. Compliance ownership stays with the firm's designated
+          person. Where the model touches a compliance calendar item it is counting minutes, not judging
+          adequacy.</p>
+          <p>No credential, password or vendor login appears in this model or in the workbook.
+          The published version names no person, no firm, no custodian and no vendor &mdash; the labels
+          table is anonymous by default and the toggle above is how it stays that way.</p>
+        </div></div>
+    </div>
+  </section>
+
+  <!-- ========== CASE 1 ========== -->
+  <section class="panel" id="p-case1" role="tabpanel" hidden>
+    <div class="case-head">
+      <span class="eyebrow">01 &middot; The consultant's departure</span>
+      <h2>What happens in 100 days</h2>
+      <p class="lede">The most urgent of the four and the hardest to argue with, because the date is
+        already fixed. Her work does not stop when she does.</p>
+    </div>
+    <div class="stack gap-24">
+      <div class="tiles" id="c1-tiles"></div>
+      <div id="c1-gap"></div>
+      <div class="card"><div class="card-head"><div><div class="card-title">Where her hours land</div>
+        <div class="card-sub">Each column is the same set of hours arriving somewhere different. The
+          utilisation figure under each is what the operations team runs at afterwards.</div></div></div>
+        <div class="card-body"><div id="c1-chart" class="chartwrap"></div></div></div>
+      <div class="grid3" id="c1-options"></div>
+      <div id="c1-verdict"></div>
+    </div>
+  </section>
+
+  <!-- ========== CASE 2 ========== -->
+  <section class="panel" id="p-case2" role="tabpanel" hidden>
+    <div class="case-head">
+      <span class="eyebrow">02 &middot; Capacity</span>
+      <h2>Where capacity breaks</h2>
+      <p class="lede">Operations hours required against operations hours available, projected forward.
+        The crossing point is reported as a household count and as a date, because a date makes a firm
+        act and a count does not.</p>
+    </div>
+    <div class="stack gap-24">
+      <div class="tiles" id="c2-tiles"></div>
+      <div class="card"><div class="card-head"><div><div class="card-title">Operations hours required vs available</div>
+        <div class="card-sub">Both series in hours per year. The crossing is marked with its date.</div></div></div>
+        <div class="card-body"><div id="c2-chart" class="chartwrap"></div></div></div>
+      <div class="grid2">
+        <div class="card"><div class="card-head"><div><div class="card-title">Sensitivity of the date</div>
+          <div class="card-sub">The same model at three growth rates. Nothing else changes.</div></div></div>
+          <div class="card-body"><div id="c2-sens"></div></div></div>
+        <div class="card"><div class="card-head"><div><div class="card-title">Who holds the operations work today</div>
+          <div class="card-sub">Catalogued hours by owner against the hours that role actually has.
+            A large shortfall means the catalogue is incomplete, not that the person is idle.</div></div></div>
+          <div class="card-body"><div id="c2-coverage"></div></div></div>
+      </div>
+      <div class="card"><div class="card-head"><div><div class="card-title">Which assumptions move this answer</div>
+        <div class="card-sub">Each lever swung to a low and a high value I would defend, holding
+          everything else. Longer bar, more the answer depends on a number nobody has measured.</div></div></div>
+        <div class="card-body"><div id="c2-tornado" class="chartwrap"></div></div></div>
+      <div id="c2-verdict"></div>
+    </div>
+  </section>
+
+  <!-- ========== CASE 3 ========== -->
+  <section class="panel" id="p-case3" role="tabpanel" hidden>
+    <div class="case-head">
+      <span class="eyebrow">03 &middot; Tier economics</span>
+      <h2>What each client tier costs to serve</h2>
+      <p class="lede">Revenue per household against cost to serve per household, built up in layers so
+        it is clear which layer is doing the work. This is presented as a question. It is not a finding
+        about any client, and it is not a recommendation.</p>
+    </div>
+    <div class="stack gap-24">
+      <div id="c3-warning"></div>
+      <div class="card"><div class="card-head"><div><div class="card-title">Revenue against cost to serve, by tier</div>
+        <div class="card-sub">Revenue is one bar. Cost is a stack of four layers, thinnest evidence
+          at the top.</div></div></div>
+        <div class="card-body"><div id="c3-chart" class="chartwrap"></div></div></div>
+      <div class="card"><div class="card-head"><div><div class="card-title">The layers, tier by tier</div>
+        <div class="card-sub">Direct operations cost is the only layer built from the task catalogue.
+          The other three are allocations.</div></div></div>
+        <div class="card-body"><div id="c3-table"></div></div></div>
+      <div class="stack gap-12">
+        <h3>The three versions of this decision</h3>
+        <p class="prose">These are laid out flat on purpose. The model does not have a view on which is
+          right, and neither do I &mdash; I have been here sixty days and this is a question about who the
+          firm wants to be.</p>
+        <div class="grid3" id="c3-options"></div>
+      </div>
+      <div id="c3-verdict"></div>
+    </div>
+  </section>
+
+  <!-- ========== CASE 4 ========== -->
+  <section class="panel" id="p-case4" role="tabpanel" hidden>
+    <div class="case-head">
+      <span class="eyebrow">04 &middot; The ask</span>
+      <h2>The operations seat</h2>
+      <p class="lede">An operations seat does not generate revenue. It protects advisor capacity and it
+        prevents service failures. That is the whole claim, and it is the only claim this section makes.</p>
+    </div>
+    <div class="stack gap-24">
+      <div class="tiles" id="c4-tiles"></div>
+      <div class="card"><div class="card-head"><div><div class="card-title">What the seat has to protect to pay for itself</div>
+        <div class="card-sub">Cost is the line. The bars are what it protects, largest claim first.</div></div></div>
+        <div class="card-body"><div id="c4-chart" class="chartwrap"></div></div></div>
+      <div class="grid2">
+        <div class="card"><div class="card-head"><div><div class="card-title">Where the protected value comes from</div></div></div>
+          <div class="card-body"><div id="c4-table"></div></div></div>
+        <div class="card"><div class="card-head"><div><div class="card-title">What it costs elsewhere</div>
+          <div class="card-sub">The hole in my own proposal. Better that I find it than he does.</div></div></div>
+          <div class="card-body"><div id="c4-displace"></div></div></div>
+      </div>
+      <div id="c4-verdict"></div>
+    </div>
+  </section>
+
+  <!-- ========== ASSUMPTIONS ========== -->
+  <section class="panel" id="p-assump" role="tabpanel" hidden>
+    <div class="case-head">
+      <span class="eyebrow">A &middot; The ledger</span>
+      <h2>Assumptions</h2>
+      <p class="lede">Every input in the model: what it is, what it is set to, where it came from, who
+        could confirm it, and when it was last checked. This is the spine. If a number on any other
+        screen is wrong, it is wrong here first.</p>
+    </div>
+    <div class="stack gap-24">
+      <div id="a-summary"></div>
+      <div class="card"><div class="card-head">
+        <div><div class="card-title">The ledger</div>
+          <div class="card-sub" id="a-count"></div></div>
+        <div class="sb-group" id="a-filters"></div></div>
+        <div class="card-body"><div id="a-table"></div></div></div>
+      <div class="card"><div class="card-head"><div><div class="card-title">Time these first</div>
+        <div class="card-sub">Task rows ordered by the hours they contribute. The top rows are where a
+          timed figure changes the model most &mdash; timing the bottom rows is mostly wasted effort.</div></div></div>
+        <div class="card-body"><div id="a-priority"></div></div></div>
+      <div class="card"><div class="card-head"><div><div class="card-title">What the tags mean</div></div></div>
+        <div class="card-body"><div id="a-tagkey"></div></div></div>
+    </div>
+  </section>
+
+  <!-- ========== BUILD ========== -->
+  <section class="panel" id="p-build" role="tabpanel" hidden>
+    <div class="case-head">
+      <span class="eyebrow">B &middot; Method</span>
+      <h2>How this was built</h2>
+      <p class="lede">The order to fill this model in, sequenced so the things I can get on my own come
+        first and the things that need somebody else are batched into as few conversations as possible.</p>
+    </div>
+    <div class="stack gap-32" id="build-body"></div>
+  </section>
+
+  <!-- ========== PRESENT ========== -->
+  <section class="panel" id="p-present" role="tabpanel" hidden>
+    <div class="case-head">
+      <span class="eyebrow">C &middot; The meeting</span>
+      <h2>The conversation</h2>
+      <p class="lede">How to walk through this without overclaiming. The model is the easy part.</p>
+    </div>
+    <div class="stack gap-32" id="present-body"></div>
+  </section>
+
+  <div id="printsheet" style="display:none"></div>
+</main>

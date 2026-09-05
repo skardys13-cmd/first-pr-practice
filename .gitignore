@@ -1,3 +1,11 @@
 __pycache__/
 *.pyc
 .pytest_cache/
+
+# ria-model build intermediates
+node_modules/
+ria-model/shot-*.png
+ria-model/dist/engine-dump.json
+ria-model/dist/cellmap.json
+package-lock.json
+package.json

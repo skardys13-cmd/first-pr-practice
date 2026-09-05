@@ -1,0 +1,235 @@
+{
+  "meta": {
+    "model_name": "Operations Capacity & Economics Model",
+    "built_by": "Paraplanner (role R4)",
+    "as_of": "2026-09-05",
+    "schema_version": "1.0.0",
+    "note": "Canonical input layer. The interactive page and the Excel workbook are both generated from this file, so they cannot disagree. Every input carries a provenance tag."
+  },
+
+  "tag_meta": {
+    "MEASURED":    {"rank": 1, "label": "Measured",    "desc": "I timed it or counted it myself."},
+    "OBSERVED":    {"rank": 2, "label": "Observed",    "desc": "I can see it in a firm system, or I was told it directly."},
+    "BENCHMARK":   {"rank": 3, "label": "Benchmark",   "desc": "Published industry source, cited with source and year."},
+    "ESTIMATED":   {"rank": 4, "label": "Estimated",   "desc": "My own judgement, stated as a range."},
+    "PLACEHOLDER": {"rank": 5, "label": "Placeholder", "desc": "Not yet filled in. The model runs, but this number is fake."}
+  },
+
+  "labels": {
+    "_note": "ANONYMISE swaps these two columns. The published version ships with 'real' identical to 'anon' so nothing identifying is ever published. Fill the 'real' column in on your local copy only.",
+    "firm":      {"anon": "The firm",            "real": "The firm"},
+    "custodian": {"anon": "The custodian",       "real": "The custodian"},
+    "R1": {"anon": "Advisor 1 (principal)",      "real": "Advisor 1 (principal)"},
+    "R2": {"anon": "Advisor 2",                  "real": "Advisor 2"},
+    "R3": {"anon": "Advisor 3",                  "real": "Advisor 3"},
+    "R4": {"anon": "Paraplanner (me)",           "real": "Paraplanner (me)"},
+    "R5": {"anon": "Client service associate",   "real": "Client service associate"},
+    "R6": {"anon": "Office manager",             "real": "Office manager"},
+    "R7": {"anon": "Operations consultant",      "real": "Operations consultant"}
+  },
+
+  "constants": {
+    "benefits_load": {
+      "v": 0.25, "unit": "pct", "tag": "BENCHMARK",
+      "name": "Benefits and payroll load",
+      "src": "US Bureau of Labor Statistics, Employer Costs for Employee Compensation. Benefits run about 29-31% of total compensation for private industry, i.e. roughly a 40-45% load on wages; finance and insurance sits near the top of that band. 25% is a deliberately conservative load covering payroll taxes, health and retirement only.",
+      "who": "The principal, or whoever handles payroll, can give the real loaded figure.",
+      "checked": "2026-09-05"
+    },
+    "productive_hours_year": {
+      "v": 1700, "unit": "hours", "tag": "ESTIMATED",
+      "name": "Productive hours per person per year",
+      "src": "2,080 scheduled hours less PTO, holidays, sick time, training and internal admin. Range I would defend: 1,600-1,800.",
+      "who": "The principal can confirm the PTO and holiday policy; the rest is my judgement.",
+      "checked": "2026-09-05"
+    },
+    "growth_rate_households": {
+      "v": 0.15, "unit": "pct", "tag": "ESTIMATED",
+      "name": "Household growth rate per year",
+      "src": "My impression of the last few quarters of new-client activity. Not verified against a count.",
+      "who": "The principal, or a new-account count out of the CRM for the last three years.",
+      "checked": "2026-09-05"
+    },
+    "switching_uplift": {
+      "v": 0.25, "unit": "pct", "tag": "ESTIMATED",
+      "name": "Switching and interruption uplift",
+      "src": "A timed task measures the task, not the day. Real operations days carry context-switching, interruptions, rework and queue time that no task timing captures. 25% is my judgement; range 15-40%. Set it to 0% to see catalogued task time alone.",
+      "who": "Nobody can confirm this directly. It is the assumption most worth arguing about.",
+      "checked": "2026-09-05"
+    },
+    "firm_overhead_per_household": {
+      "v": 1800, "unit": "usd", "tag": "PLACEHOLDER",
+      "name": "Non-payroll firm overhead per household per year",
+      "src": "NOT FILLED IN. Should cover rent, technology stack, custodial platform fees, E&O, compliance vendors, professional fees, marketing, divided by household count. I cannot see the expense lines.",
+      "who": "The principal. This is the single number that decides whether the bottom tier looks profitable or not - do not present tier economics without it.",
+      "checked": "never"
+    },
+    "fee_realisation": {
+      "v": 1.0, "unit": "pct", "tag": "PLACEHOLDER",
+      "name": "Fee realisation against schedule",
+      "src": "NOT FILLED IN. Assumed every household pays the published schedule with no discount, no family aggregation and no flat-fee exception. That is almost certainly not true.",
+      "who": "The billing run from the last quarterly cycle: actual fees billed divided by fees the schedule implies.",
+      "checked": "never"
+    },
+    "consultant_departure_days": {
+      "v": 100, "unit": "days", "tag": "OBSERVED",
+      "name": "Days until the operations consultant leaves",
+      "src": "Told to me directly.",
+      "who": "The principal.",
+      "checked": "2026-09-05"
+    },
+    "ops_seat_comp": {
+      "v": 92000, "unit": "usd", "tag": "PLACEHOLDER",
+      "name": "Compensation for an operations manager seat",
+      "src": "NOT FILLED IN. My guess at the market rate for an operations manager at a firm this size.",
+      "who": "The principal. A compensation study (Schwab RIA Benchmarking, Investment News Adviser Compensation) would give a defensible band.",
+      "checked": "never"
+    },
+    "backfill_consultant_cost": {
+      "v": 78000, "unit": "usd", "tag": "PLACEHOLDER",
+      "name": "Annual cost to backfill the consultant like-for-like",
+      "src": "NOT FILLED IN. Assumed a replacement consultant costs what the current one costs.",
+      "who": "The principal knows the current engagement cost. A replacement quote would be a real number.",
+      "checked": "never"
+    },
+    "service_failure_cost_per_event": {
+      "v": 2500, "unit": "usd", "tag": "PLACEHOLDER",
+      "name": "Cost of one service failure",
+      "src": "NOT FILLED IN. A missed RMD penalty, a late transfer, a billing error and a blown deadline all cost different amounts.",
+      "who": "The principal, or the compliance file of past incidents.",
+      "checked": "never"
+    },
+    "service_failures_avoided": {
+      "v": 0, "unit": "count", "tag": "PLACEHOLDER",
+      "name": "Service failures avoided per year by the seat",
+      "src": "DELIBERATELY ZERO. I have no incident list, so I am counting nothing. Leaving this at zero makes the case for the seat weaker and honest. Raise it only against real incidents someone can name.",
+      "who": "The principal or the consultant can name actual incidents from the last two years.",
+      "checked": "never"
+    },
+    "paraplanning_backfill_comp": {
+      "v": 55000, "unit": "usd", "tag": "PLACEHOLDER",
+      "name": "Compensation for a junior seat to absorb displaced paraplanning work",
+      "src": "NOT FILLED IN. My guess at a client service or associate paraplanner salary. Only relevant if the operations seat happens and the planning work I do now has to go somewhere.",
+      "who": "The principal.",
+      "checked": "never"
+    },
+    "advisor_hour_basis": {
+      "v": "loaded_cost", "unit": "choice", "tag": "ESTIMATED",
+      "name": "How an advisor hour is valued",
+      "src": "Two options: 'loaded_cost' values a returned advisor hour at what it costs the firm (conservative, hard to argue with) or 'revenue_capacity' values it at revenue per advisor hour (larger, and it invites the challenge that the hour would not actually have been sold). Defaulting to loaded cost on purpose.",
+      "who": "This is a framing choice, not a fact. Ask the principal which he finds credible.",
+      "checked": "2026-09-05"
+    }
+  },
+
+  "roster": [
+    {"role_id": "R1", "fte": 1.0,  "fte_tag": "OBSERVED", "is_advisor": true,  "is_operations": false, "ops_allocation": 0.00, "comp": 250000, "comp_tag": "PLACEHOLDER", "is_contractor": false, "end_date": null,
+     "comp_src": "NOT FILLED IN. Principal compensation is a guess and is probably wrong; owner comp is often taken as distribution rather than salary.", "who": "The principal. Do not push on this one - use a range if he prefers."},
+    {"role_id": "R2", "fte": 1.0,  "fte_tag": "OBSERVED", "is_advisor": true,  "is_operations": false, "ops_allocation": 0.00, "comp": 165000, "comp_tag": "PLACEHOLDER", "is_contractor": false, "end_date": null,
+     "comp_src": "NOT FILLED IN. My guess.", "who": "The principal."},
+    {"role_id": "R3", "fte": 1.0,  "fte_tag": "OBSERVED", "is_advisor": true,  "is_operations": false, "ops_allocation": 0.00, "comp": 140000, "comp_tag": "PLACEHOLDER", "is_contractor": false, "end_date": null,
+     "comp_src": "NOT FILLED IN. My guess.", "who": "The principal."},
+    {"role_id": "R4", "fte": 1.0,  "fte_tag": "OBSERVED", "is_advisor": false, "is_operations": true,  "ops_allocation": 0.35, "comp": 72000,  "comp_tag": "OBSERVED",    "is_contractor": false, "end_date": null,
+     "comp_src": "My own compensation. The 35% operations allocation is my estimate of my own week; the rest is plan work and research.", "who": "Me. I can make the allocation MEASURED by keeping a two-week time log."},
+    {"role_id": "R5", "fte": 1.0,  "fte_tag": "OBSERVED", "is_advisor": false, "is_operations": true,  "ops_allocation": 0.90, "comp": 58000,  "comp_tag": "PLACEHOLDER", "is_contractor": false, "end_date": null,
+     "comp_src": "NOT FILLED IN. My guess at a client service associate salary.", "who": "The principal."},
+    {"role_id": "R6", "fte": 1.0,  "fte_tag": "OBSERVED", "is_advisor": false, "is_operations": true,  "ops_allocation": 0.50, "comp": 68000,  "comp_tag": "PLACEHOLDER", "is_contractor": false, "end_date": null,
+     "comp_src": "NOT FILLED IN. My guess. The 50% operations allocation excludes bookkeeping, HR, facilities and reception.", "who": "The principal."},
+    {"role_id": "R7", "fte": 0.38, "fte_tag": "ESTIMATED", "is_advisor": false, "is_operations": true, "ops_allocation": 1.00, "comp": 78000,  "comp_tag": "PLACEHOLDER", "is_contractor": true,  "end_date": "2026-12-14",
+     "comp_src": "NOT FILLED IN. Engagement cost is a guess. 0.38 FTE is roughly 12-13 hours a week, which is my impression of her time here, not a contracted figure.", "who": "The principal holds the engagement letter. Her contracted hours are the second most important number in this model."}
+  ],
+
+  "book": [
+    {"tier": "T1", "label": "Under $250k",   "households": 38, "avg_aum": 118000,  "accounts_per_household": 1.6, "new_mix": 0.05, "tag": "OBSERVED",
+     "src": "Household count and average balance read off the portfolio system household report. Accounts per household is my estimate from browsing the list, not a count.", "who": "Me - the accounts-per-household figure becomes MEASURED the moment I export an account list and divide."},
+    {"tier": "T2", "label": "$250k - $1m",   "households": 74, "avg_aum": 560000,  "accounts_per_household": 2.4, "new_mix": 0.25, "tag": "OBSERVED",
+     "src": "Portfolio system household report. Accounts per household estimated.", "who": "Me."},
+    {"tier": "T3", "label": "$1m - $3m",     "households": 52, "avg_aum": 1720000, "accounts_per_household": 3.4, "new_mix": 0.45, "tag": "OBSERVED",
+     "src": "Portfolio system household report. Accounts per household estimated.", "who": "Me."},
+    {"tier": "T4", "label": "Over $3m",      "households": 18, "avg_aum": 5100000, "accounts_per_household": 4.8, "new_mix": 0.25, "tag": "OBSERVED",
+     "src": "Portfolio system household report. Accounts per household estimated.", "who": "Me."}
+  ],
+
+  "book_meta": {
+    "new_mix_tag": "ESTIMATED",
+    "new_mix_src": "How new households distribute across the tiers. My impression is that new business skews to T3. Not verified.",
+    "new_mix_who": "The principal, or a CRM report of households opened in the last 24 months by opening balance."
+  },
+
+  "fee_schedule": {
+    "tag": "OBSERVED",
+    "src": "The published fee schedule. Read off the ADV Part 2A / the client agreement.",
+    "who": "The principal, or the ADV itself.",
+    "basis": "tiered_marginal",
+    "basis_note": "TIERED / MARGINAL. Each band is charged at its own rate on the portion of assets falling inside that band. This is NOT a flat rate applied to total assets.",
+    "bands": [
+      {"from": 0,       "to": 500000,  "rate": 0.0100},
+      {"from": 500000,  "to": 1000000, "rate": 0.0085},
+      {"from": 1000000, "to": 3000000, "rate": 0.0070},
+      {"from": 3000000, "to": 5000000, "rate": 0.0050},
+      {"from": 5000000, "to": null,    "rate": 0.0035}
+    ]
+  },
+
+  "tasks": [
+    {"id": "F1",  "task": "Daily custodian reconciliation",                            "basis": "firm",          "minutes": 25,  "occurrences": 250,  "tiers": [],                     "owner": "R6", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "F2",  "task": "Quarterly billing cycle: calculate, review, submit",        "basis": "firm",          "minutes": 240, "occurrences": 4,    "tiers": [],                     "owner": "R7", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "F3",  "task": "Billing exceptions, adjustments and refunds",               "basis": "firm",          "minutes": 90,  "occurrences": 4,    "tiers": [],                     "owner": "R7", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "F4",  "task": "Compliance calendar items (books and records, testing)",    "basis": "firm",          "minutes": 180, "occurrences": 12,   "tiers": [],                     "owner": "R7", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "F5",  "task": "Annual ADV amendment, delivery and filing",                 "basis": "firm",          "minutes": 480, "occurrences": 1,    "tiers": [],                     "owner": "R7", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "F6",  "task": "Vendor management (custodian, CRM, planning, e-sign)",      "basis": "firm",          "minutes": 120, "occurrences": 12,   "tiers": [],                     "owner": "R7", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "F7",  "task": "Quarterly performance reporting run",                       "basis": "firm",          "minutes": 300, "occurrences": 4,    "tiers": [],                     "owner": "R7", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "F8",  "task": "CRM hygiene sweep (data audit, workflow cleanup)",          "basis": "firm",          "minutes": 120, "occurrences": 12,   "tiers": [],                     "owner": "R4", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "F9",  "task": "Trade error review and correction log",                     "basis": "firm",          "minutes": 45,  "occurrences": 12,   "tiers": [],                     "owner": "R7", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "F10", "task": "Staff onboarding and offboarding (systems, access)",        "basis": "firm",          "minutes": 240, "occurrences": 2,    "tiers": [],                     "owner": "R6", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "F11", "task": "Business continuity and cybersecurity review",              "basis": "firm",          "minutes": 240, "occurrences": 2,    "tiers": [],                     "owner": "R7", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "F12", "task": "Operations standing agenda in the team meeting",            "basis": "firm",          "minutes": 30,  "occurrences": 48,   "tiers": [],                     "owner": "R6", "work_type": "operations", "tag": "PLACEHOLDER"},
+
+    {"id": "A1",  "task": "Account maintenance (address, beneficiary, registration)",  "basis": "account",       "minutes": 20,  "occurrences": 0.6,  "tiers": ["T1","T2","T3","T4"], "owner": "R6", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "A2",  "task": "Custodian document requests and statement retrieval",       "basis": "account",       "minutes": 12,  "occurrences": 1.5,  "tiers": ["T1","T2","T3","T4"], "owner": "R5", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "A3",  "task": "Cost basis and tax document checks (1099 season)",          "basis": "account",       "minutes": 15,  "occurrences": 1.0,  "tiers": ["T1","T2","T3","T4"], "owner": "R5", "work_type": "operations", "tag": "PLACEHOLDER"},
+
+    {"id": "N1",  "task": "Onboarding paperwork prep and e-sign packet",               "basis": "new_household", "minutes": 90,  "occurrences": 1,    "tiers": ["T1","T2","T3","T4"], "owner": "R5", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "N2",  "task": "Account opening across registrations",                      "basis": "new_household", "minutes": 120, "occurrences": 1,    "tiers": ["T1","T2","T3","T4"], "owner": "R5", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "N3",  "task": "ACAT / transfer initiation and tracking to completion",     "basis": "new_household", "minutes": 75,  "occurrences": 1,    "tiers": ["T1","T2","T3","T4"], "owner": "R6", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "N4",  "task": "Data entry: CRM, planning software, portfolio system",      "basis": "new_household", "minutes": 100, "occurrences": 1,    "tiers": ["T1","T2","T3","T4"], "owner": "R4", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "N5",  "task": "Welcome sequence, vault and portal credentials",            "basis": "new_household", "minutes": 45,  "occurrences": 1,    "tiers": ["T1","T2","T3","T4"], "owner": "R5", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "N6",  "task": "Advisor chases outstanding onboarding paperwork",           "basis": "new_household", "minutes": 40,  "occurrences": 1,    "tiers": ["T1","T2","T3","T4"], "owner": "R2", "work_type": "operations", "tag": "PLACEHOLDER"},
+
+    {"id": "H1",  "task": "Annual review scheduling and confirmation",                 "basis": "household",     "minutes": 20,  "occurrences": 1,    "tiers": ["T1","T2","T3","T4"], "owner": "R5", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "H2",  "task": "Meeting prep pack",                                         "basis": "household",     "minutes": 45,  "occurrences": 1,    "tiers": ["T1","T2"],           "owner": "R4", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "H3",  "task": "Meeting prep pack",                                         "basis": "household",     "minutes": 85,  "occurrences": 2,    "tiers": ["T3","T4"],           "owner": "R4", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "H4",  "task": "Meeting follow-up and task capture",                        "basis": "household",     "minutes": 30,  "occurrences": 1,    "tiers": ["T1","T2"],           "owner": "R4", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "H5",  "task": "Meeting follow-up and task capture",                        "basis": "household",     "minutes": 50,  "occurrences": 2,    "tiers": ["T3","T4"],           "owner": "R4", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "H6",  "task": "Quarterly report package delivery and questions",           "basis": "household",     "minutes": 15,  "occurrences": 4,    "tiers": ["T2","T3","T4"],      "owner": "R5", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "H7",  "task": "Money movement and distribution requests",                  "basis": "household",     "minutes": 18,  "occurrences": 3,    "tiers": ["T1","T2","T3","T4"], "owner": "R5", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "H8",  "task": "RMD calculation, election and tracking",                    "basis": "household",     "minutes": 35,  "occurrences": 0.45, "tiers": ["T2","T3","T4"],      "owner": "R7", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "H9",  "task": "Beneficiary review and account maintenance",                "basis": "household",     "minutes": 15,  "occurrences": 0.5,  "tiers": ["T1","T2","T3","T4"], "owner": "R6", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "H10", "task": "Ad hoc client service requests",                            "basis": "household",     "minutes": 12,  "occurrences": 6,    "tiers": ["T1","T2"],           "owner": "R5", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "H11", "task": "Ad hoc client service requests",                            "basis": "household",     "minutes": 15,  "occurrences": 14,   "tiers": ["T3","T4"],           "owner": "R5", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "H12", "task": "Death claim and estate transition",                         "basis": "household",     "minutes": 420, "occurrences": 0.03, "tiers": ["T1","T2","T3","T4"], "owner": "R7", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "H13", "task": "Tax report and CPA coordination",                           "basis": "household",     "minutes": 40,  "occurrences": 1,    "tiers": ["T3","T4"],           "owner": "R2", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "H14", "task": "Held-away account data refresh",                            "basis": "household",     "minutes": 20,  "occurrences": 4,    "tiers": ["T3","T4"],           "owner": "R3", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "H15", "task": "Client requests routed to an advisor instead of service",   "basis": "household",     "minutes": 10,  "occurrences": 5,    "tiers": ["T1","T2","T3","T4"], "owner": "R1", "work_type": "operations", "tag": "PLACEHOLDER"},
+
+    {"id": "V1",  "task": "Client meeting delivery",                                   "basis": "household",     "minutes": 60,  "occurrences": 1,    "tiers": ["T1","T2"],           "owner": "R2", "work_type": "advisory",   "tag": "PLACEHOLDER"},
+    {"id": "V2",  "task": "Client meeting delivery",                                   "basis": "household",     "minutes": 90,  "occurrences": 2,    "tiers": ["T3","T4"],           "owner": "R1", "work_type": "advisory",   "tag": "PLACEHOLDER"},
+    {"id": "V3",  "task": "Planning work and recommendations",                         "basis": "household",     "minutes": 45,  "occurrences": 1,    "tiers": ["T1"],                "owner": "R2", "work_type": "advisory",   "tag": "PLACEHOLDER"},
+    {"id": "V4",  "task": "Planning work and recommendations",                         "basis": "household",     "minutes": 120, "occurrences": 1,    "tiers": ["T2"],                "owner": "R2", "work_type": "advisory",   "tag": "PLACEHOLDER"},
+    {"id": "V5",  "task": "Planning work and recommendations",                         "basis": "household",     "minutes": 240, "occurrences": 1,    "tiers": ["T3","T4"],           "owner": "R1", "work_type": "advisory",   "tag": "PLACEHOLDER"}
+  ],
+
+  "task_meta": {
+    "seed_note": "Every row is seeded PLACEHOLDER. The shape of the catalogue is real RIA operations work; the minutes are not. Replace each figure with a median of three timed runs and change the tag to MEASURED. That column is the strongest evidence in this model.",
+    "basis_note": {
+      "firm":          "Fixed firm-level work. Does not scale with household count.",
+      "household":     "Per household per year, for the tiers listed.",
+      "account":       "Per account per year. Multiplied by accounts per household for the tiers listed.",
+      "new_household": "Per newly onboarded household. Scales with the growth rate, not the book."
+    },
+    "work_type_note": {
+      "operations": "Operations work. Counts against operations capacity no matter who currently does it - including rows an advisor currently absorbs.",
+      "advisory":   "Advisory work. Does NOT count against operations capacity. Used only for the fully loaded cost-to-serve view."
+    }
+  }
+}

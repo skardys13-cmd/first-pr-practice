@@ -1,0 +1,2720 @@
+<title>Operations Capacity Model</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+/* ============================================================ TOKENS
+   Complete light palette on bare :root. Dark redefines tokens only,
+   under both the media query (guarded) and the [data-theme] stamp.   */
+:root{
+  color-scheme: light;
+  --plane:#e9ece9; --surface:#fbfcfb; --surface-2:#f3f6f3; --surface-3:#e8ece8;
+  --ink:#101614; --ink-2:#3c4644; --muted:#6a7370;
+  --rule:#dbe0db; --rule-2:#c3ccc5; --rule-strong:#a8b3ad;
+  --accent:#1c6b52; --accent-ink:#ffffff; --accent-soft:#e2efe9; --accent-line:#8dc0ac;
+  --warn:#a8241c; --warn-ink:#ffffff; --warn-soft:#fbeae8; --warn-line:#e8b3ad;
+  --note:#4a3aa7; --note-soft:#eceaf7;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#e87ba4;
+  --div-pos:#2a78d6; --div-neg:#d03b3b; --div-mid:#dfe4df;
+  --grid:#e0e5e0; --axis:#c3ccc5;
+  --shadow:0 1px 2px rgba(16,22,20,.05), 0 8px 24px -18px rgba(16,22,20,.28);
+  --ring:0 0 0 3px rgba(28,107,82,.28);
+  --sans:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --serif:"Newsreader",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  --maxw:1180px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --plane:#0d1110; --surface:#15191a; --surface-2:#1b2021; --surface-3:#232928;
+    --ink:#f1f4f2; --ink-2:#c0c9c5; --muted:#8a938f;
+    --rule:#272d2c; --rule-2:#39403e; --rule-strong:#4d5553;
+    --accent:#57c49c; --accent-ink:#06120d; --accent-soft:#152e27; --accent-line:#2e6b57;
+    --warn:#ff9187; --warn-ink:#2a0d0a; --warn-soft:#331a17; --warn-line:#7d3b34;
+    --note:#9085e9; --note-soft:#221f3a;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181;
+    --div-pos:#3987e5; --div-neg:#e66767; --div-mid:#333938;
+    --grid:#252b2a; --axis:#39403e;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -18px rgba(0,0,0,.8);
+    --ring:0 0 0 3px rgba(87,196,156,.32);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --plane:#0d1110; --surface:#15191a; --surface-2:#1b2021; --surface-3:#232928;
+  --ink:#f1f4f2; --ink-2:#c0c9c5; --muted:#8a938f;
+  --rule:#272d2c; --rule-2:#39403e; --rule-strong:#4d5553;
+  --accent:#57c49c; --accent-ink:#06120d; --accent-soft:#152e27; --accent-line:#2e6b57;
+  --warn:#ff9187; --warn-ink:#2a0d0a; --warn-soft:#331a17; --warn-line:#7d3b34;
+  --note:#9085e9; --note-soft:#221f3a;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181;
+  --div-pos:#3987e5; --div-neg:#e66767; --div-mid:#333938;
+  --grid:#252b2a; --axis:#39403e;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -18px rgba(0,0,0,.8);
+  --ring:0 0 0 3px rgba(87,196,156,.32);
+}
+
+/* ============================================================ BASE */
+*{box-sizing:border-box}
+body{background:var(--plane);color:var(--ink);font-family:var(--sans);
+  font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:500;text-wrap:balance;margin:0;
+  letter-spacing:-.006em;line-height:1.18}
+h1{font-size:clamp(1.85rem,1.3rem + 2vw,2.7rem)}
+h2{font-size:clamp(1.35rem,1.1rem + 1vw,1.8rem)}
+h3{font-size:1.16rem}
+h4{font-size:1rem;font-family:var(--sans);font-weight:600;letter-spacing:.01em}
+p{margin:0}
+a{color:var(--accent);text-underline-offset:2px}
+:focus-visible{outline:none;box-shadow:var(--ring);border-radius:3px}
+hr{border:0;border-top:1px solid var(--rule);margin:0}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(14px,3vw,28px)}
+.stack{display:flex;flex-direction:column}
+.gap-8{gap:8px}.gap-12{gap:12px}.gap-16{gap:16px}.gap-24{gap:24px}.gap-32{gap:32px}
+.lede{font-size:1.06rem;line-height:1.6;color:var(--ink-2);max-width:66ch}
+.prose{max-width:68ch;color:var(--ink-2)}
+.prose p + p{margin-top:.85em}
+.eyebrow{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted);font-weight:500}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* ============================================================ HEADER */
+.masthead{background:var(--surface);border-bottom:1px solid var(--rule-2)}
+.masthead .wrap{padding-top:22px;padding-bottom:20px}
+.mast-row{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start;justify-content:space-between}
+.mast-id{display:flex;gap:14px;align-items:flex-start}
+.mast-rule{width:3px;align-self:stretch;background:var(--accent);border-radius:2px;flex:none}
+.mast-meta{display:flex;flex-wrap:wrap;gap:6px 18px;font-family:var(--mono);
+  font-size:.7rem;color:var(--muted);letter-spacing:.03em}
+.mast-meta b{color:var(--ink-2);font-weight:500}
+.utilbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+
+/* ============================================================ BUTTONS */
+.btn{font:inherit;font-size:.8rem;font-weight:500;padding:6px 12px;border-radius:4px;
+  border:1px solid var(--rule-2);background:var(--surface);color:var(--ink-2);
+  cursor:pointer;transition:background .12s,border-color .12s,color .12s;white-space:nowrap}
+.btn:hover{border-color:var(--rule-strong);background:var(--surface-2)}
+.btn[aria-pressed="true"],.btn.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn-ghost{background:transparent}
+.btn-sm{font-size:.72rem;padding:4px 9px}
+
+/* ============================================================ SCENARIO BAR */
+.stickytop{position:sticky;top:0;z-index:40;box-shadow:var(--shadow)}
+.scenariobar{background:var(--surface-2);border-bottom:1px solid var(--rule-2)}
+.sb-row{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;
+  padding:9px 0;justify-content:space-between}
+.sb-group{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.sb-label{font-family:var(--mono);font-size:.66rem;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--muted)}
+.sb-readout{font-family:var(--mono);font-size:.78rem;color:var(--ink-2);
+  display:flex;gap:14px;flex-wrap:wrap;font-variant-numeric:tabular-nums}
+.sb-readout b{color:var(--ink);font-weight:600}
+.sb-panel{border-top:1px solid var(--rule);background:var(--surface);
+  max-height:34vh;overflow-y:auto}
+.sb-panel[hidden]{display:none!important}
+.sliders{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));
+  gap:12px 26px;padding:16px 0 18px}
+.slider label{display:flex;justify-content:space-between;align-items:baseline;gap:10px;
+  font-size:.78rem;color:var(--ink-2);font-weight:500;margin-bottom:3px}
+.slider output{font-family:var(--mono);font-size:.8rem;color:var(--ink);font-weight:600;
+  font-variant-numeric:tabular-nums}
+.slider input[type=range]{width:100%;accent-color:var(--accent);height:20px;margin:0}
+.slider .hint{font-size:.68rem;color:var(--muted);margin-top:1px;display:block}
+.slider.dirty label{color:var(--accent)}
+.slider.dirty output::after{content:"\00a0\25CF";font-size:.6em;vertical-align:middle;color:var(--accent)}
+.segmented{display:inline-flex;border:1px solid var(--rule-2);border-radius:4px;overflow:hidden}
+.segmented button{font:inherit;font-size:.75rem;padding:5px 10px;border:0;
+  background:var(--surface);color:var(--ink-2);cursor:pointer;border-right:1px solid var(--rule-2)}
+.segmented button:last-child{border-right:0}
+.segmented button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);font-weight:600}
+
+/* ============================================================ NAV */
+.casenav{background:var(--surface);border-bottom:1px solid var(--rule-2)}
+@media print{.stickytop{position:static}}
+.casenav-inner{display:flex;gap:2px;overflow-x:auto;scrollbar-width:thin}
+.casenav button{font:inherit;font-size:.82rem;font-weight:500;padding:11px 13px;border:0;
+  background:transparent;color:var(--muted);cursor:pointer;white-space:nowrap;
+  border-bottom:2px solid transparent;display:flex;gap:7px;align-items:baseline}
+.casenav button:hover{color:var(--ink-2)}
+.casenav button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.casenav .cn-num{font-family:var(--mono);font-size:.66rem;color:var(--muted);letter-spacing:.06em}
+.casenav button[aria-selected="true"] .cn-num{color:var(--accent)}
+
+/* ============================================================ PANELS */
+main{padding:26px 0 70px}
+.panel[hidden]{display:none!important}
+.case-head{display:flex;flex-direction:column;gap:9px;padding-bottom:18px;
+  border-bottom:1px solid var(--rule);margin-bottom:22px}
+
+/* ============================================================ PROVENANCE */
+.tag{font-family:var(--mono);font-size:.6rem;font-weight:600;letter-spacing:.09em;
+  text-transform:uppercase;padding:1px 5px;border-radius:3px;white-space:nowrap;
+  display:inline-block;vertical-align:2px;line-height:1.5}
+.tag-MEASURED{background:var(--ink);color:var(--surface);border:1.5px solid var(--ink)}
+.tag-OBSERVED{background:transparent;color:var(--accent);border:1.5px solid var(--accent)}
+.tag-BENCHMARK{background:transparent;color:var(--note);border:1.5px dotted var(--note)}
+.tag-ESTIMATED{background:transparent;color:var(--muted);border:1.5px dashed var(--rule-strong);font-style:italic}
+.tag-PLACEHOLDER{background:var(--warn);color:var(--warn-ink);border:1.5px solid var(--warn)}
+.tag-PLACEHOLDER::before{content:"! ";font-weight:700}
+
+.fig{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.fig[data-tag="ESTIMATED"]{font-style:italic;color:var(--ink-2)}
+.fig[data-tag="BENCHMARK"]{color:var(--ink-2)}
+.fig[data-tag="PLACEHOLDER"]{color:var(--warn);font-weight:600}
+.ref{font-family:var(--mono);font-size:.58em;vertical-align:super;color:var(--muted);
+  text-decoration:none;padding:0 1px;border-bottom:1px dotted var(--rule-strong);cursor:pointer}
+.ref:hover{color:var(--accent);border-bottom-color:var(--accent)}
+
+/* X-ray: "show me the estimates" */
+body.xray .fig[data-tag="ESTIMATED"],
+body.xray .fig[data-tag="BENCHMARK"],
+body.xray .fig[data-tag="PLACEHOLDER"]{
+  background:var(--warn-soft);box-shadow:0 0 0 2px var(--warn-soft);
+  border-radius:2px;text-decoration:underline;text-decoration-style:wavy;
+  text-decoration-color:var(--warn-line);text-underline-offset:3px}
+body.xray .xray-only{display:block}
+.xray-only{display:none}
+body.xray tr[data-soft="1"]{background:var(--warn-soft)}
+
+/* Caveat strip */
+.caveat{border-left:3px solid var(--warn);background:var(--warn-soft);
+  padding:9px 13px;border-radius:0 4px 4px 0;font-size:.82rem;color:var(--ink-2);
+  display:flex;gap:9px;align-items:flex-start}
+.caveat .cv-tag{font-family:var(--mono);font-size:.62rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--warn);white-space:nowrap;padding-top:2px}
+.caveat.soft{border-left-color:var(--rule-strong);background:var(--surface-2)}
+.caveat.soft .cv-tag{color:var(--muted)}
+
+/* Provenance meter under a headline */
+.provmeter{display:flex;flex-direction:column;gap:5px;margin-top:9px}
+.pm-track{display:flex;height:6px;border-radius:3px;overflow:hidden;background:var(--surface-3);gap:2px}
+.pm-seg{height:100%}
+.pm-MEASURED{background:var(--ink)}
+.pm-OBSERVED{background:var(--accent)}
+.pm-BENCHMARK{background:var(--note)}
+.pm-ESTIMATED{background:var(--rule-strong)}
+.pm-PLACEHOLDER{background:var(--warn)}
+.pm-legend{font-family:var(--mono);font-size:.66rem;color:var(--muted);
+  display:flex;flex-wrap:wrap;gap:4px 12px}
+.pm-legend span{display:flex;gap:5px;align-items:center}
+.pm-dot{width:8px;height:8px;border-radius:2px;flex:none}
+
+/* ============================================================ FIGURES */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(196px,1fr));gap:1px;
+  background:var(--rule);border:1px solid var(--rule);border-radius:6px;overflow:hidden}
+.tile{background:var(--surface);padding:15px 16px 16px;display:flex;flex-direction:column;gap:3px}
+.tile .t-label{font-size:.75rem;color:var(--muted);font-weight:500}
+.tile .t-value{font-family:var(--sans);font-size:1.72rem;font-weight:600;
+  letter-spacing:-.02em;line-height:1.12;color:var(--ink)}
+.tile .t-sub{font-size:.72rem;color:var(--muted);font-family:var(--mono)}
+.tile.alert .t-value{color:var(--warn)}
+.hero-num{font-family:var(--sans);font-size:clamp(2.6rem,2rem + 3vw,3.6rem);font-weight:600;
+  letter-spacing:-.028em;line-height:1;color:var(--ink)}
+
+/* Output sentence - each case ends on one */
+.verdict{border:1px solid var(--rule-2);border-left:3px solid var(--accent);
+  background:var(--surface);border-radius:0 6px 6px 0;padding:16px 20px;
+  display:flex;flex-direction:column;gap:7px}
+.verdict .v-tag{font-family:var(--mono);font-size:.62rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent);font-weight:600}
+.verdict .v-text{font-family:var(--serif);font-size:1.24rem;line-height:1.42;color:var(--ink)}
+
+/* ============================================================ CARD / TABLE */
+.card{background:var(--surface);border:1px solid var(--rule-2);border-radius:6px}
+.card-head{padding:14px 18px 12px;border-bottom:1px solid var(--rule);
+  display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.card-body{padding:16px 18px 18px}
+.card-title{font-family:var(--sans);font-size:.94rem;font-weight:600;color:var(--ink)}
+.card-sub{font-size:.78rem;color:var(--muted);max-width:62ch;margin-top:2px}
+
+.tscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.data{border-collapse:collapse;width:100%;font-size:.8rem;min-width:520px}
+table.data th{text-align:left;font-family:var(--mono);font-size:.64rem;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--muted);font-weight:500;padding:7px 10px;
+  border-bottom:1px solid var(--rule-2);white-space:nowrap;background:var(--surface)}
+table.data td{padding:7px 10px;border-bottom:1px solid var(--rule);color:var(--ink-2);vertical-align:top}
+table.data tbody tr:hover{background:var(--surface-2)}
+table.data td.n,table.data th.n{text-align:right;font-family:var(--mono);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+table.data tr.total td{font-weight:600;color:var(--ink);border-top:1.5px solid var(--rule-strong);
+  border-bottom:0;background:var(--surface-2)}
+table.data td.neg{color:var(--warn);font-weight:600}
+.sticky-head thead th{position:sticky;top:0;z-index:1}
+
+details.tableview{margin-top:12px;border-top:1px solid var(--rule);padding-top:9px}
+details.tableview summary{font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;
+  color:var(--muted);cursor:pointer;list-style:none;display:flex;gap:6px;align-items:center}
+details.tableview summary::-webkit-details-marker{display:none}
+details.tableview summary::before{content:"+";font-weight:700;color:var(--accent)}
+details.tableview[open] summary::before{content:"\2212"}
+details.tableview summary:hover{color:var(--ink-2)}
+
+/* ============================================================ CHARTS */
+.chartwrap{width:100%}
+.chart-scroll{overflow-x:auto;overflow-y:hidden;padding-bottom:2px}
+.chart-scroll svg{display:block;width:100%;height:auto;min-width:500px}
+.chart-scroll svg text{font-family:var(--sans)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;margin:2px 0 12px;
+  font-size:.76rem;color:var(--ink-2)}
+.legend .lg{display:flex;gap:7px;align-items:center}
+.legend .sw{width:13px;height:9px;border-radius:2px;flex:none}
+.legend .sw.line{height:3px;border-radius:2px}
+.legend .sw.dash{height:0;border-top:3px dashed currentColor;background:none!important}
+#tip{position:fixed;z-index:200;pointer-events:none;opacity:0;transition:opacity .09s;
+  background:var(--ink);color:var(--surface);font-size:.74rem;line-height:1.45;
+  padding:7px 10px;border-radius:4px;max-width:280px;box-shadow:var(--shadow);
+  font-family:var(--sans)}
+#tip .tt-h{font-weight:600;margin-bottom:2px}
+#tip .tt-r{display:flex;justify-content:space-between;gap:14px;font-family:var(--mono);
+  font-variant-numeric:tabular-nums;font-size:.72rem}
+#tip .tt-n{opacity:.75}
+
+/* ============================================================ MISC */
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(238px,1fr));gap:14px}
+.optioncard{background:var(--surface);border:1px solid var(--rule-2);border-radius:6px;
+  padding:15px 16px;display:flex;flex-direction:column;gap:9px}
+.optioncard.flag{border-color:var(--warn-line);background:var(--warn-soft)}
+.optioncard h4{display:flex;gap:8px;align-items:baseline}
+.oc-num{font-family:var(--mono);font-size:.68rem;color:var(--muted)}
+.kv{display:flex;justify-content:space-between;gap:12px;font-size:.8rem;
+  padding:3px 0;border-bottom:1px dotted var(--rule)}
+.kv:last-child{border-bottom:0}
+.kv .k{color:var(--muted)}
+.kv .v{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--ink);font-weight:500}
+
+.pill{display:inline-flex;gap:6px;align-items:center;font-family:var(--mono);font-size:.66rem;
+  letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:11px;
+  border:1px solid var(--rule-2);color:var(--muted);background:var(--surface)}
+.pill.ok{color:var(--accent);border-color:var(--accent-line);background:var(--accent-soft)}
+.pill.bad{color:var(--warn);border-color:var(--warn-line);background:var(--warn-soft)}
+
+ol.steps{list-style:none;padding:0;margin:0;counter-reset:st}
+ol.steps > li{counter-increment:st;display:grid;grid-template-columns:auto 1fr;gap:0 15px;
+  padding:15px 0;border-bottom:1px solid var(--rule)}
+ol.steps > li::before{content:counter(st,decimal-leading-zero);font-family:var(--mono);
+  font-size:.74rem;color:var(--accent);font-weight:600;padding-top:2px}
+ol.steps > li:last-child{border-bottom:0}
+.step-body{display:flex;flex-direction:column;gap:7px;min-width:0}
+.step-title{font-weight:600;color:var(--ink);font-size:.94rem}
+.stepgrid{display:grid;grid-template-columns:max-content 1fr;gap:3px 14px;font-size:.8rem}
+.stepgrid dt{font-family:var(--mono);font-size:.63rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);padding-top:3px}
+.stepgrid dd{margin:0;color:var(--ink-2)}
+.script{border-left:2px solid var(--accent-line);background:var(--accent-soft);
+  padding:10px 14px;border-radius:0 4px 4px 0;font-family:var(--serif);
+  font-size:.95rem;line-height:1.55;color:var(--ink-2);font-style:italic}
+.script b{font-style:normal;font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--accent);display:block;margin-bottom:4px;font-weight:600}
+.needs{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:.62rem;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--note);
+  border:1px dashed var(--note);border-radius:3px;padding:1px 6px}
+
+.q{border:1px solid var(--rule-2);border-radius:6px;padding:14px 16px;background:var(--surface);
+  display:flex;flex-direction:column;gap:6px}
+.q .qq{font-family:var(--serif);font-size:1.06rem;color:var(--ink);line-height:1.4}
+.q .qw{font-size:.79rem;color:var(--muted)}
+.dont{border:1px solid var(--warn-line);background:var(--warn-soft);border-radius:6px;padding:14px 16px}
+
+@media print{
+  .scenariobar,.casenav,.masthead .utilbar,.noprint{display:none!important}
+  body{background:#fff;font-size:10.5pt}
+  .panel[hidden]{display:none!important}
+  .card,.tile,.optioncard{break-inside:avoid;box-shadow:none}
+  #printsheet{display:block!important}
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.001ms!important;transition-duration:.001ms!important}
+}
+@media (max-width:640px){
+  .sb-readout{font-size:.72rem;gap:10px}
+  .tile .t-value{font-size:1.5rem}
+}
+</style>
+
+<div id="tip" role="status" aria-live="polite"></div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="mast-row">
+      <div class="mast-id">
+        <div class="mast-rule" aria-hidden="true"></div>
+        <div class="stack gap-8">
+          <div class="eyebrow">Working model &middot; built by the paraplanner &middot; not a firm document</div>
+          <h1>Operations capacity &amp; economics</h1>
+          <p class="lede">A model of how much operations work this firm carries, who carries it, what it
+            costs, and when it runs out of room. Every number carries a tag saying where it came from.
+            <b>Most of them are still guesses, and the model says so on its face.</b></p>
+          <div class="mast-meta">
+            <span>AS OF <b id="m-asof">&mdash;</b></span>
+            <span>SCHEMA <b id="m-schema">&mdash;</b></span>
+            <span>INPUTS <b id="m-inputcount">&mdash;</b></span>
+            <span>MEASURED <b id="m-measured">&mdash;</b></span>
+          </div>
+        </div>
+      </div>
+      <div class="utilbar noprint">
+        <button class="btn btn-sm" id="t-xray" aria-pressed="false" title="Highlight every figure that is not measured or observed">Show me the estimates</button>
+        <button class="btn btn-sm" id="t-anon" aria-pressed="true" title="Swap the labels table between anonymous role labels and real ones">Anonymised</button>
+        <button class="btn btn-sm" id="t-theme" title="Switch light and dark">Theme</button>
+        <button class="btn btn-sm" id="t-print" title="Print the one-page leave-behind">Leave-behind</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="stickytop noprint" id="stickytop">
+<div class="scenariobar" id="scenariobar">
+  <div class="wrap">
+    <div class="sb-row">
+      <div class="sb-group">
+        <span class="sb-label">Scenario</span>
+        <div class="segmented" role="group" aria-label="Preset scenario">
+          <button data-preset="today" aria-pressed="true">Today</button>
+          <button data-preset="gone" aria-pressed="false">She's gone, nothing changes</button>
+          <button data-preset="seat" aria-pressed="false">She's gone, I own operations</button>
+        </div>
+        <button class="btn btn-sm" id="sb-toggle" aria-expanded="true" aria-controls="sb-panel">Controls</button>
+        <button class="btn btn-sm btn-ghost" id="sb-reset" title="Return every control to its filed value">Reset</button>
+      </div>
+      <div class="sb-readout" id="sb-readout"></div>
+      <div class="sb-group">
+        <button class="btn btn-sm" id="cmp-toggle" aria-pressed="false" title="Pin this scenario and compare another against it">Compare</button>
+        <span id="cmp-state" class="sb-label"></span>
+      </div>
+    </div>
+  </div>
+  <div class="sb-panel" id="sb-panel">
+    <div class="wrap">
+      <div class="sliders" id="sliders"></div>
+    </div>
+  </div>
+</div>
+
+<nav class="casenav" aria-label="Model sections">
+  <div class="wrap">
+    <div class="casenav-inner" role="tablist" id="casenav">
+      <button role="tab" data-panel="start"  aria-selected="true"><span class="cn-num">00</span>Start here</button>
+      <button role="tab" data-panel="case1"  aria-selected="false"><span class="cn-num">01</span>What happens in 100 days</button>
+      <button role="tab" data-panel="case2"  aria-selected="false"><span class="cn-num">02</span>Where capacity breaks</button>
+      <button role="tab" data-panel="case3"  aria-selected="false"><span class="cn-num">03</span>What each tier costs to serve</button>
+      <button role="tab" data-panel="case4"  aria-selected="false"><span class="cn-num">04</span>The operations seat</button>
+      <button role="tab" data-panel="assump" aria-selected="false"><span class="cn-num">A</span>Assumptions</button>
+      <button role="tab" data-panel="build"  aria-selected="false"><span class="cn-num">B</span>How this was built</button>
+      <button role="tab" data-panel="present" aria-selected="false"><span class="cn-num">C</span>The conversation</button>
+    </div>
+  </div>
+</nav>
+</div>
+
+<main class="wrap">
+  <div id="failbanner" hidden></div>
+  <div id="cmp-strip" hidden></div>
+
+  <!-- ========== START ========== -->
+  <section class="panel" id="p-start" role="tabpanel">
+    <div class="case-head">
+      <span class="eyebrow">00 &middot; Start here</span>
+      <h2>What this is, and what it is not</h2>
+      <p class="lede">Four questions the firm is going to have to answer anyway. This model does not
+        answer them. It makes them arithmetic, so the answers can be argued about with numbers
+        instead of impressions.</p>
+    </div>
+    <div class="stack gap-24">
+      <div class="tiles" id="start-tiles"></div>
+      <div id="start-integrity"></div>
+      <div class="grid2">
+        <div class="card"><div class="card-head"><div><div class="card-title">The four cases</div>
+          <div class="card-sub">Each one ends on a single sentence with a number in it.</div></div></div>
+          <div class="card-body"><div id="start-cases" class="stack gap-12"></div></div></div>
+        <div class="card"><div class="card-head"><div><div class="card-title">What this model cannot see</div>
+          <div class="card-sub">Stated up front, because a model that hides its blind spots is worse than no model.</div></div></div>
+          <div class="card-body"><div id="start-blind" class="stack gap-12"></div></div></div>
+      </div>
+      <div class="card"><div class="card-head"><div><div class="card-title">Rules this model runs under</div></div></div>
+        <div class="card-body prose" style="max-width:none">
+          <p>No client data of any kind is in this file. The model works on <b>counts, tiers, ranges and
+          averages</b>; the smallest unit anywhere in it is a tier of at least eighteen households. There
+          are no names, no account numbers, no balances, no statements.</p>
+          <p>Nothing here is a compliance opinion. Compliance ownership stays with the firm's designated
+          person. Where the model touches a compliance calendar item it is counting minutes, not judging
+          adequacy.</p>
+          <p>No credential, password or vendor login appears in this model or in the workbook.
+          The published version names no person, no firm, no custodian and no vendor &mdash; the labels
+          table is anonymous by default and the toggle above is how it stays that way.</p>
+        </div></div>
+    </div>
+  </section>
+
+  <!-- ========== CASE 1 ========== -->
+  <section class="panel" id="p-case1" role="tabpanel" hidden>
+    <div class="case-head">
+      <span class="eyebrow">01 &middot; The consultant's departure</span>
+      <h2>What happens in 100 days</h2>
+      <p class="lede">The most urgent of the four and the hardest to argue with, because the date is
+        already fixed. Her work does not stop when she does.</p>
+    </div>
+    <div class="stack gap-24">
+      <div class="tiles" id="c1-tiles"></div>
+      <div id="c1-gap"></div>
+      <div class="card"><div class="card-head"><div><div class="card-title">Where her hours land</div>
+        <div class="card-sub">Each column is the same set of hours arriving somewhere different. The
+          utilisation figure under each is what the operations team runs at afterwards.</div></div></div>
+        <div class="card-body"><div id="c1-chart" class="chartwrap"></div></div></div>
+      <div class="grid3" id="c1-options"></div>
+      <div id="c1-verdict"></div>
+    </div>
+  </section>
+
+  <!-- ========== CASE 2 ========== -->
+  <section class="panel" id="p-case2" role="tabpanel" hidden>
+    <div class="case-head">
+      <span class="eyebrow">02 &middot; Capacity</span>
+      <h2>Where capacity breaks</h2>
+      <p class="lede">Operations hours required against operations hours available, projected forward.
+        The crossing point is reported as a household count and as a date, because a date makes a firm
+        act and a count does not.</p>
+    </div>
+    <div class="stack gap-24">
+      <div class="tiles" id="c2-tiles"></div>
+      <div class="card"><div class="card-head"><div><div class="card-title">Operations hours required vs available</div>
+        <div class="card-sub">Both series in hours per year. The crossing is marked with its date.</div></div></div>
+        <div class="card-body"><div id="c2-chart" class="chartwrap"></div></div></div>
+      <div class="grid2">
+        <div class="card"><div class="card-head"><div><div class="card-title">Sensitivity of the date</div>
+          <div class="card-sub">The same model at three growth rates. Nothing else changes.</div></div></div>
+          <div class="card-body"><div id="c2-sens"></div></div></div>
+        <div class="card"><div class="card-head"><div><div class="card-title">Who holds the operations work today</div>
+          <div class="card-sub">Catalogued hours by owner against the hours that role actually has.
+            A large shortfall means the catalogue is incomplete, not that the person is idle.</div></div></div>
+          <div class="card-body"><div id="c2-coverage"></div></div></div>
+      </div>
+      <div class="card"><div class="card-head"><div><div class="card-title">Which assumptions move this answer</div>
+        <div class="card-sub">Each lever swung to a low and a high value I would defend, holding
+          everything else. Longer bar, more the answer depends on a number nobody has measured.</div></div></div>
+        <div class="card-body"><div id="c2-tornado" class="chartwrap"></div></div></div>
+      <div id="c2-verdict"></div>
+    </div>
+  </section>
+
+  <!-- ========== CASE 3 ========== -->
+  <section class="panel" id="p-case3" role="tabpanel" hidden>
+    <div class="case-head">
+      <span class="eyebrow">03 &middot; Tier economics</span>
+      <h2>What each client tier costs to serve</h2>
+      <p class="lede">Revenue per household against cost to serve per household, built up in layers so
+        it is clear which layer is doing the work. This is presented as a question. It is not a finding
+        about any client, and it is not a recommendation.</p>
+    </div>
+    <div class="stack gap-24">
+      <div id="c3-warning"></div>
+      <div class="card"><div class="card-head"><div><div class="card-title">Revenue against cost to serve, by tier</div>
+        <div class="card-sub">Revenue is one bar. Cost is a stack of four layers, thinnest evidence
+          at the top.</div></div></div>
+        <div class="card-body"><div id="c3-chart" class="chartwrap"></div></div></div>
+      <div class="card"><div class="card-head"><div><div class="card-title">The layers, tier by tier</div>
+        <div class="card-sub">Direct operations cost is the only layer built from the task catalogue.
+          The other three are allocations.</div></div></div>
+        <div class="card-body"><div id="c3-table"></div></div></div>
+      <div class="stack gap-12">
+        <h3>The three versions of this decision</h3>
+        <p class="prose">These are laid out flat on purpose. The model does not have a view on which is
+          right, and neither do I &mdash; I have been here sixty days and this is a question about who the
+          firm wants to be.</p>
+        <div class="grid3" id="c3-options"></div>
+      </div>
+      <div id="c3-verdict"></div>
+    </div>
+  </section>
+
+  <!-- ========== CASE 4 ========== -->
+  <section class="panel" id="p-case4" role="tabpanel" hidden>
+    <div class="case-head">
+      <span class="eyebrow">04 &middot; The ask</span>
+      <h2>The operations seat</h2>
+      <p class="lede">An operations seat does not generate revenue. It protects advisor capacity and it
+        prevents service failures. That is the whole claim, and it is the only claim this section makes.</p>
+    </div>
+    <div class="stack gap-24">
+      <div class="tiles" id="c4-tiles"></div>
+      <div class="card"><div class="card-head"><div><div class="card-title">What the seat has to protect to pay for itself</div>
+        <div class="card-sub">Cost is the line. The bars are what it protects, largest claim first.</div></div></div>
+        <div class="card-body"><div id="c4-chart" class="chartwrap"></div></div></div>
+      <div class="grid2">
+        <div class="card"><div class="card-head"><div><div class="card-title">Where the protected value comes from</div></div></div>
+          <div class="card-body"><div id="c4-table"></div></div></div>
+        <div class="card"><div class="card-head"><div><div class="card-title">What it costs elsewhere</div>
+          <div class="card-sub">The hole in my own proposal. Better that I find it than he does.</div></div></div>
+          <div class="card-body"><div id="c4-displace"></div></div></div>
+      </div>
+      <div id="c4-verdict"></div>
+    </div>
+  </section>
+
+  <!-- ========== ASSUMPTIONS ========== -->
+  <section class="panel" id="p-assump" role="tabpanel" hidden>
+    <div class="case-head">
+      <span class="eyebrow">A &middot; The ledger</span>
+      <h2>Assumptions</h2>
+      <p class="lede">Every input in the model: what it is, what it is set to, where it came from, who
+        could confirm it, and when it was last checked. This is the spine. If a number on any other
+        screen is wrong, it is wrong here first.</p>
+    </div>
+    <div class="stack gap-24">
+      <div id="a-summary"></div>
+      <div class="card"><div class="card-head">
+        <div><div class="card-title">The ledger</div>
+          <div class="card-sub" id="a-count"></div></div>
+        <div class="sb-group" id="a-filters"></div></div>
+        <div class="card-body"><div id="a-table"></div></div></div>
+      <div class="card"><div class="card-head"><div><div class="card-title">Time these first</div>
+        <div class="card-sub">Task rows ordered by the hours they contribute. The top rows are where a
+          timed figure changes the model most &mdash; timing the bottom rows is mostly wasted effort.</div></div></div>
+        <div class="card-body"><div id="a-priority"></div></div></div>
+      <div class="card"><div class="card-head"><div><div class="card-title">What the tags mean</div></div></div>
+        <div class="card-body"><div id="a-tagkey"></div></div></div>
+    </div>
+  </section>
+
+  <!-- ========== BUILD ========== -->
+  <section class="panel" id="p-build" role="tabpanel" hidden>
+    <div class="case-head">
+      <span class="eyebrow">B &middot; Method</span>
+      <h2>How this was built</h2>
+      <p class="lede">The order to fill this model in, sequenced so the things I can get on my own come
+        first and the things that need somebody else are batched into as few conversations as possible.</p>
+    </div>
+    <div class="stack gap-32" id="build-body"></div>
+  </section>
+
+  <!-- ========== PRESENT ========== -->
+  <section class="panel" id="p-present" role="tabpanel" hidden>
+    <div class="case-head">
+      <span class="eyebrow">C &middot; The meeting</span>
+      <h2>The conversation</h2>
+      <p class="lede">How to walk through this without overclaiming. The model is the easy part.</p>
+    </div>
+    <div class="stack gap-32" id="present-body"></div>
+  </section>
+
+  <div id="printsheet" style="display:none"></div>
+</main>
+
+<script>
+/* ---- canonical inputs (inlined from inputs.json) ---- */
+const INPUTS = {
+  "meta": {
+    "model_name": "Operations Capacity & Economics Model",
+    "built_by": "Paraplanner (role R4)",
+    "as_of": "2026-09-05",
+    "schema_version": "1.0.0",
+    "note": "Canonical input layer. The interactive page and the Excel workbook are both generated from this file, so they cannot disagree. Every input carries a provenance tag."
+  },
+
+  "tag_meta": {
+    "MEASURED":    {"rank": 1, "label": "Measured",    "desc": "I timed it or counted it myself."},
+    "OBSERVED":    {"rank": 2, "label": "Observed",    "desc": "I can see it in a firm system, or I was told it directly."},
+    "BENCHMARK":   {"rank": 3, "label": "Benchmark",   "desc": "Published industry source, cited with source and year."},
+    "ESTIMATED":   {"rank": 4, "label": "Estimated",   "desc": "My own judgement, stated as a range."},
+    "PLACEHOLDER": {"rank": 5, "label": "Placeholder", "desc": "Not yet filled in. The model runs, but this number is fake."}
+  },
+
+  "labels": {
+    "_note": "ANONYMISE swaps these two columns. The published version ships with 'real' identical to 'anon' so nothing identifying is ever published. Fill the 'real' column in on your local copy only.",
+    "firm":      {"anon": "The firm",            "real": "The firm"},
+    "custodian": {"anon": "The custodian",       "real": "The custodian"},
+    "R1": {"anon": "Advisor 1 (principal)",      "real": "Advisor 1 (principal)"},
+    "R2": {"anon": "Advisor 2",                  "real": "Advisor 2"},
+    "R3": {"anon": "Advisor 3",                  "real": "Advisor 3"},
+    "R4": {"anon": "Paraplanner (me)",           "real": "Paraplanner (me)"},
+    "R5": {"anon": "Client service associate",   "real": "Client service associate"},
+    "R6": {"anon": "Office manager",             "real": "Office manager"},
+    "R7": {"anon": "Operations consultant",      "real": "Operations consultant"}
+  },
+
+  "constants": {
+    "benefits_load": {
+      "v": 0.25, "unit": "pct", "tag": "BENCHMARK",
+      "name": "Benefits and payroll load",
+      "src": "US Bureau of Labor Statistics, Employer Costs for Employee Compensation. Benefits run about 29-31% of total compensation for private industry, i.e. roughly a 40-45% load on wages; finance and insurance sits near the top of that band. 25% is a deliberately conservative load covering payroll taxes, health and retirement only.",
+      "who": "The principal, or whoever handles payroll, can give the real loaded figure.",
+      "checked": "2026-09-05"
+    },
+    "productive_hours_year": {
+      "v": 1700, "unit": "hours", "tag": "ESTIMATED",
+      "name": "Productive hours per person per year",
+      "src": "2,080 scheduled hours less PTO, holidays, sick time, training and internal admin. Range I would defend: 1,600-1,800.",
+      "who": "The principal can confirm the PTO and holiday policy; the rest is my judgement.",
+      "checked": "2026-09-05"
+    },
+    "growth_rate_households": {
+      "v": 0.15, "unit": "pct", "tag": "ESTIMATED",
+      "name": "Household growth rate per year",
+      "src": "My impression of the last few quarters of new-client activity. Not verified against a count.",
+      "who": "The principal, or a new-account count out of the CRM for the last three years.",
+      "checked": "2026-09-05"
+    },
+    "switching_uplift": {
+      "v": 0.25, "unit": "pct", "tag": "ESTIMATED",
+      "name": "Switching and interruption uplift",
+      "src": "A timed task measures the task, not the day. Real operations days carry context-switching, interruptions, rework and queue time that no task timing captures. 25% is my judgement; range 15-40%. Set it to 0% to see catalogued task time alone.",
+      "who": "Nobody can confirm this directly. It is the assumption most worth arguing about.",
+      "checked": "2026-09-05"
+    },
+    "firm_overhead_per_household": {
+      "v": 1800, "unit": "usd", "tag": "PLACEHOLDER",
+      "name": "Non-payroll firm overhead per household per year",
+      "src": "NOT FILLED IN. Should cover rent, technology stack, custodial platform fees, E&O, compliance vendors, professional fees, marketing, divided by household count. I cannot see the expense lines.",
+      "who": "The principal. This is the single number that decides whether the bottom tier looks profitable or not - do not present tier economics without it.",
+      "checked": "never"
+    },
+    "fee_realisation": {
+      "v": 1.0, "unit": "pct", "tag": "PLACEHOLDER",
+      "name": "Fee realisation against schedule",
+      "src": "NOT FILLED IN. Assumed every household pays the published schedule with no discount, no family aggregation and no flat-fee exception. That is almost certainly not true.",
+      "who": "The billing run from the last quarterly cycle: actual fees billed divided by fees the schedule implies.",
+      "checked": "never"
+    },
+    "consultant_departure_days": {
+      "v": 100, "unit": "days", "tag": "OBSERVED",
+      "name": "Days until the operations consultant leaves",
+      "src": "Told to me directly.",
+      "who": "The principal.",
+      "checked": "2026-09-05"
+    },
+    "ops_seat_comp": {
+      "v": 92000, "unit": "usd", "tag": "PLACEHOLDER",
+      "name": "Compensation for an operations manager seat",
+      "src": "NOT FILLED IN. My guess at the market rate for an operations manager at a firm this size.",
+      "who": "The principal. A compensation study (Schwab RIA Benchmarking, Investment News Adviser Compensation) would give a defensible band.",
+      "checked": "never"
+    },
+    "backfill_consultant_cost": {
+      "v": 78000, "unit": "usd", "tag": "PLACEHOLDER",
+      "name": "Annual cost to backfill the consultant like-for-like",
+      "src": "NOT FILLED IN. Assumed a replacement consultant costs what the current one costs.",
+      "who": "The principal knows the current engagement cost. A replacement quote would be a real number.",
+      "checked": "never"
+    },
+    "service_failure_cost_per_event": {
+      "v": 2500, "unit": "usd", "tag": "PLACEHOLDER",
+      "name": "Cost of one service failure",
+      "src": "NOT FILLED IN. A missed RMD penalty, a late transfer, a billing error and a blown deadline all cost different amounts.",
+      "who": "The principal, or the compliance file of past incidents.",
+      "checked": "never"
+    },
+    "service_failures_avoided": {
+      "v": 0, "unit": "count", "tag": "PLACEHOLDER",
+      "name": "Service failures avoided per year by the seat",
+      "src": "DELIBERATELY ZERO. I have no incident list, so I am counting nothing. Leaving this at zero makes the case for the seat weaker and honest. Raise it only against real incidents someone can name.",
+      "who": "The principal or the consultant can name actual incidents from the last two years.",
+      "checked": "never"
+    },
+    "paraplanning_backfill_comp": {
+      "v": 55000, "unit": "usd", "tag": "PLACEHOLDER",
+      "name": "Compensation for a junior seat to absorb displaced paraplanning work",
+      "src": "NOT FILLED IN. My guess at a client service or associate paraplanner salary. Only relevant if the operations seat happens and the planning work I do now has to go somewhere.",
+      "who": "The principal.",
+      "checked": "never"
+    },
+    "advisor_hour_basis": {
+      "v": "loaded_cost", "unit": "choice", "tag": "ESTIMATED",
+      "name": "How an advisor hour is valued",
+      "src": "Two options: 'loaded_cost' values a returned advisor hour at what it costs the firm (conservative, hard to argue with) or 'revenue_capacity' values it at revenue per advisor hour (larger, and it invites the challenge that the hour would not actually have been sold). Defaulting to loaded cost on purpose.",
+      "who": "This is a framing choice, not a fact. Ask the principal which he finds credible.",
+      "checked": "2026-09-05"
+    }
+  },
+
+  "roster": [
+    {"role_id": "R1", "fte": 1.0,  "fte_tag": "OBSERVED", "is_advisor": true,  "is_operations": false, "ops_allocation": 0.00, "comp": 250000, "comp_tag": "PLACEHOLDER", "is_contractor": false, "end_date": null,
+     "comp_src": "NOT FILLED IN. Principal compensation is a guess and is probably wrong; owner comp is often taken as distribution rather than salary.", "who": "The principal. Do not push on this one - use a range if he prefers."},
+    {"role_id": "R2", "fte": 1.0,  "fte_tag": "OBSERVED", "is_advisor": true,  "is_operations": false, "ops_allocation": 0.00, "comp": 165000, "comp_tag": "PLACEHOLDER", "is_contractor": false, "end_date": null,
+     "comp_src": "NOT FILLED IN. My guess.", "who": "The principal."},
+    {"role_id": "R3", "fte": 1.0,  "fte_tag": "OBSERVED", "is_advisor": true,  "is_operations": false, "ops_allocation": 0.00, "comp": 140000, "comp_tag": "PLACEHOLDER", "is_contractor": false, "end_date": null,
+     "comp_src": "NOT FILLED IN. My guess.", "who": "The principal."},
+    {"role_id": "R4", "fte": 1.0,  "fte_tag": "OBSERVED", "is_advisor": false, "is_operations": true,  "ops_allocation": 0.35, "comp": 72000,  "comp_tag": "OBSERVED",    "is_contractor": false, "end_date": null,
+     "comp_src": "My own compensation. The 35% operations allocation is my estimate of my own week; the rest is plan work and research.", "who": "Me. I can make the allocation MEASURED by keeping a two-week time log."},
+    {"role_id": "R5", "fte": 1.0,  "fte_tag": "OBSERVED", "is_advisor": false, "is_operations": true,  "ops_allocation": 0.90, "comp": 58000,  "comp_tag": "PLACEHOLDER", "is_contractor": false, "end_date": null,
+     "comp_src": "NOT FILLED IN. My guess at a client service associate salary.", "who": "The principal."},
+    {"role_id": "R6", "fte": 1.0,  "fte_tag": "OBSERVED", "is_advisor": false, "is_operations": true,  "ops_allocation": 0.50, "comp": 68000,  "comp_tag": "PLACEHOLDER", "is_contractor": false, "end_date": null,
+     "comp_src": "NOT FILLED IN. My guess. The 50% operations allocation excludes bookkeeping, HR, facilities and reception.", "who": "The principal."},
+    {"role_id": "R7", "fte": 0.38, "fte_tag": "ESTIMATED", "is_advisor": false, "is_operations": true, "ops_allocation": 1.00, "comp": 78000,  "comp_tag": "PLACEHOLDER", "is_contractor": true,  "end_date": "2026-12-14",
+     "comp_src": "NOT FILLED IN. Engagement cost is a guess. 0.38 FTE is roughly 12-13 hours a week, which is my impression of her time here, not a contracted figure.", "who": "The principal holds the engagement letter. Her contracted hours are the second most important number in this model."}
+  ],
+
+  "book": [
+    {"tier": "T1", "label": "Under $250k",   "households": 38, "avg_aum": 118000,  "accounts_per_household": 1.6, "new_mix": 0.05, "tag": "OBSERVED",
+     "src": "Household count and average balance read off the portfolio system household report. Accounts per household is my estimate from browsing the list, not a count.", "who": "Me - the accounts-per-household figure becomes MEASURED the moment I export an account list and divide."},
+    {"tier": "T2", "label": "$250k - $1m",   "households": 74, "avg_aum": 560000,  "accounts_per_household": 2.4, "new_mix": 0.25, "tag": "OBSERVED",
+     "src": "Portfolio system household report. Accounts per household estimated.", "who": "Me."},
+    {"tier": "T3", "label": "$1m - $3m",     "households": 52, "avg_aum": 1720000, "accounts_per_household": 3.4, "new_mix": 0.45, "tag": "OBSERVED",
+     "src": "Portfolio system household report. Accounts per household estimated.", "who": "Me."},
+    {"tier": "T4", "label": "Over $3m",      "households": 18, "avg_aum": 5100000, "accounts_per_household": 4.8, "new_mix": 0.25, "tag": "OBSERVED",
+     "src": "Portfolio system household report. Accounts per household estimated.", "who": "Me."}
+  ],
+
+  "book_meta": {
+    "new_mix_tag": "ESTIMATED",
+    "new_mix_src": "How new households distribute across the tiers. My impression is that new business skews to T3. Not verified.",
+    "new_mix_who": "The principal, or a CRM report of households opened in the last 24 months by opening balance."
+  },
+
+  "fee_schedule": {
+    "tag": "OBSERVED",
+    "src": "The published fee schedule. Read off the ADV Part 2A / the client agreement.",
+    "who": "The principal, or the ADV itself.",
+    "basis": "tiered_marginal",
+    "basis_note": "TIERED / MARGINAL. Each band is charged at its own rate on the portion of assets falling inside that band. This is NOT a flat rate applied to total assets.",
+    "bands": [
+      {"from": 0,       "to": 500000,  "rate": 0.0100},
+      {"from": 500000,  "to": 1000000, "rate": 0.0085},
+      {"from": 1000000, "to": 3000000, "rate": 0.0070},
+      {"from": 3000000, "to": 5000000, "rate": 0.0050},
+      {"from": 5000000, "to": null,    "rate": 0.0035}
+    ]
+  },
+
+  "tasks": [
+    {"id": "F1",  "task": "Daily custodian reconciliation",                            "basis": "firm",          "minutes": 25,  "occurrences": 250,  "tiers": [],                     "owner": "R6", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "F2",  "task": "Quarterly billing cycle: calculate, review, submit",        "basis": "firm",          "minutes": 240, "occurrences": 4,    "tiers": [],                     "owner": "R7", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "F3",  "task": "Billing exceptions, adjustments and refunds",               "basis": "firm",          "minutes": 90,  "occurrences": 4,    "tiers": [],                     "owner": "R7", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "F4",  "task": "Compliance calendar items (books and records, testing)",    "basis": "firm",          "minutes": 180, "occurrences": 12,   "tiers": [],                     "owner": "R7", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "F5",  "task": "Annual ADV amendment, delivery and filing",                 "basis": "firm",          "minutes": 480, "occurrences": 1,    "tiers": [],                     "owner": "R7", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "F6",  "task": "Vendor management (custodian, CRM, planning, e-sign)",      "basis": "firm",          "minutes": 120, "occurrences": 12,   "tiers": [],                     "owner": "R7", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "F7",  "task": "Quarterly performance reporting run",                       "basis": "firm",          "minutes": 300, "occurrences": 4,    "tiers": [],                     "owner": "R7", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "F8",  "task": "CRM hygiene sweep (data audit, workflow cleanup)",          "basis": "firm",          "minutes": 120, "occurrences": 12,   "tiers": [],                     "owner": "R4", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "F9",  "task": "Trade error review and correction log",                     "basis": "firm",          "minutes": 45,  "occurrences": 12,   "tiers": [],                     "owner": "R7", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "F10", "task": "Staff onboarding and offboarding (systems, access)",        "basis": "firm",          "minutes": 240, "occurrences": 2,    "tiers": [],                     "owner": "R6", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "F11", "task": "Business continuity and cybersecurity review",              "basis": "firm",          "minutes": 240, "occurrences": 2,    "tiers": [],                     "owner": "R7", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "F12", "task": "Operations standing agenda in the team meeting",            "basis": "firm",          "minutes": 30,  "occurrences": 48,   "tiers": [],                     "owner": "R6", "work_type": "operations", "tag": "PLACEHOLDER"},
+
+    {"id": "A1",  "task": "Account maintenance (address, beneficiary, registration)",  "basis": "account",       "minutes": 20,  "occurrences": 0.6,  "tiers": ["T1","T2","T3","T4"], "owner": "R6", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "A2",  "task": "Custodian document requests and statement retrieval",       "basis": "account",       "minutes": 12,  "occurrences": 1.5,  "tiers": ["T1","T2","T3","T4"], "owner": "R5", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "A3",  "task": "Cost basis and tax document checks (1099 season)",          "basis": "account",       "minutes": 15,  "occurrences": 1.0,  "tiers": ["T1","T2","T3","T4"], "owner": "R5", "work_type": "operations", "tag": "PLACEHOLDER"},
+
+    {"id": "N1",  "task": "Onboarding paperwork prep and e-sign packet",               "basis": "new_household", "minutes": 90,  "occurrences": 1,    "tiers": ["T1","T2","T3","T4"], "owner": "R5", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "N2",  "task": "Account opening across registrations",                      "basis": "new_household", "minutes": 120, "occurrences": 1,    "tiers": ["T1","T2","T3","T4"], "owner": "R5", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "N3",  "task": "ACAT / transfer initiation and tracking to completion",     "basis": "new_household", "minutes": 75,  "occurrences": 1,    "tiers": ["T1","T2","T3","T4"], "owner": "R6", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "N4",  "task": "Data entry: CRM, planning software, portfolio system",      "basis": "new_household", "minutes": 100, "occurrences": 1,    "tiers": ["T1","T2","T3","T4"], "owner": "R4", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "N5",  "task": "Welcome sequence, vault and portal credentials",            "basis": "new_household", "minutes": 45,  "occurrences": 1,    "tiers": ["T1","T2","T3","T4"], "owner": "R5", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "N6",  "task": "Advisor chases outstanding onboarding paperwork",           "basis": "new_household", "minutes": 40,  "occurrences": 1,    "tiers": ["T1","T2","T3","T4"], "owner": "R2", "work_type": "operations", "tag": "PLACEHOLDER"},
+
+    {"id": "H1",  "task": "Annual review scheduling and confirmation",                 "basis": "household",     "minutes": 20,  "occurrences": 1,    "tiers": ["T1","T2","T3","T4"], "owner": "R5", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "H2",  "task": "Meeting prep pack",                                         "basis": "household",     "minutes": 45,  "occurrences": 1,    "tiers": ["T1","T2"],           "owner": "R4", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "H3",  "task": "Meeting prep pack",                                         "basis": "household",     "minutes": 85,  "occurrences": 2,    "tiers": ["T3","T4"],           "owner": "R4", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "H4",  "task": "Meeting follow-up and task capture",                        "basis": "household",     "minutes": 30,  "occurrences": 1,    "tiers": ["T1","T2"],           "owner": "R4", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "H5",  "task": "Meeting follow-up and task capture",                        "basis": "household",     "minutes": 50,  "occurrences": 2,    "tiers": ["T3","T4"],           "owner": "R4", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "H6",  "task": "Quarterly report package delivery and questions",           "basis": "household",     "minutes": 15,  "occurrences": 4,    "tiers": ["T2","T3","T4"],      "owner": "R5", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "H7",  "task": "Money movement and distribution requests",                  "basis": "household",     "minutes": 18,  "occurrences": 3,    "tiers": ["T1","T2","T3","T4"], "owner": "R5", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "H8",  "task": "RMD calculation, election and tracking",                    "basis": "household",     "minutes": 35,  "occurrences": 0.45, "tiers": ["T2","T3","T4"],      "owner": "R7", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "H9",  "task": "Beneficiary review and account maintenance",                "basis": "household",     "minutes": 15,  "occurrences": 0.5,  "tiers": ["T1","T2","T3","T4"], "owner": "R6", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "H10", "task": "Ad hoc client service requests",                            "basis": "household",     "minutes": 12,  "occurrences": 6,    "tiers": ["T1","T2"],           "owner": "R5", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "H11", "task": "Ad hoc client service requests",                            "basis": "household",     "minutes": 15,  "occurrences": 14,   "tiers": ["T3","T4"],           "owner": "R5", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "H12", "task": "Death claim and estate transition",                         "basis": "household",     "minutes": 420, "occurrences": 0.03, "tiers": ["T1","T2","T3","T4"], "owner": "R7", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "H13", "task": "Tax report and CPA coordination",                           "basis": "household",     "minutes": 40,  "occurrences": 1,    "tiers": ["T3","T4"],           "owner": "R2", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "H14", "task": "Held-away account data refresh",                            "basis": "household",     "minutes": 20,  "occurrences": 4,    "tiers": ["T3","T4"],           "owner": "R3", "work_type": "operations", "tag": "PLACEHOLDER"},
+    {"id": "H15", "task": "Client requests routed to an advisor instead of service",   "basis": "household",     "minutes": 10,  "occurrences": 5,    "tiers": ["T1","T2","T3","T4"], "owner": "R1", "work_type": "operations", "tag": "PLACEHOLDER"},
+
+    {"id": "V1",  "task": "Client meeting delivery",                                   "basis": "household",     "minutes": 60,  "occurrences": 1,    "tiers": ["T1","T2"],           "owner": "R2", "work_type": "advisory",   "tag": "PLACEHOLDER"},
+    {"id": "V2",  "task": "Client meeting delivery",                                   "basis": "household",     "minutes": 90,  "occurrences": 2,    "tiers": ["T3","T4"],           "owner": "R1", "work_type": "advisory",   "tag": "PLACEHOLDER"},
+    {"id": "V3",  "task": "Planning work and recommendations",                         "basis": "household",     "minutes": 45,  "occurrences": 1,    "tiers": ["T1"],                "owner": "R2", "work_type": "advisory",   "tag": "PLACEHOLDER"},
+    {"id": "V4",  "task": "Planning work and recommendations",                         "basis": "household",     "minutes": 120, "occurrences": 1,    "tiers": ["T2"],                "owner": "R2", "work_type": "advisory",   "tag": "PLACEHOLDER"},
+    {"id": "V5",  "task": "Planning work and recommendations",                         "basis": "household",     "minutes": 240, "occurrences": 1,    "tiers": ["T3","T4"],           "owner": "R1", "work_type": "advisory",   "tag": "PLACEHOLDER"}
+  ],
+
+  "task_meta": {
+    "seed_note": "Every row is seeded PLACEHOLDER. The shape of the catalogue is real RIA operations work; the minutes are not. Replace each figure with a median of three timed runs and change the tag to MEASURED. That column is the strongest evidence in this model.",
+    "basis_note": {
+      "firm":          "Fixed firm-level work. Does not scale with household count.",
+      "household":     "Per household per year, for the tiers listed.",
+      "account":       "Per account per year. Multiplied by accounts per household for the tiers listed.",
+      "new_household": "Per newly onboarded household. Scales with the growth rate, not the book."
+    },
+    "work_type_note": {
+      "operations": "Operations work. Counts against operations capacity no matter who currently does it - including rows an advisor currently absorbs.",
+      "advisory":   "Advisory work. Does NOT count against operations capacity. Used only for the fully loaded cost-to-serve view."
+    }
+  }
+};
+/* ---- engine (inlined from engine.mjs, identical to the tested module) ---- */
+/* ===========================================================================
+   OPERATIONS CAPACITY & ECONOMICS ENGINE
+   Pure functions. No DOM, no globals, no hard-coded firm numbers.
+   Every number this file produces comes from inputs.json via the `I` argument.
+   =========================================================================== */
+
+const TIER_IDS = ["T1", "T2", "T3", "T4"];
+
+/* --- 1. TIERED (MARGINAL) FEE ------------------------------------------- */
+/* Each band charges its own rate on the PORTION of assets inside that band.
+   A flat rate on total assets is a different and wrong model. The unit test
+   in verify.mjs pins the "just above a breakpoint" case, which is where a
+   flat-rate model silently substitutes itself for a tiered one.            */
+function tieredFee(aum, bands) {
+  if (!(aum > 0)) return 0;
+  let fee = 0;
+  for (const b of bands) {
+    const top = (b.to === null || b.to === undefined) ? Infinity : b.to;
+    const inBand = Math.min(aum, top) - b.from;
+    if (inBand > 0) fee += inBand * b.rate;
+    if (aum <= top) break;
+  }
+  return fee;
+}
+
+/* Returns the band-by-band working, for showing the arithmetic on screen. */
+function tieredFeeWorking(aum, bands) {
+  const rows = [];
+  let fee = 0;
+  for (const b of bands) {
+    const top = (b.to === null || b.to === undefined) ? Infinity : b.to;
+    const inBand = Math.max(0, Math.min(aum, top) - b.from);
+    if (inBand > 0) {
+      const amt = inBand * b.rate;
+      fee += amt;
+      rows.push({ from: b.from, to: top, rate: b.rate, assets: inBand, fee: amt });
+    }
+    if (aum <= top) break;
+  }
+  return { rows, fee, effectiveRate: aum > 0 ? fee / aum : 0 };
+}
+
+/* --- 2. SCENARIO DEFAULTS ------------------------------------------------ */
+function defaultScenario(I) {
+  const c = I.constants;
+  return {
+    growth: c.growth_rate_households.v,
+    feeRealisation: c.fee_realisation.v,
+    efficiency: 1.0,
+    benefitsLoad: c.benefits_load.v,
+    productiveHours: c.productive_hours_year.v,
+    switchingUplift: c.switching_uplift.v,
+    firmOverheadPerHousehold: c.firm_overhead_per_household.v,
+    consultantPresent: true,
+    response: "absorb",          // absorb | backfill | internal
+    extraOpsFte: 0,
+    blendedOpsHourlyOverride: null,
+    horizonYears: 6,
+    seatOpsAllocation: 0.85,     // R4's ops share if they take the operations seat
+    advisorHourBasis: c.advisor_hour_basis.v,     // R4's ops share if they take the operations seat
+  };
+}
+
+const PRESETS = {
+  today:      { label: "Today",                        consultantPresent: true,  response: "absorb"   },
+  gone:       { label: "She's gone, nothing changes",  consultantPresent: false, response: "absorb"   },
+  seat:       { label: "She's gone, I own operations", consultantPresent: false, response: "internal" },
+};
+
+/* --- 3. EFFECTIVE ROSTER ------------------------------------------------- */
+/* Applies the scenario to the roster: removes the consultant, adds a backfill,
+   or promotes the paraplanner into the operations seat.                     */
+function effectiveRoster(I, s) {
+  const rows = I.roster.map(r => ({ ...r }));
+  const out = [];
+  for (const r of rows) {
+    if (r.role_id === "R7") {
+      if (!s.consultantPresent) continue;         // she has left
+      out.push(r);
+      continue;
+    }
+    if (r.role_id === "R4" && s.response === "internal" && !s.consultantPresent) {
+      out.push({ ...r,
+        ops_allocation: s.seatOpsAllocation,
+        comp: I.constants.ops_seat_comp.v,
+        seat_holder: true });
+      continue;
+    }
+    out.push(r);
+  }
+  if (!s.consultantPresent && s.response === "backfill") {
+    const orig = I.roster.find(r => r.role_id === "R7");
+    out.push({ role_id: "R8", fte: orig.fte, fte_tag: "ESTIMATED",
+      is_advisor: false, is_operations: true, ops_allocation: 1.0,
+      comp: I.constants.backfill_consultant_cost.v, comp_tag: "PLACEHOLDER",
+      is_contractor: true, end_date: null, backfill: true });
+  }
+  /* Negative headcount removes operations time, largest contributor first, so
+     "what if we lose the service associate too" is a scenario the model can be
+     asked - including the degenerate case of no operations capacity at all.  */
+  if (s.extraOpsFte < 0) {
+    let remove = -s.extraOpsFte;
+    const ops = out.filter(r => r.is_operations && r.fte > 0)
+      .sort((a, b) => (b.fte * b.ops_allocation) - (a.fte * a.ops_allocation));
+    for (const r of ops) {
+      if (remove <= 1e-9) break;
+      const has = r.fte * r.ops_allocation;
+      const take = Math.min(has, remove);
+      r.ops_allocation = Math.max(0, (has - take) / r.fte);
+      remove -= take;
+    }
+  }
+  if (s.extraOpsFte > 0) {
+    out.push({ role_id: "R9", fte: s.extraOpsFte, fte_tag: "ESTIMATED",
+      is_advisor: false, is_operations: true, ops_allocation: 1.0,
+      comp: I.constants.ops_seat_comp.v * s.extraOpsFte, comp_tag: "PLACEHOLDER",
+      is_contractor: false, end_date: null, extra: true });
+  }
+  return out;
+}
+
+/* Loaded hourly cost for one role. Contractors carry no benefits load.
+   Divides by the role's OWN hours (fte x productive hours), not by a full
+   year, so a fractional role is not costed as if it were full time.        */
+function loadedHourly(role, s) {
+  const hours = role.fte * s.productiveHours;
+  if (!(hours > 0)) return 0;
+  const load = role.is_contractor ? 0 : s.benefitsLoad;
+  return (role.comp * (1 + load)) / hours;
+}
+function loadedCost(role, s) {
+  return role.comp * (1 + (role.is_contractor ? 0 : s.benefitsLoad));
+}
+/* Hours a role actually gives to operations. */
+function opsHoursOf(role, s) {
+  return role.is_operations ? role.fte * role.ops_allocation * s.productiveHours : 0;
+}
+
+/* --- 4. TASK MINUTES ----------------------------------------------------- */
+/* Per-household RECURRING operations minutes for one tier (household + account
+   basis). Onboarding is deliberately excluded here - it is a one-off per new
+   household, reported separately, never smeared across the existing book.   */
+function minutesFor(I, s, tier, { basis, workType, ownerFilter }) {
+  const bk = I.book.find(b => b.tier === tier);
+  let mins = 0;
+  for (const t of I.tasks) {
+    if (t.work_type !== workType) continue;
+    if (!basis.includes(t.basis)) continue;
+    if (t.basis !== "firm" && !t.tiers.includes(tier)) continue;
+    if (ownerFilter && !ownerFilter(t.owner)) continue;
+    let m = t.minutes * s.efficiency * t.occurrences;
+    if (t.basis === "account") m *= bk.accounts_per_household;
+    mins += m;
+  }
+  return mins;
+}
+function firmMinutes(I, s, { workType = "operations", ownerFilter } = {}) {
+  let mins = 0;
+  for (const t of I.tasks) {
+    if (t.work_type !== workType || t.basis !== "firm") continue;
+    if (ownerFilter && !ownerFilter(t.owner)) continue;
+    mins += t.minutes * s.efficiency * t.occurrences;
+  }
+  return mins;
+}
+
+function tierMinutes(I, s, tier, ownerFilter) {
+  return {
+    recurringOps: minutesFor(I, s, tier, { basis: ["household", "account"], workType: "operations", ownerFilter }),
+    onboardingOps: minutesFor(I, s, tier, { basis: ["new_household"], workType: "operations", ownerFilter }),
+    advisory: minutesFor(I, s, tier, { basis: ["household", "account"], workType: "advisory", ownerFilter }),
+  };
+}
+
+/* --- 5. OPERATIONS HOURS REQUIRED --------------------------------------- */
+/* households: {T1:n,...}. newHouseholds: total new this year (split by new_mix).
+   The switching uplift applies to operations work only - a timed task measures
+   the task, not the day.                                                    */
+function opsHoursRequired(I, s, households, newTotal, ownerFilter) {
+  let recurring = 0, onboarding = 0;
+  for (const tier of TIER_IDS) {
+    const bk = I.book.find(b => b.tier === tier);
+    const m = tierMinutes(I, s, tier, ownerFilter);
+    recurring += (households[tier] || 0) * m.recurringOps;
+    onboarding += (newTotal * bk.new_mix) * m.onboardingOps;
+  }
+  const firm = firmMinutes(I, s, { ownerFilter });
+  const up = 1 + s.switchingUplift;
+  return {
+    recurring: recurring / 60 * up,
+    onboarding: onboarding / 60 * up,
+    firm: firm / 60 * up,
+    total: (recurring + onboarding + firm) / 60 * up,
+  };
+}
+
+/* --- 6. THE FULL MODEL --------------------------------------------------- */
+function computeModel(I, scenario) {
+  const s = { ...defaultScenario(I), ...scenario };
+  const bands = I.fee_schedule.bands;
+  const roster = effectiveRoster(I, s);
+
+  /* -- guardrails: the model must fail loudly, never quietly ------------- */
+  const errors = [];
+  if (!(s.productiveHours > 0)) errors.push("Productive hours per year is zero or negative. Every hourly rate and every capacity figure divides by it.");
+  const opsRoles = roster.filter(r => r.is_operations);
+  const opsHoursAvailable = opsRoles.reduce((a, r) => a + opsHoursOf(r, s), 0);
+  if (!(opsHoursAvailable > 0)) errors.push("There is no operations capacity at all: every operations role is removed or allocated zero time. Utilisation, cost to serve and the capacity date cannot be computed - there is nobody to do the work.");
+  const advisors = roster.filter(r => r.is_advisor);
+  if (advisors.length === 0) errors.push("There are no advisor roles, so revenue per advisor cannot be computed.");
+
+  const households0 = {};
+  for (const b of I.book) households0[b.tier] = b.households;
+  const totalHouseholds0 = TIER_IDS.reduce((a, t) => a + households0[t], 0);
+  if (!(totalHouseholds0 > 0)) errors.push("Household count is zero. There is no book to model.");
+
+  if (errors.length) return { failed: true, errors, scenario: s };
+
+  /* -- rates ------------------------------------------------------------- */
+  const blendedOpsHourlyAuto = opsRoles.reduce((a, r) => a + opsHoursOf(r, s) * loadedHourly(r, s), 0) / opsHoursAvailable;
+  const blendedOpsHourly = (s.blendedOpsHourlyOverride != null && s.blendedOpsHourlyOverride > 0)
+    ? s.blendedOpsHourlyOverride : blendedOpsHourlyAuto;
+  const advisorHoursTotal = advisors.reduce((a, r) => a + r.fte * s.productiveHours, 0);
+  const advisorLoadedHourly = advisorHoursTotal > 0
+    ? advisors.reduce((a, r) => a + loadedCost(r, s), 0) / advisorHoursTotal : 0;
+
+  /* -- revenue ----------------------------------------------------------- */
+  const tiers = I.book.map(b => {
+    const gross = tieredFee(b.avg_aum, bands);
+    const net = gross * s.feeRealisation;
+    return { tier: b.tier, label: b.label, households: b.households, avgAum: b.avg_aum,
+      accountsPerHousehold: b.accounts_per_household, newMix: b.new_mix,
+      totalAum: b.households * b.avg_aum,
+      feeGross: gross, revenuePerHousehold: net,
+      effectiveRate: b.avg_aum > 0 ? net / b.avg_aum : 0,
+      revenueTier: net * b.households };
+  });
+  const revenueTotal = tiers.reduce((a, t) => a + t.revenueTier, 0);
+  const aumTotal = tiers.reduce((a, t) => a + t.totalAum, 0);
+  const totalFte = roster.reduce((a, r) => a + r.fte, 0);
+
+  /* -- capacity today ---------------------------------------------------- */
+  const newTotal0 = totalHouseholds0 * s.growth;
+  const req0 = opsHoursRequired(I, s, households0, newTotal0);
+  const utilisation = req0.total / opsHoursAvailable;
+
+  /* Where the operations work currently sits, by owner. */
+  const roleIds = [...new Set(I.tasks.map(t => t.owner))];
+  const hoursByOwner = {};
+  for (const rid of roleIds) {
+    hoursByOwner[rid] = opsHoursRequired(I, s, households0, newTotal0, o => o === rid).total;
+  }
+  const advisorIds = new Set(I.roster.filter(r => r.is_advisor).map(r => r.role_id));
+  const opsOnAdvisors = Object.entries(hoursByOwner)
+    .filter(([rid]) => advisorIds.has(rid))
+    .reduce((a, [, h]) => a + h, 0);
+
+  /* Coverage check: catalogued hours per role vs the hours that role has.
+     A large gap means the catalogue is incomplete, not that the role is idle. */
+  const coverage = roster.filter(r => r.is_operations).map(r => {
+    const have = opsHoursOf(r, s);
+    const catalogued = hoursByOwner[r.role_id] || 0;
+    return { role_id: r.role_id, available: have, catalogued,
+      gap: have - catalogued, pct: have > 0 ? catalogued / have : 0 };
+  });
+
+  /* -- projection & capacity break --------------------------------------- */
+  const months = s.horizonYears * 12;
+  const gm = s.growth > -1 ? Math.pow(1 + s.growth, 1 / 12) - 1 : 0;
+  const proj = [];
+  let hh = { ...households0 };
+  let breakMonth = null, breakHouseholds = null;
+  const asOf = new Date(I.meta.as_of + "T00:00:00Z");
+
+  for (let m = 0; m <= months; m++) {
+    const totalH = TIER_IDS.reduce((a, t) => a + hh[t], 0);
+    const newAnnual = totalH * s.growth;
+    const r = opsHoursRequired(I, s, hh, newAnnual);
+    const d = new Date(asOf); d.setUTCMonth(d.getUTCMonth() + m);
+    proj.push({ month: m, date: d.toISOString().slice(0, 10), households: totalH,
+      required: r.total, available: opsHoursAvailable, utilisation: r.total / opsHoursAvailable });
+    if (breakMonth === null && r.total >= opsHoursAvailable) {
+      breakMonth = m; breakHouseholds = totalH;
+    }
+    const added = totalH * gm;
+    for (const t of TIER_IDS) hh[t] += added * (I.book.find(b => b.tier === t).new_mix);
+  }
+
+  /* Sub-month interpolation, so the household count and the date describe the
+     SAME crossing rather than two nearby ones.                              */
+  let breakDateExact = null, breakHouseholdsInterp = null, breakMonthFrac = null;
+  if (breakMonth !== null) {
+    if (breakMonth === 0) {
+      breakMonthFrac = 0; breakHouseholdsInterp = proj[0].households; breakDateExact = proj[0].date;
+    } else {
+      const a = proj[breakMonth - 1], b = proj[breakMonth];
+      const span = (b.required - a.required);
+      const f = span > 0 ? (opsHoursAvailable - a.required) / span : 0;
+      breakMonthFrac = (breakMonth - 1) + f;
+      breakHouseholdsInterp = a.households + f * (b.households - a.households);
+      const d = new Date(asOf);
+      d.setUTCDate(d.getUTCDate() + Math.round(breakMonthFrac * 30.4375));
+      breakDateExact = d.toISOString().slice(0, 10);
+    }
+  }
+
+  /* Households at which capacity breaks, holding today's mix (the count the
+     firm can act on). Solved directly rather than read off the projection.  */
+  const perHhAtMix = (() => {
+    const unit = {}; for (const t of TIER_IDS) unit[t] = households0[t] / totalHouseholds0;
+    const r1 = opsHoursRequired(I, s, unit, 1 * s.growth);
+    return r1.total - opsHoursRequired(I, s, { T1: 0, T2: 0, T3: 0, T4: 0 }, 0).total;
+  })();
+  const fixedHours = opsHoursRequired(I, s, { T1: 0, T2: 0, T3: 0, T4: 0 }, 0).total;
+  const breakHouseholdsExact = perHhAtMix > 0
+    ? (opsHoursAvailable - fixedHours) / perHhAtMix : null;
+
+  const capacity = {
+    required: req0, available: opsHoursAvailable, utilisation,
+    hoursByOwner, opsOnAdvisors, coverage, projection: proj,
+    breakMonth, breakMonthFrac,
+    breakHouseholds: breakHouseholdsInterp,
+    breakHouseholdsStepped: breakHouseholds,
+    breakHouseholdsExact,
+    breakDate: breakDateExact,
+    breakDateStepped: breakMonth === null ? null : proj[breakMonth].date,
+    alreadyOver: utilisation >= 1,
+    noBreak: breakMonth === null,
+    horizonMonths: months,
+    fixedHours, perHouseholdHours: perHhAtMix,
+  };
+
+  /* -- cost to serve, layer by layer ------------------------------------- */
+  const firmOpsHours = req0.firm;
+  const allocFirmPerHh = (firmOpsHours * blendedOpsHourly) / totalHouseholds0;
+  const up = 1 + s.switchingUplift;
+
+  const tierEcon = tiers.map(t => {
+    const m = tierMinutes(I, s, t.tier);
+    const directHours = m.recurringOps / 60 * up;
+    const onboardHours = m.onboardingOps / 60 * up;
+    const advisoryHours = m.advisory / 60;
+    const directOps = directHours * blendedOpsHourly;
+    const advisory = advisoryHours * advisorLoadedHourly;
+    const firmOh = s.firmOverheadPerHousehold;
+    const totalLoaded = directOps + allocFirmPerHh + advisory + firmOh;
+    return { ...t, directHours, onboardHours, advisoryHours,
+      onboardingCost: onboardHours * blendedOpsHourly,
+      costLayers: { directOps, allocFirm: allocFirmPerHh, advisory, firmOverhead: firmOh },
+      costDirect: directOps,
+      costOpsFull: directOps + allocFirmPerHh,
+      costTotalLoaded: totalLoaded,
+      marginDirect: t.revenuePerHousehold - directOps,
+      marginLoaded: t.revenuePerHousehold - totalLoaded };
+  });
+  const underwaterDirect = tierEcon.filter(t => t.marginDirect < 0).map(t => t.tier);
+  const underwaterLoaded = tierEcon.filter(t => t.marginLoaded < 0).map(t => t.tier);
+
+  /* -- CASE 1: the consultant's departure --------------------------------- */
+  const consultant = I.roster.find(r => r.role_id === "R7");
+  const consultantCatalogued = opsHoursRequired(I, s, households0, newTotal0, o => o === "R7").total;
+  const consultantContracted = consultant.fte * s.productiveHours;
+  const consultantUnmapped = Math.max(0, consultantContracted - consultantCatalogued);
+
+  function utilUnder(opts) {
+    const sc = { ...s, ...opts };
+    const rs = effectiveRoster(I, sc);
+    const avail = rs.filter(r => r.is_operations).reduce((a, r) => a + opsHoursOf(r, sc), 0);
+    const req = opsHoursRequired(I, sc, households0, newTotal0).total;
+    return { available: avail, required: req, utilisation: avail > 0 ? req / avail : Infinity, roster: rs };
+  }
+  const base = utilUnder({ consultantPresent: true, response: "absorb" });
+  const optAbsorb = utilUnder({ consultantPresent: false, response: "absorb" });
+  const optBackfill = utilUnder({ consultantPresent: false, response: "backfill" });
+  const optInternal = utilUnder({ consultantPresent: false, response: "internal" });
+
+  const r4 = I.roster.find(r => r.role_id === "R4");
+  const seatCompDelta = I.constants.ops_seat_comp.v - r4.comp;
+  const seatCostLoaded = seatCompDelta * (1 + s.benefitsLoad);
+  const displacedParaplanningHours = (s.seatOpsAllocation - r4.ops_allocation) * r4.fte * s.productiveHours;
+
+  const case1 = {
+    departureDate: consultant.end_date,
+    daysAway: I.constants.consultant_departure_days.v,
+    catalogued: consultantCatalogued,
+    contracted: consultantContracted,
+    unmapped: consultantUnmapped,
+    baseUtilisation: base.utilisation,
+    options: [
+      { key: "absorb", label: "Absorb across the existing team",
+        annualCost: 0, costNote: "No new spend. The hours land on the people already here.",
+        available: optAbsorb.available, utilisation: optAbsorb.utilisation,
+        hoursShort: Math.max(0, optAbsorb.required - optAbsorb.available) },
+      { key: "backfill", label: "Backfill with a like-for-like hire",
+        annualCost: I.constants.backfill_consultant_cost.v,
+        costNote: "Replaces her hours at the same cost. Break-even is immediate by construction - the question is whether the hours come back.",
+        available: optBackfill.available, utilisation: optBackfill.utilisation,
+        hoursShort: Math.max(0, optBackfill.required - optBackfill.available) },
+      { key: "internal", label: "I take it on",
+        annualCost: seatCostLoaded,
+        costNote: `Compensation delta only, loaded. Displaces ${Math.round(displacedParaplanningHours)} hours a year of paraplanning work that has to go somewhere.`,
+        available: optInternal.available, utilisation: optInternal.utilisation,
+        hoursShort: Math.max(0, optInternal.required - optInternal.available),
+        displacedHours: displacedParaplanningHours },
+    ],
+  };
+
+  /* -- CASE 4: the operations seat ---------------------------------------- */
+  const postDepartureBlended = (() => {
+    const sc = { ...s, consultantPresent: false, response: "internal" };
+    const rs = effectiveRoster(I, sc).filter(r => r.is_operations);
+    const h = rs.reduce((a, r) => a + opsHoursOf(r, sc), 0);
+    return h > 0 ? rs.reduce((a, r) => a + opsHoursOf(r, sc) * loadedHourly(r, sc), 0) / h : 0;
+  })();
+  const protectConsultant = consultantCatalogued * postDepartureBlended;
+  const protectAdvisor = opsOnAdvisors * (s.advisorHourBasis === "revenue_capacity"
+    ? (revenueTotal / advisorHoursTotal) : advisorLoadedHourly);
+  const protectFailures = I.constants.service_failures_avoided.v * I.constants.service_failure_cost_per_event.v;
+  const protectTotal = protectConsultant + protectAdvisor + protectFailures;
+
+  const case4 = {
+    seatCompDelta, seatCostLoaded, displacedParaplanningHours,
+    advisorLoadedHourly, revenuePerAdvisorHour: advisorHoursTotal > 0 ? revenueTotal / advisorHoursTotal : 0,
+    protect: [
+      { key: "consultant", label: "Operations hours she leaves behind, covered in-house",
+        hours: consultantCatalogued, rate: postDepartureBlended, value: protectConsultant },
+      { key: "advisor", label: "Operations work currently sitting on advisors, moved off",
+        hours: opsOnAdvisors, rate: advisorLoadedHourly, value: protectAdvisor },
+      { key: "failures", label: "Service failures avoided",
+        hours: null, rate: I.constants.service_failure_cost_per_event.v, value: protectFailures,
+        note: "Deliberately zero. I have no incident list, so I am counting nothing." },
+    ],
+    protectTotal,
+    breakEvenRatio: seatCostLoaded > 0 ? protectTotal / seatCostLoaded : Infinity,
+    surplus: protectTotal - seatCostLoaded,
+    monthsOfHeadroom: (() => {
+      const withSeat = utilUnder({ consultantPresent: false, response: "internal" });
+      if (withSeat.available <= 0) return null;
+      let h = { ...households0 }, m = 0;
+      while (m < 600) {
+        const totalH = TIER_IDS.reduce((a, t) => a + h[t], 0);
+        const r = opsHoursRequired(I, s, h, totalH * s.growth).total;
+        if (r >= withSeat.available) break;
+        const added = totalH * gm;
+        for (const t of TIER_IDS) h[t] += added * (I.book.find(b => b.tier === t).new_mix);
+        m++;
+      }
+      return m >= 600 ? null : m;
+    })(),
+  };
+
+  const taskHoursById = taskHours(I, s, households0, newTotal0);
+
+  return {
+    failed: false, scenario: s, roster, taskHoursById,
+    rates: { blendedOpsHourly, blendedOpsHourlyAuto, advisorLoadedHourly,
+      loadedHourlyByRole: Object.fromEntries(roster.map(r => [r.role_id, loadedHourly(r, s)])) },
+    book: { households: households0, totalHouseholds: totalHouseholds0, aumTotal, newTotal: newTotal0 },
+    revenue: { total: revenueTotal,
+      perHousehold: revenueTotal / totalHouseholds0,
+      perAdvisor: revenueTotal / advisors.length,
+      perEmployee: revenueTotal / totalFte,
+      totalFte, advisorCount: advisors.length },
+    tiers: tierEcon, underwaterDirect, underwaterLoaded,
+    allocFirmPerHh, capacity, case1, case4,
+  };
+}
+
+/* --- 7. SENSITIVITY (the tornado) --------------------------------------- */
+/* Each lever is moved to a low and a high value that I would actually defend,
+   and we record what the answer becomes. The output is months-to-capacity-break,
+   because that is the number the firm would act on.                          */
+function sensitivity(I, scenario, metric = "breakMonth") {
+  const s = { ...defaultScenario(I), ...scenario };
+  const levers = [
+    { key: "switchingUplift",  label: "Switching and interruption uplift", low: 0.10, high: 0.40, fmt: "pct" },
+    { key: "growth",           label: "Household growth rate",             low: 0.08, high: 0.25, fmt: "pct" },
+    { key: "efficiency",       label: "Minutes per task (process change)", low: 0.85, high: 1.15, fmt: "pct" },
+    { key: "productiveHours",  label: "Productive hours per person",       low: 1500, high: 1850, fmt: "num" },
+  ];
+  const readOut = m => {
+    if (m.failed) return null;
+    if (metric === "breakMonth") return m.capacity.breakMonth === null ? m.capacity.horizonMonths + 1 : m.capacity.breakMonth;
+    if (metric === "utilisation") return m.capacity.utilisation;
+    return null;
+  };
+  const baseM = computeModel(I, s);
+  const baseV = readOut(baseM);
+  const rows = levers.map(l => {
+    const lo = readOut(computeModel(I, { ...s, [l.key]: l.low }));
+    const hi = readOut(computeModel(I, { ...s, [l.key]: l.high }));
+    return { ...l, baseValue: s[l.key], lowOut: lo, highOut: hi,
+      swing: Math.abs((hi ?? 0) - (lo ?? 0)) };
+  });
+  /* Ops allocation is a roster field, not a scenario field, so it is swung
+     through the productive-hours-equivalent instead: +/- 0.5 operations FTE. */
+  const loFte = readOut(computeModel(I, { ...s, extraOpsFte: 0 }));
+  const hiFte = readOut(computeModel(I, { ...s, extraOpsFte: 0.5 }));
+  rows.push({ key: "extraOpsFte", label: "Half an extra operations FTE", low: 0, high: 0.5,
+    baseValue: s.extraOpsFte, lowOut: loFte, highOut: hiFte, swing: Math.abs((hiFte ?? 0) - (loFte ?? 0)), fmt: "num" });
+
+  rows.sort((a, b) => b.swing - a.swing);
+  return { baseValue: baseV, rows, metric };
+}
+
+/* --- 8. HOURS BY TASK (drives the ledger's "time these first" ordering) --- */
+function taskHours(I, s, households, newTotal) {
+  const out = {};
+  const up = 1 + s.switchingUplift;
+  for (const t of I.tasks) {
+    const base = t.minutes * s.efficiency * t.occurrences;
+    let mins = 0;
+    if (t.basis === "firm") mins = base;
+    else for (const tier of t.tiers) {
+      const bk = I.book.find(b => b.tier === tier);
+      if (t.basis === "household") mins += (households[tier] || 0) * base;
+      else if (t.basis === "account") mins += (households[tier] || 0) * bk.accounts_per_household * base;
+      else if (t.basis === "new_household") mins += (newTotal * bk.new_mix) * base;
+    }
+    out[t.id] = mins / 60 * (t.work_type === "operations" ? up : 1);
+  }
+  return out;
+}
+
+/* ---- page ---- */
+/* ==========================================================================
+   OPERATIONS CAPACITY MODEL - page layer
+   The engine above is byte-identical to the one the verification harness runs.
+   ========================================================================== */
+const $ = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => [...(r || document).querySelectorAll(s)];
+
+/* ---------------------------------------------------------------- FORMAT */
+const nf = (n, d = 0) => (Number.isFinite(n) ? n.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d }) : "—");
+const usd = (n, d = 0) => (Number.isFinite(n) ? (n < 0 ? "−$" : "$") + nf(Math.abs(n), d) : "—");
+const usdK = n => !Number.isFinite(n) ? "—" : Math.abs(n) >= 1e6 ? (n < 0 ? "−$" : "$") + (Math.abs(n) / 1e6).toFixed(Math.abs(n) >= 1e7 ? 0 : 1) + "m"
+  : Math.abs(n) >= 10000 ? (n < 0 ? "−$" : "$") + nf(Math.abs(n) / 1000, 0) + "k" : usd(n);
+const pct = (n, d = 1) => Number.isFinite(n) ? (n * 100).toFixed(d) + "%" : "—";
+const ratio = n => Number.isFinite(n) ? n.toFixed(2) + "×" : "—";
+const hrs = (n, d = 1) => Number.isFinite(n) ? nf(n, d) + " h" : "—";
+const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const longDate = iso => { if (!iso) return "—"; const d = new Date(iso + "T00:00:00Z"); return MONTHS[d.getUTCMonth()] + " " + d.getUTCFullYear(); };
+const shortDate = iso => { if (!iso) return "—"; const d = new Date(iso + "T00:00:00Z"); return MONTHS[d.getUTCMonth()].slice(0, 3) + " " + d.getUTCFullYear(); };
+const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+/* ---------------------------------------------------------------- STATE */
+const TAGS = ["MEASURED", "OBSERVED", "BENCHMARK", "ESTIMATED", "PLACEHOLDER"];
+let state = defaultScenario(INPUTS);
+let anonymised = true, xray = false, cmpBase = null, activePanel = "start";
+let ledgerFilter = "ALL";
+
+/* label lookup - the single ANONYMISE switch */
+const L = key => {
+  const row = INPUTS.labels[key];
+  if (!row) return key;
+  return anonymised ? row.anon : row.real;
+};
+
+/* ---------------------------------------------- THE ASSUMPTION LEDGER */
+/* Every input in the model becomes one atom with a workpaper reference code. */
+const ATOMS = [];
+const ATOM_BY_ID = {};
+/* Rebuilt whenever ANONYMISE flips: atom ids are stable, only the labels move. */
+function buildLedger() {
+  ATOMS.length = 0;
+  for (const k of Object.keys(ATOM_BY_ID)) delete ATOM_BY_ID[k];
+  const push = a => { ATOMS.push(a); ATOM_BY_ID[a.id] = a; return a; };
+  let n;
+  n = 0;
+  for (const [k, c] of Object.entries(INPUTS.constants))
+    push({ id: "const." + k, ref: "C-" + (++n), group: "Constants", name: c.name,
+      value: c.v, unit: c.unit, tag: c.tag, src: c.src, who: c.who, checked: c.checked });
+  n = 0;
+  for (const r of INPUTS.roster) {
+    push({ id: "roster." + r.role_id + ".comp", ref: "R-" + (++n), group: "Roster",
+      name: L(r.role_id) + " — annual compensation", value: r.comp, unit: "usd",
+      tag: r.comp_tag, src: r.comp_src, who: r.who, checked: r.comp_tag === "PLACEHOLDER" ? "never" : INPUTS.meta.as_of });
+    push({ id: "roster." + r.role_id + ".fte", ref: "R-" + (++n), group: "Roster",
+      name: L(r.role_id) + " — FTE", value: r.fte, unit: "fte", tag: r.fte_tag,
+      src: r.fte_tag === "OBSERVED" ? "Headcount I can see." : "My estimate of the hours actually worked here.",
+      who: "The principal holds the contract or the offer letter.", checked: INPUTS.meta.as_of });
+    if (r.is_operations)
+      push({ id: "roster." + r.role_id + ".ops_allocation", ref: "R-" + (++n), group: "Roster",
+        name: L(r.role_id) + " — share of time on operations", value: r.ops_allocation, unit: "pct",
+        tag: "ESTIMATED", src: "My estimate of how much of this person's week is operations work rather than planning, bookkeeping or reception.",
+        who: "The person themselves, from a two-week time log. This is the cheapest input in the model to upgrade.",
+        checked: INPUTS.meta.as_of });
+  }
+  n = 0;
+  for (const b of INPUTS.book)
+    push({ id: "book." + b.tier, ref: "B-" + (++n), group: "Book",
+      name: b.tier + " " + b.label + " — households, average AUM, accounts per household",
+      value: b.households, unit: "households", tag: b.tag, src: b.src, who: b.who, checked: INPUTS.meta.as_of });
+  push({ id: "book.new_mix", ref: "B-" + (++n), group: "Book",
+    name: "How new households distribute across the tiers", value: null, unit: "mix",
+    tag: INPUTS.book_meta.new_mix_tag, src: INPUTS.book_meta.new_mix_src, who: INPUTS.book_meta.new_mix_who,
+    checked: INPUTS.meta.as_of });
+  push({ id: "fee.schedule", ref: "F-1", group: "Fee schedule",
+    name: "Tiered fee schedule (" + INPUTS.fee_schedule.bands.length + " bands)", value: null, unit: "schedule",
+    tag: INPUTS.fee_schedule.tag, src: INPUTS.fee_schedule.src, who: INPUTS.fee_schedule.who, checked: INPUTS.meta.as_of });
+  n = 0;
+  for (const t of INPUTS.tasks)
+    push({ id: "task." + t.id, ref: "T-" + (++n), group: "Task catalogue",
+      name: t.task + (t.tiers.length && t.tiers.length < 4 ? " (" + t.tiers.join(", ") + ")" : ""),
+      value: t.minutes, unit: "minutes", tag: t.tag, taskId: t.id,
+      src: "Seeded from the shape of real RIA operations work. The minutes are not measured — " + t.minutes + " min × " + t.occurrences + "/yr is a placeholder.",
+      who: "Me, with a stopwatch. Three runs, median, interruptions included.", checked: "never" });
+}
+buildLedger();
+
+const opsTaskAtoms = INPUTS.tasks.filter(t => t.work_type === "operations").map(t => "task." + t.id);
+const allTaskAtoms = INPUTS.tasks.map(t => "task." + t.id);
+const bookAtoms = INPUTS.book.map(b => "book." + b.tier);
+const opsRoleIds = INPUTS.roster.filter(r => r.is_operations).map(r => r.role_id);
+const advisorRoleIds = INPUTS.roster.filter(r => r.is_advisor).map(r => r.role_id);
+const opsRosterAtoms = opsRoleIds.flatMap(r => ["roster." + r + ".fte", "roster." + r + ".ops_allocation"]);
+const opsCompAtoms = opsRoleIds.map(r => "roster." + r + ".comp");
+const advisorCompAtoms = advisorRoleIds.map(r => "roster." + r + ".comp");
+
+/* Which inputs each headline output actually depends on. */
+const DEPS = {
+  revenue_total: ["fee.schedule", ...bookAtoms, "const.fee_realisation"],
+  utilisation: [...opsTaskAtoms, ...opsRosterAtoms, ...bookAtoms, "book.new_mix",
+    "const.productive_hours_year", "const.switching_uplift", "const.growth_rate_households"],
+  hours_required: [...opsTaskAtoms, ...bookAtoms, "book.new_mix",
+    "const.switching_uplift", "const.growth_rate_households"],
+  capacity_break: [...opsTaskAtoms, ...opsRosterAtoms, ...bookAtoms, "book.new_mix",
+    "const.productive_hours_year", "const.switching_uplift", "const.growth_rate_households"],
+  cost_to_serve: [...opsTaskAtoms, ...opsCompAtoms, ...bookAtoms, "const.benefits_load",
+    "const.productive_hours_year", "const.switching_uplift", "const.firm_overhead_per_household",
+    ...advisorCompAtoms, "fee.schedule", "const.fee_realisation"],
+  consultant_hours: [...INPUTS.tasks.filter(t => t.owner === "R7").map(t => "task." + t.id),
+    ...bookAtoms, "const.switching_uplift", "roster.R7.fte", "const.productive_hours_year"],
+  seat: ["const.ops_seat_comp", "roster.R4.comp", "const.benefits_load",
+    ...INPUTS.tasks.filter(t => t.owner === "R7" || advisorRoleIds.includes(t.owner)).map(t => "task." + t.id),
+    ...advisorCompAtoms, "const.productive_hours_year", "const.switching_uplift",
+    "const.service_failures_avoided", "const.service_failure_cost_per_event"],
+};
+
+function rollup(ids) {
+  const counts = Object.fromEntries(TAGS.map(t => [t, 0]));
+  const seen = new Set();
+  for (const id of ids) { if (seen.has(id)) continue; seen.add(id);
+    const a = ATOM_BY_ID[id]; if (a) counts[a.tag]++; }
+  const total = [...seen].filter(id => ATOM_BY_ID[id]).length || 1;
+  const shares = Object.fromEntries(TAGS.map(t => [t, counts[t] / total]));
+  return { counts, shares, total,
+    solid: shares.MEASURED + shares.OBSERVED,
+    worstTag: TAGS.slice().reverse().find(t => counts[t] > 0) || "OBSERVED" };
+}
+/* Hours-weighted view: which tags the HOURS in a figure come from. Tells you
+   where a stopwatch buys the most, which a headcount of inputs does not.  */
+function hoursRollup(model, ids) {
+  const counts = Object.fromEntries(TAGS.map(t => [t, 0]));
+  let total = 0;
+  for (const id of new Set(ids)) {
+    const a = ATOM_BY_ID[id];
+    if (!a || !a.taskId) continue;
+    const h = model.taskHoursById[a.taskId] || 0;
+    counts[a.tag] += h; total += h;
+  }
+  if (total <= 0) return null;
+  return { counts, total, shares: Object.fromEntries(TAGS.map(t => [t, counts[t] / total])) };
+}
+function caveatFor(ids) {
+  const r = rollup(ids);
+  if (r.counts.PLACEHOLDER > 0) return { level: "hard", r,
+    text: `${r.counts.PLACEHOLDER} of the ${r.total} inputs behind this figure are placeholders — numbers I made up so the model would run. This is not yet a finding. It is a structure waiting for real values.` };
+  if (r.shares.ESTIMATED > 0.5) return { level: "soft", r,
+    text: `${pct(r.shares.ESTIMATED, 0)} of the inputs behind this figure are my own estimates rather than measured or observed values. Treat the shape as informative and the level as provisional.` };
+  return null;
+}
+function caveatHTML(ids) {
+  const c = caveatFor(ids); if (!c) return "";
+  return `<div class="caveat${c.level === "soft" ? " soft" : ""}"><span class="cv-tag">${c.level === "hard" ? "Placeholders" : "Mostly estimated"}</span><span>${esc(c.text)}</span></div>`;
+}
+function provMeter(ids, model, opts = {}) {
+  const r = rollup(ids);
+  const segs = TAGS.filter(t => r.counts[t] > 0)
+    .map(t => `<div class="pm-seg pm-${t}" style="width:${(r.shares[t] * 100).toFixed(2)}%" title="${t}: ${r.counts[t]} of ${r.total}"></div>`).join("");
+  const legend = TAGS.filter(t => r.counts[t] > 0)
+    .map(t => `<span><i class="pm-dot pm-${t}"></i>${r.counts[t]} ${t.toLowerCase()}</span>`).join("");
+  let hoursLine = "";
+  if (opts.hours && model) {
+    const hr = hoursRollup(model, opts.ids || ids);
+    if (hr) {
+      const untimed = hr.shares.PLACEHOLDER + hr.shares.ESTIMATED;
+      hoursLine = `<span style="color:var(--muted)">${pct(untimed, 0)} of the hours in this number come from untimed rows</span>`;
+    }
+  }
+  return `<div class="provmeter"><div class="pm-track">${segs}</div>
+    <div class="pm-legend">${legend}${hoursLine ? `<span>·</span>${hoursLine}` : ""}</div></div>`;
+}
+/* A figure with its provenance attached. */
+function fig(text, tag, refId) {
+  const a = refId ? ATOM_BY_ID[refId] : null;
+  return `<span class="fig" data-tag="${tag}">${text}</span>${a ? `<a class="ref" href="#" data-goto="${esc(refId)}" title="${esc(a.name)} — ${a.tag}">[${a.ref}]</a>` : ""}`;
+}
+/* A computed figure: tagged with the weakest input behind it. */
+function outFig(text, ids) { return `<span class="fig" data-tag="${rollup(ids).worstTag}">${text}</span>`; }
+
+/* ---------------------------------------------------------------- TOOLTIP */
+const tipEl = () => $("#tip");
+document.addEventListener("pointerover", e => {
+  const t = e.target.closest("[data-tip]"); if (!t) return;
+  const el = tipEl(); el.innerHTML = t.getAttribute("data-tip"); el.style.opacity = "1"; moveTip(e);
+});
+document.addEventListener("pointermove", e => { if (tipEl().style.opacity === "1") moveTip(e); });
+document.addEventListener("pointerout", e => {
+  if (e.target.closest("[data-tip]") && !e.relatedTarget?.closest?.("[data-tip]")) tipEl().style.opacity = "0";
+});
+function moveTip(e) {
+  const el = tipEl(), r = el.getBoundingClientRect();
+  let x = e.clientX + 14, y = e.clientY + 16;
+  if (x + r.width > innerWidth - 8) x = e.clientX - r.width - 12;
+  if (y + r.height > innerHeight - 8) y = e.clientY - r.height - 12;
+  el.style.left = Math.max(8, x) + "px"; el.style.top = Math.max(8, y) + "px";
+}
+const tipRows = (title, rows) => esc(`<div class="tt-h">${title}</div>` +
+  rows.map(([k, v]) => `<div class="tt-r"><span class="tt-n">${k}</span><span>${v}</span></div>`).join(""));
+
+/* ---------------------------------------------------------------- CHARTS */
+const SERIES = ["--s1", "--s2", "--s3", "--s4", "--s5"];
+const sc = i => `var(${SERIES[i % SERIES.length]})`;
+
+function niceTicks(max, count = 5) {
+  if (!(max > 0)) return [0, 1];
+  const raw = max / count, mag = Math.pow(10, Math.floor(Math.log10(raw)));
+  const step = [1, 2, 2.5, 5, 10].map(m => m * mag).find(s => s >= raw) || 10 * mag;
+  const out = []; for (let v = 0; v <= max * 1.0001 + step * .5; v += step) out.push(v);
+  return out;
+}
+function legendHTML(items) {
+  return `<div class="legend">` + items.map(i =>
+    `<span class="lg"><i class="sw${i.line ? " line" : ""}" style="background:${i.color}"></i>${esc(i.label)}</span>`).join("") + `</div>`;
+}
+function tableView(headers, rows, label = "Show the numbers") {
+  return `<details class="tableview"><summary>${esc(label)}</summary><div class="tscroll">
+    <table class="data"><thead><tr>${headers.map((h, i) => `<th class="${i ? "n" : ""}">${esc(h)}</th>`).join("")}</tr></thead>
+    <tbody>${rows.map(r => `<tr>${r.map((c, i) => `<td class="${i ? "n" : ""}">${c}</td>`).join("")}</tr>`).join("")}</tbody></table></div></details>`;
+}
+
+/* ---- CHART 1: capacity over time ---------------------------------------- */
+function chartCapacity(model) {
+  const W = 760, H = 340, P = { t: 22, r: 96, b: 44, l: 62 };
+  const proj = model.capacity.projection;
+  const iw = W - P.l - P.r, ih = H - P.t - P.b;
+  const maxY = Math.max(...proj.map(p => p.required), model.capacity.available) * 1.12;
+  const ticks = niceTicks(maxY);
+  const yMax = ticks[ticks.length - 1];
+  const x = m => P.l + (m / model.capacity.horizonMonths) * iw;
+  const y = v => P.t + ih - (v / yMax) * ih;
+
+  const line = proj.map((p, i) => `${i ? "L" : "M"}${x(p.month).toFixed(1)},${y(p.required).toFixed(1)}`).join("");
+  const area = `M${x(0).toFixed(1)},${y(0).toFixed(1)}` + proj.map(p => `L${x(p.month).toFixed(1)},${y(p.required).toFixed(1)}`).join("") + `L${x(proj[proj.length - 1].month).toFixed(1)},${y(0).toFixed(1)}Z`;
+  const availY = y(model.capacity.available);
+
+  let grid = ticks.map(t => `<line x1="${P.l}" y1="${y(t).toFixed(1)}" x2="${P.l + iw}" y2="${y(t).toFixed(1)}" stroke="var(--grid)" stroke-width="1"/>
+    <text x="${P.l - 9}" y="${(y(t) + 4).toFixed(1)}" text-anchor="end" font-size="11" fill="var(--muted)">${nf(t)}</text>`).join("");
+  let xt = "";
+  for (let m = 0; m <= model.capacity.horizonMonths; m += 12) {
+    xt += `<line x1="${x(m).toFixed(1)}" y1="${P.t + ih}" x2="${x(m).toFixed(1)}" y2="${P.t + ih + 5}" stroke="var(--axis)"/>
+      <text x="${x(m).toFixed(1)}" y="${P.t + ih + 19}" text-anchor="middle" font-size="11" fill="var(--muted)">${shortDate(proj[m].date)}</text>`;
+  }
+
+  let cross = "";
+  if (model.capacity.breakMonth !== null) {
+    const cx = x(model.capacity.breakMonthFrac), cy = availY;
+    cross = `<line x1="${cx.toFixed(1)}" y1="${P.t}" x2="${cx.toFixed(1)}" y2="${P.t + ih}" stroke="var(--warn)" stroke-width="1"/>
+      <circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="6" fill="var(--warn)" stroke="var(--surface)" stroke-width="2"/>
+      <rect x="${(cx - 52).toFixed(1)}" y="${(P.t + 2).toFixed(1)}" width="104" height="34" rx="3" fill="var(--surface)" stroke="var(--warn)" stroke-width="1"/>
+      <text x="${cx.toFixed(1)}" y="${(P.t + 15).toFixed(1)}" text-anchor="middle" font-size="11" font-weight="600" fill="var(--ink)">${esc(longDate(model.capacity.breakDate))}</text>
+      <text x="${cx.toFixed(1)}" y="${(P.t + 29).toFixed(1)}" text-anchor="middle" font-size="10.5" fill="var(--muted)">${nf(model.capacity.breakHouseholds, 0)} households</text>`;
+  }
+
+  const hits = proj.map(p => `<rect x="${(x(p.month) - iw / model.capacity.horizonMonths / 2).toFixed(1)}" y="${P.t}" width="${(iw / model.capacity.horizonMonths).toFixed(2)}" height="${ih}" fill="transparent"
+    data-tip="${tipRows(longDate(p.date), [["Households", nf(p.households, 0)], ["Hours required", nf(p.required, 0)], ["Hours available", nf(p.available, 0)], ["Utilisation", pct(p.utilisation)]])}"/>`).join("");
+
+  const last = proj[proj.length - 1];
+  const svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Operations hours required against hours available, projected forward">
+    ${grid}${xt}
+    <line x1="${P.l}" y1="${P.t + ih}" x2="${P.l + iw}" y2="${P.t + ih}" stroke="var(--axis)"/>
+    <path d="${area}" fill="${sc(0)}" opacity=".10"/>
+    <line x1="${P.l}" y1="${availY.toFixed(1)}" x2="${P.l + iw}" y2="${availY.toFixed(1)}" stroke="${sc(1)}" stroke-width="2" stroke-linecap="round"/>
+    <path d="${line}" fill="none" stroke="${sc(0)}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    ${cross}
+    <circle cx="${x(last.month).toFixed(1)}" cy="${y(last.required).toFixed(1)}" r="4.5" fill="${sc(0)}" stroke="var(--surface)" stroke-width="2"/>
+    <text x="${P.l + iw + 9}" y="${(y(last.required) + 4).toFixed(1)}" font-size="11.5" font-weight="600" fill="var(--ink)">${nf(last.required, 0)} h</text>
+    <text x="${P.l + iw + 9}" y="${(availY + 4).toFixed(1)}" font-size="11.5" font-weight="600" fill="var(--ink)">${nf(model.capacity.available, 0)} h</text>
+    <text x="${P.l + iw + 9}" y="${(availY + 17).toFixed(1)}" font-size="10" fill="var(--muted)">available</text>
+    <text x="12" y="${(P.t + ih / 2).toFixed(1)}" font-size="11" fill="var(--muted)" transform="rotate(-90 12 ${(P.t + ih / 2).toFixed(1)})" text-anchor="middle">Operations hours per year</text>
+    ${hits}
+  </svg>`;
+
+  const rows = proj.filter(p => p.month % 12 === 0).map(p =>
+    [longDate(p.date), nf(p.households, 0), nf(p.required, 0), nf(p.available, 0), pct(p.utilisation)]);
+  return `<div class="chart-scroll">${svg}</div>` +
+    legendHTML([{ label: "Hours required by the task catalogue", color: sc(0), line: 1 },
+                { label: "Hours the operations team has", color: sc(1), line: 1 }]) +
+    tableView(["Date", "Households", "Required (h)", "Available (h)", "Utilisation"], rows);
+}
+
+/* ---- CHART 2: tier economics -------------------------------------------- */
+function chartTiers(model) {
+  const W = 760, H = 360, P = { t: 34, r: 18, b: 62, l: 66 };
+  const iw = W - P.l - P.r, ih = H - P.t - P.b;
+  const layers = [
+    { key: "directOps", label: "Direct operations time", c: sc(1) },
+    { key: "allocFirm", label: "Share of firm-level operations", c: sc(2) },
+    { key: "advisory", label: "Advisor time", c: sc(3) },
+    { key: "firmOverhead", label: "Non-payroll firm overhead", c: sc(4) },
+  ];
+  const maxV = Math.max(...model.tiers.map(t => Math.max(t.revenuePerHousehold, t.costTotalLoaded))) * 1.16;
+  const ticks = niceTicks(maxV); const yMax = ticks[ticks.length - 1];
+  const y = v => P.t + ih - (v / yMax) * ih;
+  const band = iw / model.tiers.length;
+  const bw = Math.min(24, band * 0.24), gap2 = 2;
+
+  let grid = ticks.map(t => `<line x1="${P.l}" y1="${y(t).toFixed(1)}" x2="${P.l + iw}" y2="${y(t).toFixed(1)}" stroke="var(--grid)"/>
+    <text x="${P.l - 9}" y="${(y(t) + 4).toFixed(1)}" text-anchor="end" font-size="11" fill="var(--muted)">${usdK(t)}</text>`).join("");
+
+  let bars = "", labels = "", divider = "";
+  model.tiers.forEach((t, i) => {
+    const cx = P.l + band * i + band / 2;
+    const xr = cx - bw - 4, xcst = cx + 4;
+    // revenue bar (rounded top, square base)
+    const hR = Math.max(1.5, (t.revenuePerHousehold / yMax) * ih);
+    bars += roundedTopRect(xr, y(t.revenuePerHousehold), bw, hR, 4, sc(0),
+      tipRows(t.tier + " · " + t.label,
+        [["Revenue per household", usd(t.revenuePerHousehold)], ["Average AUM", usd(t.avgAum)], ["Effective fee rate", pct(t.effectiveRate, 3)]]));
+    // cost stack
+    let acc = 0;
+    layers.forEach((ly, li) => {
+      const v = t.costLayers[ly.key]; if (v <= 0) return;
+      const y0 = y(acc + v), y1 = y(acc);
+      const h = Math.max(0.8, y1 - y0 - (li === 0 ? 0 : gap2));
+      const top = li === layers.length - 1;
+      bars += (top ? roundedTopRect(xcst, y0, bw, h, 4, ly.c, tipRows(t.tier + " · " + ly.label, [["Cost per household", usd(v)], ["Share of loaded cost", t.costTotalLoaded > 0 ? pct(v / t.costTotalLoaded) : "—"]]))
+        : `<rect x="${xcst.toFixed(1)}" y="${y0.toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" fill="${ly.c}" data-tip="${tipRows(t.tier + " · " + ly.label, [["Cost per household", usd(v)], ["Share of loaded cost", t.costTotalLoaded > 0 ? pct(v / t.costTotalLoaded) : "—"]])}"/>`);
+      acc += v;
+    });
+    labels += `<text x="${xr + bw / 2}" y="${(y(t.revenuePerHousehold) - 7).toFixed(1)}" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--ink)">${usdK(t.revenuePerHousehold)}</text>
+      <text x="${xcst + bw / 2}" y="${(y(t.costTotalLoaded) - 7).toFixed(1)}" text-anchor="middle" font-size="10.5" font-weight="600" fill="${t.marginLoaded < 0 ? "var(--warn)" : "var(--ink)"}">${usdK(t.costTotalLoaded)}</text>
+      <text x="${cx}" y="${P.t + ih + 18}" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--ink)">${t.tier}</text>
+      <text x="${cx}" y="${P.t + ih + 32}" text-anchor="middle" font-size="10.5" fill="var(--muted)">${esc(t.label)}</text>
+      <text x="${cx}" y="${P.t + ih + 47}" text-anchor="middle" font-size="10.5" font-weight="${t.marginLoaded < 0 ? 600 : 400}" fill="${t.marginLoaded < 0 ? "var(--warn)" : "var(--muted)"}">${t.marginLoaded < 0 ? "cost exceeds revenue" : usdK(t.marginLoaded) + " margin"}</text>`;
+  });
+
+  // the crossing: boundary between the last underwater tier and the first that is not
+  const firstOk = model.tiers.findIndex(t => t.marginLoaded >= 0);
+  if (firstOk > 0) {
+    const dx = P.l + band * firstOk;
+    divider = `<line x1="${dx}" y1="${P.t - 12}" x2="${dx}" y2="${P.t + ih}" stroke="var(--warn)" stroke-width="1" stroke-dasharray="2 3"/>
+      <text x="${dx - 7}" y="${P.t - 16}" text-anchor="end" font-size="10" fill="var(--warn)" font-weight="600">cost &gt; revenue</text>
+      <text x="${dx + 7}" y="${P.t - 16}" text-anchor="start" font-size="10" fill="var(--muted)">revenue &gt; cost</text>`;
+  }
+
+  const svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Revenue per household against fully loaded cost to serve, by tier">
+    ${grid}<line x1="${P.l}" y1="${P.t + ih}" x2="${P.l + iw}" y2="${P.t + ih}" stroke="var(--axis)"/>
+    ${divider}${bars}${labels}
+    <text x="12" y="${(P.t + ih / 2).toFixed(1)}" font-size="11" fill="var(--muted)" transform="rotate(-90 12 ${(P.t + ih / 2).toFixed(1)})" text-anchor="middle">Dollars per household per year</text>
+  </svg>`;
+
+  const rows = model.tiers.map(t => [t.tier + " " + t.label, usd(t.revenuePerHousehold),
+    usd(t.costLayers.directOps), usd(t.costLayers.allocFirm), usd(t.costLayers.advisory),
+    usd(t.costLayers.firmOverhead), usd(t.costTotalLoaded),
+    `<span class="${t.marginLoaded < 0 ? "neg" : ""}">${usd(t.marginLoaded)}</span>`]);
+  return `<div class="chart-scroll">${svg}</div>` +
+    legendHTML([{ label: "Revenue per household", color: sc(0) }, ...layers.map(l => ({ label: l.label, color: l.c }))]) +
+    tableView(["Tier", "Revenue", "Direct ops", "Firm ops share", "Advisor time", "Firm overhead", "Total loaded", "Margin"], rows);
+}
+function roundedTopRect(x, y, w, h, r, fill, tip) {
+  r = Math.min(r, h, w / 2);
+  const d = `M${x.toFixed(1)},${(y + h).toFixed(1)} L${x.toFixed(1)},${(y + r).toFixed(1)} Q${x.toFixed(1)},${y.toFixed(1)} ${(x + r).toFixed(1)},${y.toFixed(1)} L${(x + w - r).toFixed(1)},${y.toFixed(1)} Q${(x + w).toFixed(1)},${y.toFixed(1)} ${(x + w).toFixed(1)},${(y + r).toFixed(1)} L${(x + w).toFixed(1)},${(y + h).toFixed(1)} Z`;
+  return `<path d="${d}" fill="${fill}"${tip ? ` data-tip="${tip}"` : ""}/>`;
+}
+
+
+/* ---- CHART 3: where her hours land -------------------------------------- */
+function chartDeparture(model) {
+  const c1 = model.case1;
+  const W = 760, rowH = 62, P = { t: 30, r: 20, b: 40, l: 150 };
+  const H = P.t + rowH * 3 + P.b;
+  const iw = W - P.l - P.r;
+  const totalHours = c1.catalogued + c1.unmapped;
+  const xMax = totalHours * 1.04;
+  const x = v => P.l + (v / xMax) * iw;
+
+  /* Under "absorb", her hours land on whoever has slack. Spare capacity is
+     measured at the team level - available hours after she goes, less the work
+     that is not hers - because a per-role "gap" is unmapped work, not free time. */
+  const afterAvail = c1.options[0].available;
+  const workNotHers = model.capacity.required.total - c1.catalogued;
+  const canAbsorb = Math.max(0, Math.min(c1.catalogued, afterAvail - workNotHers));
+  const overflow = Math.max(0, c1.catalogued - canAbsorb);
+
+  const scenarios = [
+    { name: "Absorb across the team", segs: [
+        ...(canAbsorb > 0.5 ? [{ label: "Spare capacity on the remaining team", hours: canAbsorb, c: sc(2) }] : []),
+        ...(overflow > 0.5 ? [{ label: "Nobody — work with no owner", hours: overflow, c: "var(--warn)" }] : [])],
+      util: c1.options[0].utilisation, cost: c1.options[0].annualCost },
+    { name: "Backfill like-for-like", segs: [{ label: "Replacement engagement", hours: c1.catalogued, c: sc(2) }],
+      util: c1.options[1].utilisation, cost: c1.options[1].annualCost },
+    { name: "I take it on", segs: [{ label: "The operations seat", hours: c1.catalogued, c: sc(0) }],
+      util: c1.options[2].utilisation, cost: c1.options[2].annualCost },
+  ];
+
+  let body = "";
+  scenarios.forEach((s, i) => {
+    const yTop = P.t + rowH * i + 8, bh = 22;
+    let acc = 0;
+    body += `<text x="${P.l - 12}" y="${yTop + 15}" text-anchor="end" font-size="11.5" font-weight="600" fill="var(--ink)">${esc(s.name)}</text>`;
+    for (const g of s.segs) {
+      const x0 = x(acc), w = Math.max(1, x(acc + g.hours) - x(acc) - 2);
+      body += `<rect x="${x0.toFixed(1)}" y="${yTop}" width="${w.toFixed(1)}" height="${bh}" fill="${g.c}" rx="1"
+        data-tip="${tipRows(s.name, [[g.label, nf(g.hours, 0) + " h/yr"]])}"/>`;
+      acc += g.hours;
+    }
+    // unmapped extension - outlined, never filled: it is not yet known work
+    const ux0 = x(c1.catalogued), uw = Math.max(1, x(totalHours) - ux0 - 2);
+    body += `<rect x="${ux0.toFixed(1)}" y="${yTop}" width="${uw.toFixed(1)}" height="${bh}" fill="none"
+      stroke="var(--rule-strong)" stroke-width="1.5" stroke-dasharray="4 3" rx="1"
+      data-tip="${tipRows("Not yet in the model", [["Unmapped hours", nf(c1.unmapped, 0) + " h/yr"], ["Her contracted hours", nf(c1.contracted, 0) + " h/yr"]])}"/>`;
+    body += `<text x="${P.l}" y="${yTop + bh + 16}" font-size="10.5" fill="var(--muted)">operations then runs at </text>
+      <text x="${P.l + 108}" y="${yTop + bh + 16}" font-size="10.5" font-weight="700" fill="${s.util > 1 ? "var(--warn)" : "var(--ink)"}">${pct(s.util)}</text>
+      <text x="${P.l + 152}" y="${yTop + bh + 16}" font-size="10.5" fill="var(--muted)">· ${s.cost > 0 ? usd(s.cost) + " a year" : "no new spend"}</text>`;
+  });
+
+  const svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Where the consultant's hours land under each of three responses">
+    <text x="${P.l}" y="18" font-size="10.5" fill="var(--muted)">0 h</text>
+    <text x="${x(c1.catalogued).toFixed(1)}" y="18" text-anchor="middle" font-size="10.5" fill="var(--ink-2)" font-weight="600">${nf(c1.catalogued, 0)} h catalogued</text>
+    <text x="${x(totalHours).toFixed(1)}" y="18" text-anchor="end" font-size="10.5" fill="var(--muted)">${nf(totalHours, 0)} h contracted</text>
+    <line x1="${P.l}" y1="24" x2="${x(totalHours).toFixed(1)}" y2="24" stroke="var(--grid)"/>
+    <line x1="${x(c1.catalogued).toFixed(1)}" y1="24" x2="${x(c1.catalogued).toFixed(1)}" y2="${P.t + rowH * 3 - 8}" stroke="var(--rule-2)" stroke-width="1"/>
+    ${body}
+    <text x="${P.l}" y="${H - 12}" font-size="10.5" fill="var(--muted)">Hours per year. The dashed extension is work she does that this model cannot see yet.</text>
+  </svg>`;
+
+  const rows = scenarios.map((s, i) => [s.name, nf(c1.catalogued, 0),
+    s.segs.map(g => esc(g.label) + " " + nf(g.hours, 0) + "h").join("; "),
+    pct(s.util), s.cost > 0 ? usd(s.cost) : "—"]);
+  return `<div class="chart-scroll">${svg}</div>` +
+    legendHTML([...new Map(scenarios.flatMap(s => s.segs).map(g => [g.label, g])).values()]
+      .map(g => ({ label: g.label, color: g.c }))
+      .concat([{ label: "Unmapped — not yet in the model", color: "var(--rule-strong)" }])) +
+    tableView(["Response", "Hours to rehome", "Where they land", "Resulting utilisation", "Annual cost"], rows);
+}
+
+/* ---- CHART 4: does the seat pay for itself ------------------------------ */
+function chartSeat(model) {
+  const c4 = model.case4;
+  const W = 760, H = 210, P = { t: 34, r: 20, b: 46, l: 150 };
+  const iw = W - P.l - P.r;
+  const items = c4.protect.filter(p => p.value > 0);
+  const total = c4.protectTotal;
+  const xMax = Math.max(total, c4.seatCostLoaded) * 1.15;
+  const x = v => P.l + (v / xMax) * iw;
+  const bh = 30;
+
+  let stack = "", acc = 0;
+  items.forEach((p, i) => {
+    const x0 = x(acc), w = Math.max(1, x(acc + p.value) - x0 - 2);
+    stack += `<rect x="${x0.toFixed(1)}" y="${P.t + 44}" width="${w.toFixed(1)}" height="${bh}" fill="${sc(i)}" rx="1"
+      data-tip="${tipRows(p.label, [["Value protected", usd(p.value)], ...(p.hours ? [["Hours", nf(p.hours, 0) + " h/yr"], ["Valued at", usd(p.rate, 2) + "/h"]] : [])])}"/>`;
+    acc += p.value;
+  });
+
+  const costW = Math.max(2, x(c4.seatCostLoaded) - P.l - 2);
+  const svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Cost of the operations seat against what it protects">
+    <text x="${P.l - 12}" y="${P.t + 20}" text-anchor="end" font-size="11.5" font-weight="600" fill="var(--ink)">Cost of the seat</text>
+    <rect x="${P.l}" y="${P.t + 4}" width="${costW.toFixed(1)}" height="${bh}" fill="var(--rule-strong)" rx="1"
+      data-tip="${tipRows("Cost of the seat", [["Compensation delta", usd(c4.seatCompDelta)], ["Loaded", usd(c4.seatCostLoaded)]])}"/>
+    <text x="${(P.l + costW + 9).toFixed(1)}" y="${P.t + 24}" font-size="11.5" font-weight="600" fill="var(--ink)">${usd(c4.seatCostLoaded)}</text>
+    <text x="${P.l - 12}" y="${P.t + 64}" text-anchor="end" font-size="11.5" font-weight="600" fill="var(--ink)">What it protects</text>
+    ${stack}
+    <text x="${(x(total) + 9).toFixed(1)}" y="${P.t + 64}" font-size="11.5" font-weight="600" fill="var(--ink)">${usd(total)}</text>
+    <line x1="${x(c4.seatCostLoaded).toFixed(1)}" y1="${P.t - 4}" x2="${x(c4.seatCostLoaded).toFixed(1)}" y2="${P.t + 88}" stroke="var(--warn)" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <text x="${x(c4.seatCostLoaded).toFixed(1)}" y="${P.t - 10}" text-anchor="middle" font-size="10" font-weight="600" fill="var(--warn)">break-even</text>
+    <text x="${P.l}" y="${H - 14}" font-size="10.5" fill="var(--muted)">Everything right of the dashed line is surplus: ${usd(c4.surplus)} a year, or ${ratio(c4.breakEvenRatio)} the cost of the seat.</text>
+  </svg>`;
+  return `<div class="chart-scroll">${svg}</div>` +
+    legendHTML([{ label: "Cost of the seat (loaded)", color: "var(--rule-strong)" },
+      ...items.map((p, i) => ({ label: p.label, color: sc(i) }))]) +
+    tableView(["Component", "Hours", "Valued at", "Value"],
+      [...items.map(p => [p.label, p.hours ? nf(p.hours, 0) + " h" : "—", p.rate ? usd(p.rate, 2) : "—", usd(p.value)]),
+       ["<b>Total protected</b>", "", "", "<b>" + usd(total) + "</b>"],
+       ["Cost of the seat", "", "", usd(c4.seatCostLoaded)]]);
+}
+
+/* ---- CHART 5: sensitivity tornado --------------------------------------- */
+function chartTornado(model) {
+  const sens = sensitivity(INPUTS, state, "breakMonth");
+  const rows = sens.rows.filter(r => r.lowOut !== null && r.highOut !== null);
+  const W = 760, rowH = 34, P = { t: 36, r: 132, b: 40, l: 210 };
+  const H = P.t + rowH * rows.length + P.b;
+  const iw = W - P.l - P.r;
+  const all = rows.flatMap(r => [r.lowOut, r.highOut]).concat([sens.baseValue]);
+  const lo = Math.min(...all), hi = Math.max(...all);
+  const pad = Math.max(1, (hi - lo) * 0.08);
+  const x = v => P.l + ((v - (lo - pad)) / ((hi + pad) - (lo - pad))) * iw;
+  const fmtLever = (r, v) => r.fmt === "pct" ? pct(v, 0) : nf(v, v < 10 ? 1 : 0);
+  const outLabel = m => m > model.capacity.horizonMonths ? "no break in " + model.scenario.horizonYears + " yrs"
+    : m <= 0 ? "already past" : nf(m, 0) + " mo";
+
+  let body = "";
+  rows.forEach((r, i) => {
+    const yc = P.t + rowH * i + rowH / 2;
+    const a = Math.min(r.lowOut, r.highOut), b = Math.max(r.lowOut, r.highOut);
+    const xb = x(sens.baseValue);
+    const worseW = Math.max(0, xb - x(a)), betterW = Math.max(0, x(b) - xb);
+    body += `<text x="${P.l - 14}" y="${yc + 4}" text-anchor="end" font-size="11.5" fill="var(--ink)">${esc(r.label)}</text>`;
+    if (worseW > 0.5) body += `<rect x="${x(a).toFixed(1)}" y="${yc - 9}" width="${worseW.toFixed(1)}" height="18" fill="var(--div-neg)" rx="2"
+      data-tip="${tipRows(r.label + " → " + fmtLever(r, r.lowOut === a ? r.low : r.high), [["Capacity breaks in", outLabel(a)], ["vs base", outLabel(sens.baseValue)]])}"/>`;
+    if (betterW > 0.5) body += `<rect x="${xb.toFixed(1)}" y="${yc - 9}" width="${betterW.toFixed(1)}" height="18" fill="var(--div-pos)" rx="2"
+      data-tip="${tipRows(r.label + " → " + fmtLever(r, r.highOut === b ? r.high : r.low), [["Capacity breaks in", outLabel(b)], ["vs base", outLabel(sens.baseValue)]])}"/>`;
+    body += `<text x="${(x(a) - 7).toFixed(1)}" y="${yc + 4}" text-anchor="end" font-size="10" fill="var(--muted)">${fmtLever(r, r.lowOut === a ? r.low : r.high)}</text>
+      <text x="${(x(b) + 7).toFixed(1)}" y="${yc + 4}" text-anchor="start" font-size="10" fill="var(--muted)">${fmtLever(r, r.highOut === b ? r.high : r.low)}</text>`;
+  });
+
+  const xb = x(sens.baseValue);
+  const svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Which assumptions move the capacity date most">
+    <line x1="${xb.toFixed(1)}" y1="${P.t - 12}" x2="${xb.toFixed(1)}" y2="${P.t + rowH * rows.length + 4}" stroke="var(--rule-strong)" stroke-width="1.5"/>
+    <text x="${xb.toFixed(1)}" y="${P.t - 18}" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--ink-2)">as filed: ${outLabel(sens.baseValue)}</text>
+    ${body}
+    <text x="${P.l}" y="${H - 14}" font-size="10.5" fill="var(--muted)">Months until operations capacity is exhausted, measured from the line marked as filed.</text>
+  </svg>`;
+  return `<div class="chart-scroll">${svg}</div>` +
+    legendHTML([{ label: "Breaks sooner than filed", color: "var(--div-neg)" },
+                { label: "Breaks later than filed", color: "var(--div-pos)" }]) +
+    tableView(["Assumption", "Low value", "Breaks in", "High value", "Breaks in", "Swing (months)"],
+      rows.map(r => [r.label, fmtLever(r, r.low), outLabel(r.lowOut), fmtLever(r, r.high), outLabel(r.highOut), nf(r.swing, 0)]));
+}
+
+
+/* ======================================================== SECTION RENDERERS */
+function tile(label, value, sub, opts = {}) {
+  return `<div class="tile${opts.alert ? " alert" : ""}">
+    <div class="t-label">${esc(label)}</div>
+    <div class="t-value">${value}</div>
+    ${sub ? `<div class="t-sub">${sub}</div>` : ""}
+    ${opts.ids ? provMeter(opts.ids, opts.model, { hours: opts.hours }) : ""}</div>`;
+}
+function verdict(text) {
+  return `<div class="verdict"><span class="v-tag">The sentence this ends on</span>
+    <div class="v-text">${text}</div></div>`;
+}
+const M = () => computeModel(INPUTS, state);
+
+/* ---------------------------------------------------------------- START */
+function renderStart(model) {
+  const cap = model.capacity;
+  $("#start-tiles").innerHTML =
+    tile("The book", `${nf(model.book.totalHouseholds, 0)}`, `households · ${usdK(model.book.aumTotal)} AUM`, { ids: DEPS.revenue_total, model }) +
+    tile("Revenue at the schedule", usdK(model.revenue.total), `${usd(model.revenue.perHousehold)} per household`, { ids: DEPS.revenue_total, model }) +
+    tile("Operations utilisation", pct(cap.utilisation), `${nf(cap.required.total, 0)} h needed · ${nf(cap.available, 0)} h available`, { ids: DEPS.utilisation, model, hours: true, alert: cap.utilisation > 1 }) +
+    tile("Capacity runs out", cap.breakDate ? longDate(cap.breakDate) : "not inside " + model.scenario.horizonYears + " years",
+      cap.breakDate ? `at about ${nf(cap.breakHouseholds, 0)} households` : "at this growth rate", { ids: DEPS.capacity_break, model, hours: true, alert: cap.breakMonth !== null && cap.breakMonth < 24 });
+
+  $("#start-integrity").innerHTML = caveatHTML([...new Set([...DEPS.utilisation, ...DEPS.cost_to_serve])]) ||
+    `<div class="caveat soft"><span class="cv-tag">Note</span><span>Provenance is clean.</span></div>`;
+
+  const cases = [
+    ["01", "What happens in 100 days", `${nf(model.case1.catalogued, 0)} catalogued hours a year need a home, plus ${nf(model.case1.unmapped, 0)} the model cannot see yet.`],
+    ["02", "Where capacity breaks", cap.breakDate ? `Around ${longDate(cap.breakDate)}, at about ${nf(cap.breakHouseholds, 0)} households.` : `Not inside the ${model.scenario.horizonYears}-year horizon at this growth rate.`],
+    ["03", "What each tier costs to serve", model.underwaterLoaded.length ? `${model.underwaterLoaded.join(", ")} costs more to serve, fully loaded, than it produces.` : `No tier is underwater on the numbers as filed.`],
+    ["04", "The operations seat", `Costs ${usd(model.case4.seatCostLoaded)} loaded. It has to protect that much to pay for itself.`],
+  ];
+  $("#start-cases").innerHTML = cases.map(([n, t, s]) =>
+    `<div><div style="display:flex;gap:9px;align-items:baseline"><span class="oc-num">${n}</span>
+      <b style="font-size:.9rem">${esc(t)}</b></div>
+      <div style="font-size:.82rem;color:var(--muted);padding-left:26px">${esc(s)}</div></div>`).join("");
+
+  const blind = [
+    ["The expense lines", "I cannot see rent, technology, E&O, custodial platform fees or professional fees. Firm overhead per household is a placeholder, and it is the number that decides whether the bottom tier looks profitable."],
+    ["What the consultant actually does", `Her catalogued work comes to ${nf(model.case1.catalogued, 0)} hours against roughly ${nf(model.case1.contracted, 0)} contracted. The ${nf(model.case1.unmapped, 0)}-hour gap is work I have not documented yet, not work that does not exist.`],
+    ["Real task timings", `All ${INPUTS.tasks.length} rows in the task catalogue are placeholders. Every hour figure in this model rests on them.`],
+    ["Fee realisation", "I have assumed every household pays the published schedule. Discounts, family aggregation and flat-fee exceptions are not in here."],
+  ];
+  $("#start-blind").innerHTML = blind.map(([t, s]) =>
+    `<div><b style="font-size:.88rem">${esc(t)}</b><div style="font-size:.82rem;color:var(--muted)">${esc(s)}</div></div>`).join("");
+}
+
+/* ---------------------------------------------------------------- CASE 1 */
+function renderCase1(model) {
+  const c = model.case1, cap = model.capacity;
+  $("#c1-tiles").innerHTML =
+    tile("She leaves in", `${nf(c.daysAway, 0)} days`, longDate(c.departureDate), {}) +
+    tile("Hours the catalogue has captured", nf(c.catalogued, 0) + " h", "per year, from her rows in the task catalogue", { ids: DEPS.consultant_hours, model, hours: true }) +
+    tile("Hours it has not", nf(c.unmapped, 0) + " h", `against roughly ${nf(c.contracted, 0)} h contracted`, { alert: true }) +
+    tile("If nothing changes", pct(c.options[0].utilisation), `${nf(c.options[0].hoursShort, 0)} h a year with no owner`, { alert: c.options[0].utilisation > 1 });
+
+  $("#c1-gap").innerHTML = `<div class="caveat"><span class="cv-tag">Read this first</span><span>
+    The catalogue accounts for ${nf(c.catalogued, 0)} of her roughly ${nf(c.contracted, 0)} contracted hours a year. The
+    ${nf(c.unmapped, 0)}-hour difference is almost certainly real work I have not written down yet, not slack.
+    <b>Everything below understates the problem by that amount.</b> Closing that gap is the single most
+    valuable thing I can do in the ${nf(c.daysAway, 0)} days remaining, and it needs her help to do it.</span></div>`;
+
+  $("#c1-chart").innerHTML = chartDeparture(model);
+
+  $("#c1-options").innerHTML = c.options.map((o, i) => `
+    <div class="optioncard${o.utilisation > 1 ? " flag" : ""}">
+      <h4><span class="oc-num">0${i + 1}</span>${esc(o.label)}</h4>
+      <div>
+        <div class="kv"><span class="k">Annual cost</span><span class="v">${o.annualCost > 0 ? outFig(usd(o.annualCost), DEPS.seat) : "none"}</span></div>
+        <div class="kv"><span class="k">Operations utilisation after</span><span class="v" style="${o.utilisation > 1 ? "color:var(--warn)" : ""}">${pct(o.utilisation)}</span></div>
+        <div class="kv"><span class="k">Hours left with no owner</span><span class="v" style="${o.hoursShort > 0 ? "color:var(--warn)" : ""}">${nf(o.hoursShort, 0)} h</span></div>
+        ${o.displacedHours ? `<div class="kv"><span class="k">Paraplanning work displaced</span><span class="v">${nf(o.displacedHours, 0)} h</span></div>` : ""}
+      </div>
+      <p style="font-size:.8rem;color:var(--muted);margin:0">${esc(o.costNote)}</p>
+    </div>`).join("");
+
+  $("#c1-verdict").innerHTML = verdict(
+    `When she leaves, <b>${nf(c.catalogued, 0)} catalogued hours a year</b> need a home &mdash; and ${nf(c.unmapped, 0)} more
+     that this model cannot see yet. Absorbing them puts operations at <b>${pct(c.options[0].utilisation)}</b> and leaves
+     ${nf(c.options[0].hoursShort, 0)} hours with nobody on them. Backfilling costs ${usd(c.options[1].annualCost)} a year.
+     Moving me into the seat costs ${usd(c.options[2].annualCost)} and displaces ${nf(c.options[2].displacedHours, 0)} hours
+     of the planning work I do now.`) + caveatHTML(DEPS.consultant_hours);
+}
+
+/* ---------------------------------------------------------------- CASE 2 */
+function renderCase2(model) {
+  const cap = model.capacity;
+  $("#c2-tiles").innerHTML =
+    tile("Utilisation today", pct(cap.utilisation), `${nf(cap.required.total, 0)} h required of ${nf(cap.available, 0)} h`, { ids: DEPS.utilisation, model, hours: true, alert: cap.utilisation > 1 }) +
+    tile("Capacity breaks at", cap.breakHouseholds ? nf(cap.breakHouseholds, 0) : "—", cap.breakHouseholds ? `households, from ${nf(model.book.totalHouseholds, 0)} today` : "no break in horizon", { ids: DEPS.capacity_break, model }) +
+    tile("Which is around", cap.breakDate ? longDate(cap.breakDate) : "beyond the horizon", cap.breakMonth !== null ? `${nf(cap.breakMonthFrac, 0)} months away` : `at ${pct(model.scenario.growth, 0)} growth`, { ids: DEPS.capacity_break, model, alert: cap.breakMonth !== null && cap.breakMonth < 24 }) +
+    tile("Fixed vs variable", `${nf(cap.perHouseholdHours, 1)} h`, `per additional household · ${nf(cap.fixedHours, 0)} h fixed firm-level`, { ids: DEPS.hours_required, model, hours: true });
+
+  $("#c2-chart").innerHTML = chartCapacity(model);
+
+  const rates = [0.10, 0.15, 0.20];
+  $("#c2-sens").innerHTML = `<div class="tscroll"><table class="data" style="min-width:0">
+    <thead><tr><th>Growth rate</th><th class="n">Households at the break</th><th class="n">Date</th><th class="n">Months away</th></tr></thead>
+    <tbody>${rates.map(g => {
+      const m2 = computeModel(INPUTS, { ...state, growth: g });
+      const on = Math.abs(g - model.scenario.growth) < 1e-9;
+      return `<tr${on ? ' style="background:var(--accent-soft)"' : ""}><td>${pct(g, 0)}${on ? " <span class=\"pill ok\">as filed</span>" : ""}</td>
+        <td class="n">${m2.capacity.breakHouseholds ? nf(m2.capacity.breakHouseholds, 0) : "—"}</td>
+        <td class="n">${m2.capacity.breakDate ? longDate(m2.capacity.breakDate) : "beyond horizon"}</td>
+        <td class="n">${m2.capacity.breakMonth !== null ? nf(m2.capacity.breakMonthFrac, 0) : "—"}</td></tr>`;
+    }).join("")}</tbody></table></div>
+    <p style="font-size:.78rem;color:var(--muted);margin-top:9px">Growth is the only thing changing between these
+    rows. The household count at the break moves as well as the date, because faster growth means more onboarding
+    work arriving alongside the larger book.</p>`;
+
+  $("#c2-coverage").innerHTML = `<div class="tscroll"><table class="data" style="min-width:0">
+    <thead><tr><th>Role</th><th class="n">Hours available</th><th class="n">Catalogued</th><th class="n">Accounted for</th></tr></thead>
+    <tbody>${cap.coverage.map(c => `<tr data-soft="${c.pct < 0.8 ? 1 : 0}">
+      <td>${esc(L(c.role_id))}</td><td class="n">${nf(c.available, 0)}</td><td class="n">${nf(c.catalogued, 0)}</td>
+      <td class="n"><span class="pill ${c.pct >= 0.8 ? "ok" : "bad"}">${pct(c.pct, 0)}</span></td></tr>`).join("")}</tbody></table></div>
+    <p style="font-size:.78rem;color:var(--muted);margin-top:9px">Anything well under 100% means I have not yet
+    written down what that person does. It is a gap in my catalogue, not spare time on their calendar &mdash; and
+    every one of those gaps makes the capacity date above <b>later than it really is</b>.</p>`;
+
+  $("#c2-tornado").innerHTML = chartTornado(model);
+
+  $("#c2-verdict").innerHTML = verdict(cap.breakDate
+    ? `At ${pct(model.scenario.growth, 0)} growth, operations runs out of capacity at <b>${nf(cap.breakHouseholds, 0)} households</b>,
+       around <b>${longDate(cap.breakDate)}</b> &mdash; ${nf(cap.breakMonthFrac, 0)} months from now.`
+    : `At ${pct(model.scenario.growth, 0)} growth, operations does not run out of capacity inside the
+       ${model.scenario.horizonYears}-year horizon. Utilisation settles at ${pct(cap.projection[cap.projection.length - 1].utilisation)}.`)
+    + caveatHTML(DEPS.capacity_break);
+}
+
+/* ---------------------------------------------------------------- CASE 3 */
+function renderCase3(model) {
+  const oh = ATOM_BY_ID["const.firm_overhead_per_household"];
+  $("#c3-warning").innerHTML = `<div class="caveat"><span class="cv-tag">Before reading this</span><span>
+    The largest single layer in the cost stack below is non-payroll firm overhead, set at
+    ${fig(usd(model.scenario.firmOverheadPerHousehold), "PLACEHOLDER", "const.firm_overhead_per_household")} per household.
+    <b>I invented that number.</b> I cannot see the expense lines. It decides on its own whether the bottom tier
+    looks profitable, so the honest version of this screen is: tell me the real figure and I will rerun it in
+    front of you. Move the overhead slider to nothing and ${model.tiers.filter(t => t.revenuePerHousehold - (t.costTotalLoaded - model.scenario.firmOverheadPerHousehold) < 0).length === 0 ? "every tier is above water" : "the picture changes"}.</span></div>`;
+
+  $("#c3-chart").innerHTML = chartTiers(model);
+
+  $("#c3-table").innerHTML = `<div class="tscroll"><table class="data">
+    <thead><tr><th>Tier</th><th class="n">Households</th><th class="n">Avg AUM</th><th class="n">Revenue</th>
+      <th class="n">Ops hours</th><th class="n">Direct ops</th><th class="n">Firm ops share</th>
+      <th class="n">Advisor time</th><th class="n">Firm overhead</th><th class="n">Loaded total</th><th class="n">Margin</th></tr></thead>
+    <tbody>${model.tiers.map(t => `<tr>
+      <td><b>${t.tier}</b> ${esc(t.label)}</td>
+      <td class="n">${nf(t.households, 0)}</td><td class="n">${usdK(t.avgAum)}</td>
+      <td class="n">${usd(t.revenuePerHousehold)}</td>
+      <td class="n">${nf(t.directHours, 1)}</td>
+      <td class="n">${usd(t.costLayers.directOps)}</td><td class="n">${usd(t.costLayers.allocFirm)}</td>
+      <td class="n">${usd(t.costLayers.advisory)}</td><td class="n">${usd(t.costLayers.firmOverhead)}</td>
+      <td class="n">${usd(t.costTotalLoaded)}</td>
+      <td class="n ${t.marginLoaded < 0 ? "neg" : ""}">${usd(t.marginLoaded)}</td></tr>`).join("")}
+      <tr class="total"><td>Whole book</td><td class="n">${nf(model.book.totalHouseholds, 0)}</td>
+        <td class="n">${usdK(model.book.aumTotal / model.book.totalHouseholds)}</td>
+        <td class="n">${usd(model.revenue.perHousehold)}</td>
+        <td class="n">${nf(model.tiers.reduce((a, t) => a + t.directHours * t.households, 0) / model.book.totalHouseholds, 1)}</td>
+        <td class="n" colspan="5"></td>
+        <td class="n">${usd(model.tiers.reduce((a, t) => a + t.costTotalLoaded * t.households, 0) / model.book.totalHouseholds)}</td>
+        <td class="n">${usd(model.tiers.reduce((a, t) => a + t.marginLoaded * t.households, 0) / model.book.totalHouseholds)}</td></tr>
+    </tbody></table></div>
+    <p style="font-size:.78rem;color:var(--muted);margin-top:9px">Onboarding is deliberately not in these figures.
+    A new ${model.tiers[2].tier} household costs about ${usd(model.tiers[2].onboardingCost)} of operations time to bring on,
+    once. Smearing that across the existing book would overstate what a settled household costs.</p>`;
+
+  const t1 = model.tiers[0];
+  const opts = [
+    ["Raise the minimum", `Stop taking households below a threshold. Protects capacity and margin. Costs the firm its pipeline: a ${t1.tier} household today is sometimes a ${model.tiers[2].tier} household in ten years, and referrals come from families, not balances.`],
+    ["Serve that tier differently", `Keep them, change the service model: fewer scheduled meetings, group or digital review, a defined service tier. Cuts the ${nf(t1.directHours, 1)} operations hours a ${t1.tier} household takes now. Costs consistency, and someone has to tell them.`],
+    ["Accept it as a pipeline cost", `Decide the ${usd(Math.abs(t1.marginLoaded))} a year is what the firm pays for relationships, referrals and the next generation. Perfectly defensible &mdash; but it should be a decision somebody made, not an accident of never having counted.`],
+  ];
+  $("#c3-options").innerHTML = opts.map(([t, s], i) =>
+    `<div class="optioncard"><h4><span class="oc-num">0${i + 1}</span>${esc(t)}</h4>
+      <p style="font-size:.83rem;color:var(--ink-2);margin:0">${s}</p></div>`).join("");
+
+  $("#c3-verdict").innerHTML = verdict(
+    `The bottom tier costs roughly <b>${usd(t1.costTotalLoaded)}</b> a year to serve on a fully loaded basis and produces
+     <b>${usd(t1.revenuePerHousehold)}</b>. That is a decision, not a finding, and there are three versions of it above.
+     ${t1.marginDirect >= 0 ? `On direct operations cost alone it is still ${usd(t1.marginDirect)} ahead &mdash; the gap is created by overhead and advisor time, not by the operations team.` : ""}`)
+    + caveatHTML(DEPS.cost_to_serve);
+}
+
+/* ---------------------------------------------------------------- CASE 4 */
+function renderCase4(model) {
+  const c4 = model.case4;
+  $("#c4-tiles").innerHTML =
+    tile("The seat costs", usd(c4.seatCostLoaded), `${usd(c4.seatCompDelta)} compensation delta, loaded at ${pct(model.scenario.benefitsLoad, 0)}`, { ids: ["const.ops_seat_comp", "roster.R4.comp", "const.benefits_load"], model }) +
+    tile("It has to protect", usd(c4.seatCostLoaded), "to pay for itself", {}) +
+    tile("On these numbers it protects", usd(c4.protectTotal), `${ratio(c4.breakEvenRatio)} the cost of the seat`, { ids: DEPS.seat, model, hours: true }) +
+    tile("Capacity headroom it buys", c4.monthsOfHeadroom !== null ? nf(c4.monthsOfHeadroom, 0) + " months" : "beyond horizon",
+      "before the capacity date returns", { ids: DEPS.capacity_break, model });
+
+  $("#c4-chart").innerHTML = chartSeat(model);
+
+  $("#c4-table").innerHTML = `<div class="tscroll"><table class="data" style="min-width:0">
+    <thead><tr><th>What it protects</th><th class="n">Hours</th><th class="n">Valued at</th><th class="n">Per year</th></tr></thead>
+    <tbody>${c4.protect.map(p => `<tr><td>${esc(p.label)}${p.note ? `<div style="font-size:.74rem;color:var(--muted)">${esc(p.note)}</div>` : ""}</td>
+      <td class="n">${p.hours !== null ? nf(p.hours, 0) : "—"}</td>
+      <td class="n">${p.rate ? usd(p.rate, 2) : "—"}</td>
+      <td class="n">${usd(p.value)}</td></tr>`).join("")}
+      <tr class="total"><td>Total protected</td><td class="n"></td><td class="n"></td><td class="n">${usd(c4.protectTotal)}</td></tr>
+      <tr><td>Cost of the seat, loaded</td><td class="n"></td><td class="n"></td><td class="n">${usd(c4.seatCostLoaded)}</td></tr>
+      <tr class="total"><td>Surplus</td><td class="n"></td><td class="n"></td>
+        <td class="n ${c4.surplus < 0 ? "neg" : ""}">${usd(c4.surplus)}</td></tr>
+    </tbody></table></div>
+    <p style="font-size:.78rem;color:var(--muted);margin-top:9px">Advisor hours are valued at
+    <b>${usd(c4.advisorLoadedHourly, 2)}</b>, what they cost the firm &mdash; not at
+    ${usd(c4.revenuePerAdvisorHour, 2)}, what an advisor hour earns. The larger number is the one that gets
+    challenged, because it assumes the returned hour would have been sold. I have used the smaller one on purpose.</p>`;
+
+  const displaced = c4.displacedParaplanningHours;
+  const backfillCost = INPUTS.constants.paraplanning_backfill_comp
+    ? INPUTS.constants.paraplanning_backfill_comp.v * (1 + model.scenario.benefitsLoad) * (displaced / model.scenario.productiveHours) : null;
+  $("#c4-displace").innerHTML = `
+    <p class="prose" style="font-size:.87rem;margin-bottom:12px">Moving me into the seat takes my operations share
+    from ${pct(INPUTS.roster.find(r => r.role_id === "R4").ops_allocation, 0)} to ${pct(model.scenario.seatOpsAllocation, 0)}.
+    That frees <b>${nf(displaced, 0)} hours a year</b> of operations capacity &mdash; and it displaces the same
+    ${nf(displaced, 0)} hours of paraplanning work. That work does not disappear. There are three places it can go,
+    and one of them cancels the whole proposal.</p>
+    <div class="stack gap-8">
+      <div class="kv"><span class="k">Advisors absorb it (at ${usd(c4.advisorLoadedHourly, 0)}/h)</span>
+        <span class="v" style="color:var(--warn)">${usd(displaced * c4.advisorLoadedHourly)} a year</span></div>
+      <div class="kv"><span class="k">A junior hire absorbs it</span><span class="v">${backfillCost ? usd(backfillCost) : "needs a number"}</span></div>
+      <div class="kv"><span class="k">The firm decides some of it stops</span><span class="v">free, but somebody has to choose</span></div>
+    </div>
+    <div class="caveat" style="margin-top:12px"><span class="cv-tag">Say this out loud</span><span>
+      If advisors absorb the displaced planning work, this proposal <b>costs</b> the firm
+      ${usd(displaced * c4.advisorLoadedHourly - c4.protectTotal + c4.seatCostLoaded)} rather than saving anything.
+      The seat only works if the paraplanning either stops or gets cheaper hands. That is the question to put to him,
+      and it is better that I raise it than that he finds it.</span></div>`;
+
+  $("#c4-verdict").innerHTML = verdict(
+    `The seat costs <b>${usd(c4.seatCostLoaded)}</b> loaded. It has to protect <b>${usd(c4.seatCostLoaded)}</b> to pay for
+     itself. On these numbers it protects ${usd(c4.protectTotal)} &mdash; ${nf(c4.protect[1].hours, 0)} advisor hours moved off
+     operations work and ${nf(c4.protect[0].hours, 0)} of the consultant's hours covered in-house &mdash; but only if the
+     ${nf(displaced, 0)} hours of planning work it displaces are not simply handed back to the advisors.`)
+    + caveatHTML(DEPS.seat);
+}
+
+
+/* ---------------------------------------------------------------- LEDGER */
+function atomValue(a) {
+  if (a.id.startsWith("book.T")) {
+    const b = INPUTS.book.find(x => "book." + x.tier === a.id);
+    return `${nf(b.households, 0)} households · ${usdK(b.avg_aum)} avg · ${nf(b.accounts_per_household, 1)} accts`;
+  }
+  if (a.id === "book.new_mix") return INPUTS.book.map(b => `${b.tier} ${pct(b.new_mix, 0)}`).join(" · ");
+  if (a.id === "fee.schedule") return INPUTS.fee_schedule.bands.map(b =>
+    `${pct(b.rate, 2)} to ${b.to === null ? "∞" : usdK(b.to)}`).join(" · ");
+  if (a.taskId) { const t = INPUTS.tasks.find(x => x.id === a.taskId);
+    return `${nf(t.minutes, 0)} min × ${nf(t.occurrences, 2)}/yr · ${t.basis.replace(/_/g, " ")} · ${L(t.owner)}`; }
+  switch (a.unit) {
+    case "usd": return usd(a.value);
+    case "pct": return pct(a.value, a.value < 0.1 ? 1 : 0);
+    case "hours": return nf(a.value, 0) + " h";
+    case "fte": return nf(a.value, 2) + " FTE";
+    case "days": return nf(a.value, 0) + " days";
+    case "count": return nf(a.value, 0);
+    case "choice": return String(a.value).replace(/_/g, " ");
+    default: return a.value === null ? "—" : String(a.value);
+  }
+}
+function renderAssumptions(model) {
+  const r = rollup(ATOMS.map(a => a.id));
+  const solidPct = r.solid;
+  $("#a-summary").innerHTML = `<div class="tiles">
+    ${tile("Inputs in the model", nf(r.total, 0), "every one carries a tag", {})}
+    ${tile("Measured or observed", pct(solidPct, 0), `${r.counts.MEASURED + r.counts.OBSERVED} of ${r.total}`, {})}
+    ${tile("Still placeholders", nf(r.counts.PLACEHOLDER, 0), "numbers I made up so the model would run", { alert: r.counts.PLACEHOLDER > 0 })}
+    ${tile("Timed by me", nf(r.counts.MEASURED, 0), "the strongest evidence in the model", { alert: r.counts.MEASURED === 0 })}
+  </div>
+  <div style="margin-top:14px">${provMeter(ATOMS.map(a => a.id), model)}</div>`;
+
+  $("#a-filters").innerHTML = ["ALL", ...TAGS].map(t =>
+    `<button class="btn btn-sm" data-filter="${t}" aria-pressed="${ledgerFilter === t}">${t === "ALL" ? "All" : t[0] + t.slice(1).toLowerCase()}${t === "ALL" ? "" : ` <span class="num">${rollup(ATOMS.map(a => a.id)).counts[t]}</span>`}</button>`).join("");
+
+  const rows = ATOMS.filter(a => ledgerFilter === "ALL" || a.tag === ledgerFilter);
+  $("#a-count").innerHTML = `${rows.length} of ${ATOMS.length} inputs shown. Every row: what it is, what it is set to, where it came from, who could confirm it, and when it was last checked.`;
+  $("#a-table").innerHTML = `<div class="tscroll" style="max-height:640px;overflow-y:auto">
+    <table class="data sticky-head" style="min-width:940px"><thead><tr>
+      <th>Ref</th><th>Input</th><th>Value</th><th>Tag</th><th>Where it came from</th><th>Who could confirm it</th><th>Last checked</th>
+    </tr></thead><tbody>
+    ${rows.map(a => `<tr id="atom-${esc(a.id)}" data-soft="${["ESTIMATED", "PLACEHOLDER", "BENCHMARK"].includes(a.tag) ? 1 : 0}">
+      <td class="num" style="color:var(--muted);font-size:.72rem">${a.ref}</td>
+      <td style="min-width:190px"><b style="color:var(--ink);font-weight:500">${esc(a.name)}</b>
+        <div style="font-size:.7rem;color:var(--muted)">${esc(a.group)}</div></td>
+      <td class="num" style="font-size:.75rem">${esc(atomValue(a))}</td>
+      <td><span class="tag tag-${a.tag}">${a.tag}</span></td>
+      <td style="min-width:250px;font-size:.76rem">${esc(a.src)}</td>
+      <td style="min-width:170px;font-size:.76rem">${esc(a.who)}</td>
+      <td class="num" style="font-size:.72rem;${a.checked === "never" ? "color:var(--warn);font-weight:600" : ""}">${esc(a.checked)}</td>
+    </tr>`).join("")}</tbody></table></div>`;
+
+  const ranked = INPUTS.tasks.map(t => ({ t, h: model.taskHoursById[t.id] || 0 }))
+    .filter(x => x.t.work_type === "operations").sort((a, b) => b.h - a.h);
+  const totalH = ranked.reduce((a, x) => a + x.h, 0);
+  let cum = 0;
+  const top = ranked.slice(0, 10).map((x, i) => { cum += x.h;
+    return [`${i + 1}. ${esc(x.t.task)}`, esc(L(x.t.owner)), nf(x.h, 0), pct(x.h / totalH, 1), pct(cum / totalH, 0)]; });
+  $("#a-priority").innerHTML = `<div class="tscroll"><table class="data" style="min-width:0">
+    <thead><tr><th>Task</th><th>Currently owned by</th><th class="n">Hours / yr</th><th class="n">Share</th><th class="n">Cumulative</th></tr></thead>
+    <tbody>${top.map(r => `<tr>${r.map((c, i) => `<td class="${i > 1 ? "n" : ""}">${c}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
+    <p style="font-size:.79rem;color:var(--muted);margin-top:9px">These ten rows are
+    <b>${pct(cum / totalH, 0)}</b> of all catalogued operations hours. Timing them turns most of this model from
+    guesswork into evidence. The remaining ${ranked.length - 10} rows are worth timing eventually and not worth
+    delaying the conversation for.</p>`;
+
+  $("#a-tagkey").innerHTML = `<div class="grid2">${TAGS.map(t => `
+    <div style="display:flex;gap:11px;align-items:flex-start">
+      <span class="tag tag-${t}">${t}</span>
+      <span style="font-size:.83rem;color:var(--ink-2)">${esc(INPUTS.tag_meta[t].desc)}</span></div>`).join("")}</div>
+    <p style="font-size:.8rem;color:var(--muted);margin-top:14px">The tag travels with the number everywhere it
+    appears. Turn on <b>Show me the estimates</b> at the top of the page and every figure that is not measured or
+    observed lights up, on every screen.</p>`;
+}
+
+/* ---------------------------------------------------------------- BUILD */
+const WORKFLOW = [
+  { phase: "Tonight, on my own", note: "Nothing here needs anybody else's time. All of it is readable out of systems I already have access to." },
+  { n: 1, title: "Household counts and average AUM, by tier",
+    need: "How many households sit in each of the four AUM bands, and the average balance in each band.",
+    from: "The portfolio system's household report. Group by household, sort by total value, then count into the four bands. Export the summary only — never the household list.",
+    goes: "Book tab, one row per tier. Workbook: <span class='num'>Book!C5:E8</span>.",
+    formula: "Total AUM is a formula, not a typed number: <span class='num'>= households × average AUM</span>.",
+    check: "Total AUM across the four tiers should land within a few percent of the AUM figure the firm quotes. If it is 20% out, the household grouping is wrong — usually because related accounts are not grouped into one household.",
+    tag: "OBSERVED" },
+  { n: 2, title: "Accounts per household, by tier",
+    need: "The average number of custodial accounts each household holds, per tier.",
+    from: "Export the account list, count accounts, divide by households in that tier. This is the number I currently have as an estimate and it takes ten minutes to make real.",
+    goes: "Book tab, accounts per household column.",
+    formula: "Drives every per-account task row: <span class='num'>minutes × occurrences × accounts per household</span>.",
+    check: "Should rise across the tiers. If the top tier is not the highest, either the grouping is wrong or there are dormant accounts inflating a lower tier.",
+    tag: "MEASURED" },
+  { n: 3, title: "The fee schedule, as bands",
+    need: "Every breakpoint and the rate that applies inside each band.",
+    from: "The ADV Part 2A, or the client agreement. Copy the bands exactly — do not simplify to an average rate.",
+    goes: "FeeSchedule tab, one row per band.",
+    formula: "Each band charges its own rate on the portion of assets inside it. The workbook uses SUMPRODUCT over the band table, not a lookup of one rate.",
+    check: "Hand-work a household just above a breakpoint. A household at $520,000 on a 1.00% / 0.85% schedule pays <b>$5,170</b>, not $4,420. If the model gives $4,420 it is a flat-rate model wearing a tiered schedule, and every revenue number in it is wrong.",
+    tag: "OBSERVED" },
+  { n: 4, title: "My own week",
+    need: "What share of my hours is operations work rather than planning, research and meeting support.",
+    from: "Me. Keep a two-week log in 30-minute blocks. Not a guess — a log.",
+    goes: "Roster tab, operations allocation for my row.",
+    formula: "Feeds operations hours available: <span class='num'>FTE × allocation × productive hours</span>.",
+    check: "If it comes out above 60% I should ask whether I am already doing the operations job. That is useful information for case 4 either way.",
+    tag: "MEASURED" },
+  { phase: "The next two weeks — timing", note: "This is the strongest evidence I will have. It is also the only evidence in this model that nobody can dispute, because I will have done it myself." },
+  { n: 5, title: "Time the ten tasks that carry the model",
+    need: "Median minutes per occurrence for the ten task rows that make up most of the catalogued hours. The Assumptions tab ranks them.",
+    from: "A stopwatch and my own calendar. Three runs each, not one.",
+    goes: "Tasks tab, minutes column, and change the tag from PLACEHOLDER to MEASURED as each one lands.",
+    formula: "Everything. Every hour figure in this model is built on this column.",
+    check: "A timing that is faster than my instinct is a timing I did wrong. See the note below on timing honestly.",
+    tag: "MEASURED", coach: "timing" },
+  { phase: "One conversation with the consultant", note: "Batched deliberately into a single conversation. She is leaving; her time is the scarcest input in this whole exercise, and asking her the same kind of question four times over four weeks is how goodwill gets spent." },
+  { n: 6, title: "Her task list", needs_person: true,
+    need: "Everything she does that is not already in my catalogue — especially the quarterly and annual work that does not happen while I am watching.",
+    from: "Her, directly. This needs to be framed as documentation, not measurement. See the script below.",
+    goes: "Tasks tab, new rows, owner set to her role, tagged OBSERVED until timed.",
+    formula: "New rows enter the catalogue and the coverage check on the Capacity tab closes.",
+    check: "The coverage check is the test. Her catalogued hours currently account for only part of her contracted hours; the gap should shrink markedly after this conversation. If it does not, I have not asked well enough.",
+    tag: "OBSERVED", coach: "asking" },
+  { n: 7, title: "Her contracted hours", needs_person: true,
+    need: "How many hours a week or month she is actually engaged for.",
+    from: "Her, or the principal — whoever finds it less awkward. It is in the engagement letter.",
+    goes: "Roster tab, FTE for her row: <span class='num'>= weekly hours × 48 / productive hours</span>.",
+    formula: "Sets how much capacity leaves the firm on her last day.",
+    check: "Compare with the catalogued hours for her rows. A large gap means the catalogue is still incomplete — go back to step 6.",
+    tag: "OBSERVED" },
+  { n: 8, title: "Her own timings, for her own tasks", needs_person: true,
+    need: "Her estimate of minutes per occurrence on the rows only she does.",
+    from: "The same conversation. Ask for ranges, not points: 'somewhere between 20 minutes and an hour' is a more honest input than '35 minutes'.",
+    goes: "Tasks tab, tagged OBSERVED (her figure) rather than MEASURED (mine).",
+    formula: "Same as any other task row.",
+    check: "Put her ranges in at both ends and see whether the capacity date moves by more than a quarter. If it does, that row is worth timing properly before it leaves with her.",
+    tag: "OBSERVED" },
+  { phase: "One conversation with the principal", note: "Also batched. These are the numbers I genuinely cannot see, and asking for them one at a time over a month makes me look like I am fishing rather than building." },
+  { n: 9, title: "Compensation, as bands not points", needs_person: true,
+    need: "A loaded cost band for each seat. Bands are fine — the model does not need anybody's exact salary.",
+    from: "The principal. Offer the band framing first; it is easier to say yes to.",
+    goes: "Roster tab, compensation column.",
+    formula: "<span class='num'>loaded hourly = comp × (1 + benefits load) / (FTE × productive hours)</span>.",
+    check: "Run the model at both ends of every band. If the answer to any of the four cases flips between the ends, say so out loud rather than picking a midpoint.",
+    tag: "OBSERVED" },
+  { n: 10, title: "Non-payroll firm overhead per household", needs_person: true,
+    need: "Rent, technology, custodial platform fees, E&O, compliance vendors, professional fees, marketing — divided by household count.",
+    from: "The principal, or whoever prepares the P&L. A single annual total is enough; I do not need the breakdown.",
+    goes: "Assumptions tab, firm overhead per household.",
+    formula: "<span class='num'>= total non-payroll overhead / total households</span>.",
+    check: "This number decides on its own whether the bottom tier looks profitable. Until it is real, case 3 is a structure, not a finding — and I should say exactly that when I show it.",
+    tag: "OBSERVED" },
+  { n: 11, title: "The real growth rate", needs_person: true,
+    need: "New households opened in each of the last three years.",
+    from: "A CRM report, or the principal. A count, not a feeling — including mine.",
+    goes: "Assumptions tab, household growth rate.",
+    formula: "<span class='num'>= (households now / households three years ago) ^ (1/3) − 1</span>.",
+    check: "If the three years disagree wildly, use the range and show the capacity date at both ends rather than averaging them into a single false number.",
+    tag: "OBSERVED" },
+  { n: 12, title: "Fee realisation", needs_person: true,
+    need: "Actual fees billed last quarter against what the schedule implies.",
+    from: "The billing run. I may be able to get this myself once I am closer to the billing cycle.",
+    goes: "Assumptions tab, fee realisation.",
+    formula: "<span class='num'>= fees actually billed / fees the schedule implies</span>.",
+    check: "Almost certainly below 100% — discounts, family aggregation, flat-fee exceptions. If it comes out above 100% the schedule in the model is wrong.",
+    tag: "OBSERVED" },
+  { n: 13, title: "Service incidents worth counting", needs_person: true,
+    need: "Actual service failures in the last two years, and roughly what each cost.",
+    from: "The principal, or the compliance file.",
+    goes: "Assumptions tab, service failures avoided and cost per event.",
+    formula: "Feeds case 4 only.",
+    check: "Leave this at zero unless somebody can name real incidents. A padded number here is the fastest way to lose the room, and the case is strong enough without it.",
+    tag: "OBSERVED" },
+];
+
+function renderBuild() {
+  const phases = [];
+  let cur = null;
+  for (const s of WORKFLOW) {
+    if (s.phase) { cur = { phase: s.phase, note: s.note, steps: [] }; phases.push(cur); }
+    else cur.steps.push(s);
+  }
+  const coachTiming = `<div class="card"><div class="card-head"><div>
+      <div class="card-title">How to time a process honestly</div>
+      <div class="card-sub">The timings are the only evidence in this model that is mine. If I flatter them, everything built on them is worthless — and worse, it is confidently worthless.</div></div></div>
+    <div class="card-body prose" style="max-width:none">
+      <p><b>Three runs, never one.</b> The first run of anything is the slowest and the one I am most tempted to
+      throw away. Keep it. Three runs of the same task on three different days.</p>
+      <p><b>Record the median, not the best.</b> The fastest run is the one where nothing went wrong, and nothing
+      going wrong is not the normal case. The median of three is the number that goes in the model.</p>
+      <p><b>Include the interruptions.</b> If the phone goes while I am opening an account, that time counts. The
+      model is trying to predict how much of a real week this work consumes, not how fast the task could be done
+      in a room with the door shut. Stop the clock only when I stop working on the firm's behalf entirely.</p>
+      <p><b>Time the whole loop, not the keystrokes.</b> An account opening is not the twelve minutes in the
+      custodian portal. It is the prep, the portal, the follow-up on the thing that bounced, and the note in the
+      CRM. Time from picking it up to genuinely putting it down.</p>
+      <p><b>Write down what made a run unusual.</b> "45 minutes, but the client's trust document was wrong" is a
+      more useful record than "45 minutes", because when the median looks strange in three weeks I will know why.</p>
+      <p style="color:var(--warn)"><b>The failure mode to watch for in myself:</b> timing the runs where I look
+      efficient. A timing I flatter myself with is worse than no timing at all, because no timing is honestly
+      labelled PLACEHOLDER and a flattering one gets labelled MEASURED.</p>
+    </div></div>`;
+
+  const coachAsking = `<div class="card"><div class="card-head"><div>
+      <div class="card-title">How to ask the consultant for her task list</div>
+      <div class="card-sub">This is the conversation I am most likely to get wrong. She is leaving. Any question about what she does can land as an audit, and once it lands that way I will not get a second run at it.</div></div></div>
+    <div class="card-body stack gap-16">
+      <div class="prose" style="max-width:none">
+        <p>Three things make the difference: <b>ask for the handover, not the inventory</b>; <b>make it clear the
+        work is going to be harder without her, not easier</b>; and <b>ask her to correct me rather than to
+        inform me</b> — bring a draft she can mark up, so she is editing my document instead of writing hers.</p>
+      </div>
+      <div class="script"><b>The opening — in person, not over email</b>
+        "I've been trying to write down everything operations covers so that when you go, we don't discover
+        something important in February that nobody knew existed. I've had a go at the list myself, but I know
+        it's got holes in it — particularly the quarterly and annual things I haven't been here long enough to
+        see. Could I show you what I've got and have you tell me what I've missed?"</div>
+      <div class="script"><b>Handing over the draft</b>
+        "Don't worry about the numbers on it — those are all my guesses at the minute. What I really want is the
+        rows that aren't there at all. The things that only happen in January, or only when something goes wrong."</div>
+      <div class="script"><b>Asking for her timings, without it sounding like a stopwatch</b>
+        "For the ones only you do — could you give me a rough range rather than a number? If you tell me the
+        billing run is somewhere between three and six hours depending on how many exceptions there are, that's
+        far more useful to me than a single figure, and it's honest about the thing that actually varies."</div>
+      <div class="script"><b>If it starts to feel like measurement</b>
+        "To be clear about why I'm asking — this isn't about your hours. It's that I'm probably picking a lot of
+        this up, and I'd rather find out now what I don't know than in the middle of a quarter end."</div>
+      <div class="prose" style="max-width:none">
+        <p><b>What not to do:</b> do not send her a spreadsheet with empty minute columns and ask her to fill it
+        in. That is an audit form, whatever the covering note says. Do not ask what she does with her time. Do not
+        mention utilisation, capacity or cost anywhere in this conversation — those are my words for my model, and
+        none of them belong in a handover.</p>
+        <p><b>What to do afterwards:</b> send her the updated list and ask if it looks right. People correct a
+        document far more readily than they compose one, and it makes plain that the point was the handover.</p>
+      </div>
+    </div></div>`;
+
+  $("#build-body").innerHTML = `
+    <div class="caveat soft"><span class="cv-tag">Order matters</span><span>Sequenced so everything I can get on
+      my own comes first, and everything needing somebody else is batched into two conversations rather than
+      fifteen interruptions. Steps needing another person are marked.</span></div>
+    ${phases.map((p, pi) => `
+      <div class="stack gap-12">
+        <div>
+          <span class="eyebrow">Phase ${pi + 1}</span>
+          <h3 style="margin-top:4px">${esc(p.phase)}</h3>
+          <p class="prose" style="margin-top:6px;font-size:.88rem">${esc(p.note)}</p>
+        </div>
+        <div class="card"><div class="card-body"><ol class="steps">
+        ${p.steps.map(s => `<li><div class="step-body">
+          <div class="step-title">${esc(s.title)} ${s.needs_person ? `<span class="needs">needs someone else</span>` : ""}</div>
+          <dl class="stepgrid">
+            <dt>The number</dt><dd>${esc(s.need)}</dd>
+            <dt>Where from</dt><dd>${esc(s.from)}</dd>
+            <dt>Where it goes</dt><dd>${s.goes}</dd>
+            <dt>Formula on it</dt><dd>${s.formula}</dd>
+            <dt>Sanity check</dt><dd>${s.check}</dd>
+            <dt>Tag it</dt><dd><span class="tag tag-${s.tag}">${s.tag}</span></dd>
+          </dl>
+          ${s.coach === "timing" ? `<p style="font-size:.8rem;color:var(--muted);margin:0">See <b>How to time a process honestly</b> below before starting this one.</p>` : ""}
+          ${s.coach === "asking" ? `<p style="font-size:.8rem;color:var(--muted);margin:0">The exact wording is drafted below under <b>How to ask the consultant for her task list</b>.</p>` : ""}
+        </div></li>`).join("")}
+        </ol></div></div>
+      </div>`).join("")}
+    ${coachTiming}
+    ${coachAsking}`;
+}
+
+
+/* ---------------------------------------------------------------- PRESENT */
+function renderPresent(model) {
+  const cap = model.capacity, c1 = model.case1, c4 = model.case4, t1 = model.tiers[0];
+  $("#present-body").innerHTML = `
+    <div class="card"><div class="card-head"><div><div class="card-title">The opening sentence</div>
+      <div class="card-sub">One sentence. It has to ask him to correct my assumptions, not to admire my work.</div></div></div>
+      <div class="card-body stack gap-16">
+        <div class="script"><b>Say this</b>
+          "I've built a model of how much operations work we carry and when we run out of room for it. Most of the
+          numbers in it are my guesses, and they're all labelled as guesses — what I'd really like is half an hour
+          of you telling me which ones are wrong."</div>
+        <div class="prose" style="max-width:none">
+          <p>The whole posture is in that sentence. I am sixty days in. I am not the person who tells him what his
+          numbers are. I am the person who built a tool, labelled every assumption, and asked to be corrected.
+          If he spends the meeting correcting me, the meeting has worked.</p>
+          <p><b>Do not open with the seat.</b> Do not open with an insight. Open by handing him the controls.</p>
+        </div>
+      </div></div>
+
+    <div class="card"><div class="card-head"><div><div class="card-title">The order to walk them in</div>
+      <div class="card-sub">Departure first. It is the problem he already has, and it is the only one with a date on it.</div></div></div>
+      <div class="card-body"><ol class="steps">
+        <li><div class="step-body"><div class="step-title">Case 1 — what happens in ${nf(c1.daysAway, 0)} days</div>
+          <p class="prose" style="font-size:.87rem;margin:0">Start here because he is already worried about it and
+          because it needs no persuading. Lead with the gap, not the total: the catalogue accounts for
+          ${nf(c1.catalogued, 0)} of her roughly ${nf(c1.contracted, 0)} hours, and the honest headline is that
+          <b>I do not yet know what the other ${nf(c1.unmapped, 0)} hours are</b>. Admitting that first buys credit
+          for everything after it.</p></div></li>
+        <li><div class="step-body"><div class="step-title">Case 2 — where capacity breaks</div>
+          <p class="prose" style="font-size:.87rem;margin:0">Now the departure has a context: it is not a one-off
+          problem, it is an early arrival of a problem that was coming anyway${cap.breakDate ? `, around ${longDate(cap.breakDate)}` : ""}.
+          Show the tornado chart here — it is the chart that says which of my guesses the answer actually depends
+          on, and it is the fastest way to demonstrate that I know what I do not know.</p></div></li>
+        <li><div class="step-body"><div class="step-title">Case 3 — what each tier costs to serve</div>
+          <p class="prose" style="font-size:.87rem;margin:0">Third, and carefully. Frame it before showing it:
+          "this one I'm least sure about, because the biggest number in it is one I can't see." Then ask for the
+          overhead figure and rerun it in front of him. Present three options flat. <b>Do not recommend one.</b></p></div></li>
+        <li><div class="step-body"><div class="step-title">Case 4 — the seat</div>
+          <p class="prose" style="font-size:.87rem;margin:0">Last. By now he has spent forty minutes correcting a
+          model that says operations is the constraint; the seat is the obvious next question rather than my ask.
+          Lead with the displaced-hours problem, not the break-even — being the one who found the hole in my own
+          proposal is worth more than the ratio is.</p></div></li>
+      </ol></div></div>
+
+    <div class="card"><div class="card-head"><div><div class="card-title">The three questions to ask him</div>
+      <div class="card-sub">Phrased so the answers improve the model rather than just fill silence.</div></div></div>
+      <div class="card-body grid2">
+        <div class="q"><div class="qq">"What's our non-payroll cost per household — rent, tech, E&amp;O, all of it?"</div>
+          <div class="qw">It is the largest single layer in case 3 and it is currently a number I made up. It also
+          quietly tells me whether he thinks in per-household economics at all, which changes how I present
+          everything else.</div></div>
+        <div class="q"><div class="qq">"When she goes, what do you already expect to drop?"</div>
+          <div class="qw">If he names something, that is a real input and it goes in the model. If he says nothing
+          drops, then the ${nf(c1.options[0].hoursShort, 0)} hours with no owner in case 1 is the whole
+          conversation, and I have not had to assert it myself.</div></div>
+        <div class="q"><div class="qq">"Which of these numbers looks most wrong to you?"</div>
+          <div class="qw">Invites correction rather than defence, and whatever he names is the assumption to work
+          on next. Ask it while the sliders are on screen so the answer can go straight in.</div></div>
+        <div class="q" style="border-style:dashed"><div class="qq">A fourth, only if it is going well</div>
+          <div class="qw">"Is an operations role here something you're actually considering, or am I building
+          towards something that isn't going to exist?" Direct, but it is the December question and a straight
+          answer is worth more than a good meeting.</div></div>
+      </div></div>
+
+    <div class="card"><div class="card-head"><div><div class="card-title">What to do when he disagrees with a number</div></div></div>
+      <div class="card-body stack gap-12">
+        <div class="prose" style="max-width:none">
+          <p><b>Change it in front of him. Immediately, without defending the old value.</b> Open the controls,
+          move the slider to his number, and let him watch the chart move. That is the entire reason this is
+          interactive rather than a deck.</p>
+          <p>Then say what it did: "at your number the capacity date moves from X to Y" — or, better,
+          "at your number it barely moves, so it turns out that assumption wasn't carrying much." Both of those
+          are good outcomes. A model that survives being corrected is a tool. One that has to be defended is a
+          presentation, and it is the last one of mine he will sit through.</p>
+          <p>If he disagrees with something I actually timed, that is different and worth holding: "that one I
+          timed — three runs, median was 40 minutes. Happy to time it again, but that's where the number came
+          from." Say it once, without pushing. That is what the MEASURED tag is for.</p>
+        </div>
+        <div class="dont"><b style="font-family:var(--sans);font-size:.9rem">The one thing not to say</b>
+          <div class="prose" style="max-width:none;margin-top:7px">
+            <p><b>Do not present cost-to-serve as a finding about specific clients.</b> Never "these clients lose
+            us money." The model works in tiers precisely so that sentence is not available. The tier is a
+            question about a service model; the household is somebody's family, and the person who says the
+            second sentence in a six-person firm does not get asked into the next conversation.</p>
+            <p><b>And do not lead with the seat.</b> It is the last thing in the meeting, framed as protection
+            rather than generation. An operations seat protects advisor capacity and prevents service failures.
+            Claiming it generates revenue invites the one challenge I cannot win from this chair.</p>
+          </div></div>
+      </div></div>
+
+    <div class="card"><div class="card-head"><div><div class="card-title">The leave-behind</div>
+      <div class="card-sub">One page, printed, on the desk when I go. The workbook goes with it.</div></div></div>
+      <div class="card-body stack gap-12">
+        <p class="prose" style="font-size:.88rem">Everything on the summary is drawn live from whatever the sliders
+        are set to when it prints — so if he corrects three numbers in the meeting, the page he keeps has his
+        numbers on it, not mine. Print it at the end, not before.</p>
+        <button class="btn noprint" id="print-btn2">Print the one-page summary</button>
+      </div></div>`;
+  const b = $("#print-btn2"); if (b) b.onclick = doPrint;
+}
+
+/* ---------------------------------------------------------------- PRINT */
+function renderPrint(model) {
+  const cap = model.capacity, c1 = model.case1, c4 = model.case4, t1 = model.tiers[0];
+  const r = rollup(ATOMS.map(a => a.id));
+  $("#printsheet").innerHTML = `
+    <h2 style="margin-bottom:4px">Operations capacity &amp; economics — summary</h2>
+    <p style="font-size:.8rem;color:var(--muted);margin-bottom:12px">Working model, ${esc(INPUTS.meta.as_of)}.
+      ${r.counts.PLACEHOLDER} of ${r.total} inputs are still placeholders. Nothing here is a compliance opinion,
+      and no client data is used anywhere in it.</p>
+    <table class="data" style="min-width:0"><tbody>
+      <tr><td><b>The book</b></td><td class="n">${nf(model.book.totalHouseholds, 0)} households · ${usdK(model.book.aumTotal)} AUM · ${usdK(model.revenue.total)} revenue at the schedule</td></tr>
+      <tr><td><b>Operations today</b></td><td class="n">${nf(cap.required.total, 0)} h required · ${nf(cap.available, 0)} h available · <b>${pct(cap.utilisation)} utilised</b></td></tr>
+      <tr><td><b>1 · In ${nf(c1.daysAway, 0)} days</b></td><td class="n">${nf(c1.catalogued, 0)} catalogued hours need a home, plus ~${nf(c1.unmapped, 0)} not yet documented. Absorbing them: <b>${pct(c1.options[0].utilisation)}</b> utilisation, ${nf(c1.options[0].hoursShort, 0)} h unowned. Backfill ${usd(c1.options[1].annualCost)}/yr. Internal seat ${usd(c1.options[2].annualCost)}/yr.</td></tr>
+      <tr><td><b>2 · Capacity</b></td><td class="n">${cap.breakDate ? `Breaks at ~${nf(cap.breakHouseholds, 0)} households, around <b>${longDate(cap.breakDate)}</b>, at ${pct(model.scenario.growth, 0)} growth.` : `No break inside ${model.scenario.horizonYears} years at ${pct(model.scenario.growth, 0)} growth.`}</td></tr>
+      <tr><td><b>3 · Tier economics</b></td><td class="n">${t1.tier} costs ~${usd(t1.costTotalLoaded)} loaded to serve, produces ${usd(t1.revenuePerHousehold)}. Driven by a placeholder overhead figure of ${usd(model.scenario.firmOverheadPerHousehold)}/household. Three options: raise the minimum, serve differently, accept as pipeline cost.</td></tr>
+      <tr><td><b>4 · The seat</b></td><td class="n">Costs ${usd(c4.seatCostLoaded)} loaded. Protects ${usd(c4.protectTotal)} on these numbers (${nf(c4.protect[1].hours, 0)} advisor hours + ${nf(c4.protect[0].hours, 0)} consultant hours). Displaces ${nf(c4.displacedParaplanningHours, 0)} h of paraplanning that must go somewhere.</td></tr>
+    </tbody></table>
+    <p style="font-size:.78rem;margin-top:14px"><b>What I need from you:</b> the non-payroll overhead per household,
+      compensation bands for the roster, the real three-year new-household count, and whether an operations role is
+      genuinely on the table. Everything else I can get myself.</p>`;
+}
+function doPrint() { $("#printsheet").style.display = "block"; window.print();
+  setTimeout(() => { $("#printsheet").style.display = "none"; }, 400); }
+
+/* ---------------------------------------------------------------- CONTROLS */
+const SLIDERS = [
+  { key: "growth", label: "Household growth rate", min: 0, max: 0.30, step: 0.01, fmt: v => pct(v, 0), ref: "const.growth_rate_households" },
+  { key: "efficiency", label: "Minutes per task", min: 0.60, max: 1.20, step: 0.01, fmt: v => pct(v, 0) + " of filed", note: "A 10% process improvement is 90%." },
+  { key: "switchingUplift", label: "Switching and interruption uplift", min: 0, max: 0.50, step: 0.01, fmt: v => pct(v, 0), ref: "const.switching_uplift" },
+  { key: "feeRealisation", label: "Fee realisation against schedule", min: 0.70, max: 1.10, step: 0.01, fmt: v => pct(v, 0), ref: "const.fee_realisation" },
+  { key: "productiveHours", label: "Productive hours per person", min: 1200, max: 2000, step: 25, fmt: v => nf(v, 0) + " h", ref: "const.productive_hours_year" },
+  { key: "benefitsLoad", label: "Benefits and payroll load", min: 0, max: 0.50, step: 0.01, fmt: v => pct(v, 0), ref: "const.benefits_load" },
+  { key: "firmOverheadPerHousehold", label: "Firm overhead per household", min: 0, max: 5000, step: 100, fmt: v => usd(v), ref: "const.firm_overhead_per_household" },
+  { key: "extraOpsFte", label: "Operations headcount change", min: -2.5, max: 2, step: 0.1,
+    fmt: v => v > 0 ? "+" + nf(v, 1) + " FTE" : v < 0 ? "−" + nf(-v, 1) + " FTE" : "no change",
+    note: "On top of whatever the scenario sets. Negative removes operations time, largest contributor first — take it far enough and the model refuses to run." },
+  { key: "blendedOpsHourlyOverride", label: "Blended operations hourly rate", min: 0, max: 150, step: 1, fmt: v => v > 0 ? usd(v) + " / h" : "auto from roster", note: "Zero uses the roster." },
+  { key: "seatOpsAllocation", label: "My operations share, if I take the seat", min: 0.35, max: 1, step: 0.05, fmt: v => pct(v, 0), note: "Case 4. The rest of my week stays paraplanning." },
+];
+const BASE = defaultScenario(INPUTS);
+
+function renderSliders() {
+  const respHTML = `<div class="slider" style="grid-column:1/-1">
+    <label><span>Operations headcount</span></label>
+    <div class="sb-group">
+      <label style="font-size:.78rem;display:flex;gap:6px;align-items:center;font-weight:400;margin:0">
+        <input type="checkbox" id="c-consultant" ${state.consultantPresent ? "checked" : ""}> Consultant still on the roster</label>
+      <div class="segmented" role="group" aria-label="Response to her departure">
+        ${[["absorb", "Absorb"], ["backfill", "Backfill"], ["internal", "I take the seat"]].map(([k, l]) =>
+          `<button data-resp="${k}" aria-pressed="${state.response === k}" ${state.consultantPresent ? "disabled style=opacity:.45" : ""}>${l}</button>`).join("")}
+      </div>
+    </div>
+    <span class="hint">${state.consultantPresent ? "The response only applies once she is off the roster." : "How her work is covered."}</span></div>`;
+
+  $("#sliders").innerHTML = respHTML + SLIDERS.map(s => {
+    const v = state[s.key] ?? 0;
+    const dirty = Math.abs(v - (BASE[s.key] ?? 0)) > 1e-9;
+    const a = s.ref ? ATOM_BY_ID[s.ref] : null;
+    return `<div class="slider${dirty ? " dirty" : ""}">
+      <label for="sl-${s.key}"><span>${esc(s.label)}${a ? ` <span class="tag tag-${a.tag}" style="font-size:.52rem">${a.tag}</span>` : ""}</span>
+        <output id="out-${s.key}">${s.fmt(v)}</output></label>
+      <input type="range" id="sl-${s.key}" min="${s.min}" max="${s.max}" step="${s.step}" value="${v}" data-key="${s.key}">
+      <span class="hint">${esc(s.note || (a ? "Filed value " + s.fmt(BASE[s.key]) + ". " + a.who : ""))}</span></div>`;
+  }).join("");
+
+  $$("#sliders input[type=range]").forEach(el => {
+    el.addEventListener("input", () => {
+      const k = el.dataset.key, s = SLIDERS.find(x => x.key === k);
+      state[k] = k === "blendedOpsHourlyOverride" && +el.value === 0 ? null : +el.value;
+      $("#out-" + k).textContent = s.fmt(+el.value);
+      el.closest(".slider").classList.toggle("dirty", Math.abs(+el.value - (BASE[k] ?? 0)) > 1e-9);
+      syncPresetButtons(); renderAll(false);
+    });
+  });
+  const cc = $("#c-consultant");
+  if (cc) cc.onchange = () => { state.consultantPresent = cc.checked; syncPresetButtons(); renderSliders(); renderAll(); };
+  $$("#sliders [data-resp]").forEach(b => b.onclick = () => {
+    if (state.consultantPresent) return;
+    state.response = b.dataset.resp; syncPresetButtons(); renderSliders(); renderAll();
+  });
+}
+function syncPresetButtons() {
+  $$("[data-preset]").forEach(b => {
+    const p = PRESETS[b.dataset.preset];
+    b.setAttribute("aria-pressed", String(state.consultantPresent === p.consultantPresent && state.response === p.response));
+  });
+}
+function renderReadout(model) {
+  if (model.failed) {
+    $("#sb-readout").innerHTML = `<b style="color:var(--warn)">Model cannot run</b>`;
+    return;
+  }
+  const cap = model.capacity;
+  $("#sb-readout").innerHTML = `
+    <span>Utilisation <b style="${cap.utilisation > 1 ? "color:var(--warn)" : ""}">${pct(cap.utilisation)}</b></span>
+    <span>Capacity <b>${cap.breakDate ? longDate(cap.breakDate) : "beyond " + model.scenario.horizonYears + " yrs"}</b></span>
+    <span>Revenue <b>${usdK(model.revenue.total)}</b></span>`;
+}
+function renderCompare(model) {
+  const strip = $("#cmp-strip");
+  if (!cmpBase) { strip.hidden = true; return; }
+  strip.hidden = false;
+  const a = computeModel(INPUTS, cmpBase.state), b = model;
+  const rowsFor = m => m.failed ? null : ({
+    "Operations utilisation": [pct(m.capacity.utilisation), m.capacity.utilisation],
+    "Hours required per year": [nf(m.capacity.required.total, 0), m.capacity.required.total],
+    "Hours available per year": [nf(m.capacity.available, 0), m.capacity.available],
+    "Capacity runs out": [m.capacity.breakDate ? longDate(m.capacity.breakDate) : "beyond horizon", m.capacity.breakMonthFrac ?? 999],
+    "Revenue at the schedule": [usdK(m.revenue.total), m.revenue.total],
+    "Bottom tier margin, loaded": [usd(m.tiers[0].marginLoaded), m.tiers[0].marginLoaded],
+  });
+  const A = rowsFor(a), B = rowsFor(b);
+  if (!A || !B) { strip.innerHTML = `<div class="caveat"><span class="cv-tag">Compare</span><span>One of the two scenarios cannot run.</span></div>`; return; }
+  const keys = Object.keys(A);
+  strip.innerHTML = `<div class="card" style="margin-bottom:22px"><div class="card-head">
+      <div><div class="card-title">Compare</div><div class="card-sub">A is pinned. Move any control and B moves with it. The deltas are the argument.</div></div>
+      <button class="btn btn-sm" id="cmp-clear">Clear</button></div>
+    <div class="card-body"><div class="tscroll"><table class="data" style="min-width:0">
+      <thead><tr><th>Measure</th><th class="n">A · ${esc(cmpBase.label)}</th><th class="n">B · now</th><th class="n">Change</th></tr></thead>
+      <tbody>${keys.map(k => {
+        const d = B[k][1] - A[k][1];
+        const same = Math.abs(d) < 1e-9;
+        const dir = k === "Capacity runs out" ? (d > 0 ? "later" : "sooner") : (d > 0 ? "up" : "down");
+        return `<tr><td>${esc(k)}</td><td class="n">${A[k][0]}</td><td class="n"><b>${B[k][0]}</b></td>
+          <td class="n" style="color:${same ? "var(--muted)" : "var(--ink)"}">${same ? "no change" :
+            (k === "Capacity runs out" ? `${nf(Math.abs(d), 0)} months ${dir}` : `${d > 0 ? "+" : "−"}${
+              k.includes("Revenue") || k.includes("margin") ? usdK(Math.abs(d)) :
+              k.includes("utilisation") ? pct(Math.abs(d)) : nf(Math.abs(d), 0)}`)}</td></tr>`;
+      }).join("")}</tbody></table></div></div></div>`;
+  $("#cmp-clear").onclick = () => { cmpBase = null; $("#cmp-toggle").setAttribute("aria-pressed", "false"); $("#cmp-state").textContent = ""; renderAll(); };
+}
+
+/* ---------------------------------------------------------------- RENDER */
+function renderAll(full = true) {
+  const model = M();
+  renderReadout(model);
+  const fb = $("#failbanner");
+  if (model.failed) {
+    /* Fail visibly: hide every panel rather than render a number that looks
+       fine and means nothing. The panels are intact and come straight back. */
+    fb.hidden = false;
+    fb.innerHTML = `<div class="caveat" style="margin-top:20px"><span class="cv-tag">The model stopped</span>
+      <span><b>This is deliberate.</b> At these settings the model cannot produce an honest number, so it
+      produces none.<br><br>${model.errors.map(x => "• " + esc(x)).join("<br>")}<br><br>
+      Move the controls back, or press Reset, and everything returns.</span></div>`;
+    $$(".panel").forEach(p => { p.hidden = true; });
+    $("#cmp-strip").hidden = true;
+    return;
+  }
+  fb.hidden = true;
+  $$(".panel").forEach(p => { p.hidden = p.id !== "p-" + activePanel; });
+  renderCompare(model);
+  const r = { start: renderStart, case1: renderCase1, case2: renderCase2, case3: renderCase3,
+    case4: renderCase4, assump: renderAssumptions, build: () => renderBuild(), present: renderPresent }[activePanel];
+  if (r) r(model);
+  renderPrint(model);
+  const meta = rollup(ATOMS.map(a => a.id));
+  $("#m-asof").textContent = INPUTS.meta.as_of;
+  $("#m-schema").textContent = INPUTS.meta.schema_version;
+  $("#m-inputcount").textContent = meta.total;
+  $("#m-measured").textContent = meta.counts.MEASURED + " of " + meta.total;
+}
+
+/* ---------------------------------------------------------------- EVENTS */
+function showPanel(name) {
+  activePanel = name;
+  $$(".panel").forEach(p => { p.hidden = p.id !== "p-" + name; });
+  $$("#casenav button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.panel === name)));
+  renderAll();
+  window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+}
+$$("#casenav button").forEach(b => b.onclick = () => showPanel(b.dataset.panel));
+$$("[data-preset]").forEach(b => b.onclick = () => {
+  const p = PRESETS[b.dataset.preset];
+  state.consultantPresent = p.consultantPresent; state.response = p.response;
+  syncPresetButtons(); renderSliders(); renderAll();
+});
+$("#sb-toggle").onclick = () => {
+  const open = $("#sb-panel").hidden;
+  $("#sb-panel").hidden = !open;
+  $("#sb-toggle").setAttribute("aria-expanded", String(open));
+};
+$("#sb-reset").onclick = () => { state = defaultScenario(INPUTS); syncPresetButtons(); renderSliders(); renderAll(); };
+$("#cmp-toggle").onclick = () => {
+  if (cmpBase) { cmpBase = null; $("#cmp-toggle").setAttribute("aria-pressed", "false"); $("#cmp-state").textContent = ""; }
+  else {
+    const preset = Object.entries(PRESETS).find(([, p]) => p.consultantPresent === state.consultantPresent && p.response === state.response);
+    cmpBase = { state: JSON.parse(JSON.stringify(state)), label: preset ? preset[1].label : "pinned" };
+    $("#cmp-toggle").setAttribute("aria-pressed", "true");
+    $("#cmp-state").textContent = "A pinned — now change something";
+  }
+  renderAll();
+};
+$("#t-xray").onclick = () => { xray = !xray; document.body.classList.toggle("xray", xray);
+  $("#t-xray").setAttribute("aria-pressed", String(xray)); };
+$("#t-anon").onclick = () => { anonymised = !anonymised;
+  $("#t-anon").setAttribute("aria-pressed", String(anonymised));
+  $("#t-anon").textContent = anonymised ? "Anonymised" : "Real labels";
+  buildLedger(); renderAll();
+};
+$("#t-theme").onclick = () => {
+  const cur = document.documentElement.getAttribute("data-theme");
+  const next = cur === "dark" ? "light" : cur === "light" ? null : "dark";
+  if (next) document.documentElement.setAttribute("data-theme", next);
+  else document.documentElement.removeAttribute("data-theme");
+  $("#t-theme").textContent = next ? next[0].toUpperCase() + next.slice(1) : "Theme";
+};
+$("#t-print").onclick = doPrint;
+document.addEventListener("click", e => {
+  const f = e.target.closest("[data-filter]");
+  if (f) { ledgerFilter = f.dataset.filter; renderAll(); return; }
+  const g = e.target.closest("[data-goto]");
+  if (g) { e.preventDefault(); ledgerFilter = "ALL"; showPanel("assump");
+    requestAnimationFrame(() => {
+      const row = document.getElementById("atom-" + g.dataset.goto);
+      if (row) { row.scrollIntoView({ block: "center", behavior: "smooth" });
+        row.style.transition = "background .2s"; row.style.background = "var(--accent-soft)";
+        setTimeout(() => { row.style.background = ""; }, 1600); }
+    });
+  }
+});
+
+/* ---------------------------------------------------------------- INIT */
+/* Closed at rest: open, the control panel takes half the viewport and pushes
+   the numbers off screen. The presets and the readout stay visible either way. */
+$("#sb-panel").hidden = true;
+$("#sb-toggle").setAttribute("aria-expanded", String(!$("#sb-panel").hidden));
+renderSliders();
+showPanel("start");
+
+</script>
